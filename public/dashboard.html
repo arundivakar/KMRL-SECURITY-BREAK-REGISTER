@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>KMRL Dashboard</title>
+
+    <link rel="stylesheet" href="admin.css">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <div class="topbar">
+
+        <h2>KMRL Break Logs</h2>
+
+        <a href="/logout">
+            <button>
+                Logout
+            </button>
+        </a>
+
+    </div>
+
+    <input type="text"
+           id="search"
+           placeholder="Search Employee ID">
+
+    <table>
+
+        <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>EMP ID</th>
+                <th>Break</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Minutes</th>
+                <th>Status</th>
+            </tr>
+
+        </thead>
+
+        <tbody id="logs-body"></tbody>
+
+    </table>
+
+</div>
+
+<script src="admin.js"></script>
+
+</body>
+</html>

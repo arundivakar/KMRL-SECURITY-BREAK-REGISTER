@@ -1,12 +1,25 @@
 const express = require('express');
 const Database = require('better-sqlite3');
 const cors = require('cors');
+const session = require('express-session');
+const bcrypt = require('bcrypt');
+const path = require('path');
 
 const app = express();
 const db = new Database('./db/breaks.db');
 
 app.use(cors());
+
 app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+
+app.use(session({
+    secret: 'kmrl-secret-key',
+    resave: false,
+    saveUninitialized: false
+}));
+
 app.use(express.static('public'));
 
 db.prepare(`
@@ -20,6 +33,91 @@ CREATE TABLE IF NOT EXISTS breaks (
     status TEXT
 )
 `).run();
+
+db.prepare(`
+CREATE TABLE IF NOT EXISTS employees (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    emp_id TEXT UNIQUE,
+    name TEXT,
+    designation TEXT
+)
+`).run();
+
+db.prepare(`
+CREATE TABLE IF NOT EXISTS admins (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE,
+    password TEXT
+)
+`).run();
+
+const adminExists = db.prepare(`
+SELECT * FROM admins WHERE username = ?
+`).get('admin');
+
+if (!adminExists) {
+
+    const hashedPassword = bcrypt.hashSync('admin123', 10);
+
+    db.prepare(`
+        INSERT INTO admins (username, password)
+        VALUES (?, ?)
+    `).run('admin', hashedPassword);
+}
+
+function isAuthenticated(req, res, next) {
+
+    if (req.session.loggedIn) {
+        return next();
+    }
+
+    return res.redirect('/login.html');
+}
+
+app.post('/api/login', (req, res) => {
+
+    const { username, password } = req.body;
+
+    const admin = db.prepare(`
+        SELECT * FROM admins
+        WHERE username = ?
+    `).get(username);
+
+    if (!admin) {
+
+        return res.json({
+            success: false,
+            message: 'Invalid username'
+        });
+    }
+
+    const validPassword = bcrypt.compareSync(
+        password,
+        admin.password
+    );
+
+    if (!validPassword) {
+
+        return res.json({
+            success: false,
+            message: 'Invalid password'
+        });
+    }
+
+    req.session.loggedIn = true;
+
+    res.json({
+        success: true
+    });
+});
+
+app.get('/logout', (req, res) => {
+
+    req.session.destroy(() => {
+
+        res.redirect('/login.html');
+    });
+});
 
 app.post('/api/breaks', (req, res) => {
 
@@ -50,6 +148,7 @@ app.post('/api/breaks', (req, res) => {
         `).get(emp_id, break_no);
 
         if (!row) {
+
             return res.json({
                 message: 'No active break found'
             });
@@ -72,105 +171,48 @@ app.post('/api/breaks', (req, res) => {
             message: `${break_no} completed`
         });
     }
-
 });
 
-app.get('/logs', (req, res) => {
+app.get('/api/employee/:emp_id', (req, res) => {
+
+    const emp = db.prepare(`
+        SELECT * FROM employees
+        WHERE emp_id = ?
+    `).get(req.params.emp_id);
+
+    if (!emp) {
+
+        return res.json({
+            found: false
+        });
+    }
+
+    res.json({
+        found: true,
+        employee: emp
+    });
+});
+
+app.get('/dashboard', isAuthenticated, (req, res) => {
+
+    res.sendFile(
+        path.join(__dirname, 'public/dashboard.html')
+    );
+});
+
+app.get('/api/logs', isAuthenticated, (req, res) => {
 
     const rows = db.prepare(`
         SELECT * FROM breaks
         ORDER BY id DESC
     `).all();
 
-    let html = `
-    <html>
-    <head>
-        <title>Break Logs</title>
-
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1.0">
-
-        <style>
-
-            body {
-                font-family: Arial;
-                padding: 15px;
-                background: #f2f2f2;
-            }
-
-            h2 {
-                text-align: center;
-            }
-
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                background: white;
-            }
-
-            th, td {
-                border: 1px solid #ccc;
-                padding: 10px;
-                text-align: center;
-                font-size: 14px;
-            }
-
-            th {
-                background: #007bff;
-                color: white;
-            }
-
-            tr:nth-child(even) {
-                background: #f9f9f9;
-            }
-
-        </style>
-    </head>
-
-    <body>
-
-    <h2>KMRL TCS Break Logs</h2>
-
-    <table>
-
-        <tr>
-            <th>ID</th>
-            <th>Employee</th>
-            <th>Break</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Minutes</th>
-            <th>Status</th>
-        </tr>
-    `;
-
-    rows.forEach(row => {
-
-        html += `
-        <tr>
-            <td>${row.id}</td>
-            <td>${row.emp_id}</td>
-            <td>${row.break_no}</td>
-            <td>${row.start_time || ''}</td>
-            <td>${row.end_time || ''}</td>
-            <td>${row.duration_minutes || ''}</td>
-            <td>${row.status}</td>
-        </tr>
-        `;
-    });
-
-    html += `
-    </table>
-
-    </body>
-    </html>
-    `;
-
-    res.send(html);
+    res.json(rows);
 });
 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
+
     console.log(`Server running on port ${PORT}`);
 });
