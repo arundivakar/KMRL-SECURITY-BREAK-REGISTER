@@ -7,7 +7,14 @@ const path = require('path');
 const app = express();
 
 const db =
-    new Database('./db/breaks.db');
+    new Database(
+
+        path.join(
+            __dirname,
+            'db',
+            'breaks.db'
+        )
+    );
 
 app.use(express.json());
 
