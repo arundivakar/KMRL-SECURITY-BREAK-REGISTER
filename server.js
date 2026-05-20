@@ -26,108 +26,6 @@ app.use(session({
 
 app.use(express.static('public'));
 
-db.prepare(`
-
-CREATE TABLE IF NOT EXISTS employees (
-
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-    emp_id TEXT,
-
-    name TEXT,
-
-    designation TEXT
-)
-
-`).run();
-
-db.prepare(`
-
-CREATE TABLE IF NOT EXISTS admins (
-
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-    username TEXT,
-
-    password TEXT
-)
-
-`).run();
-
-db.prepare(`
-
-CREATE TABLE IF NOT EXISTS break_summary (
-
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-    entry_date TEXT,
-
-    emp_id TEXT,
-
-    station TEXT,
-
-    shift_type TEXT,
-
-    break1 INTEGER DEFAULT 0,
-
-    break2 INTEGER DEFAULT 0,
-
-    break3 INTEGER DEFAULT 0,
-
-    break4 INTEGER DEFAULT 0,
-
-    break5 INTEGER DEFAULT 0,
-
-    break6 INTEGER DEFAULT 0,
-
-    total INTEGER DEFAULT 0,
-
-    current_open_break TEXT,
-
-    current_start_time TEXT,
-
-    edited_by_name TEXT,
-
-    edited_by_emp TEXT,
-
-    edit_reason TEXT,
-
-    edited_at TEXT
-)
-
-`).run();
-
-const admin =
-    db.prepare(`
-        SELECT *
-        FROM admins
-        WHERE username = ?
-    `).get('admin');
-
-if (!admin) {
-
-    const hashed =
-        bcrypt.hashSync(
-            'admin123',
-            10
-        );
-
-    db.prepare(`
-
-        INSERT INTO admins
-        (
-            username,
-            password
-        )
-
-        VALUES (?, ?)
-
-    `).run(
-        'admin',
-        hashed
-    );
-}
-
 function normalize(id) {
 
     return id
@@ -140,7 +38,7 @@ function normalize(id) {
         .toUpperCase();
 }
 
-function auth(
+function isAuthenticated(
     req,
     res,
     next
@@ -161,7 +59,7 @@ function auth(
 app.get(
 '/dashboard',
 
-auth,
+isAuthenticated,
 
 (req, res) => {
 
@@ -170,6 +68,22 @@ auth,
         path.join(
             __dirname,
             'public/dashboard.html'
+        )
+    );
+});
+
+app.get(
+'/edit/:id',
+
+isAuthenticated,
+
+(req, res) => {
+
+    res.sendFile(
+
+        path.join(
+            __dirname,
+            'public/edit.html'
         )
     );
 });
@@ -364,6 +278,22 @@ app.post(
             );
     }
 
+    db.prepare(`
+
+        UPDATE break_summary
+
+        SET
+            station = ?,
+            shift_type = ?
+
+        WHERE id = ?
+
+    `).run(
+        station,
+        shift_type,
+        row.id
+    );
+
     const map = {
 
         'Break 1': 'break1',
@@ -505,7 +435,7 @@ app.post(
 app.get(
 '/api/logs',
 
-auth,
+isAuthenticated,
 
 (req, res) => {
 
@@ -550,6 +480,178 @@ auth,
         `).all();
 
     res.json(rows);
+});
+
+app.get(
+'/api/edit-entry/:id',
+
+isAuthenticated,
+
+(req, res) => {
+
+    const row =
+        db.prepare(`
+
+            SELECT
+
+                b.*,
+
+                e.name
+
+            FROM break_summary b
+
+            LEFT JOIN employees e
+
+            ON
+                REPLACE(
+                    REPLACE(
+                        b.emp_id,
+                        ' ',
+                        ''
+                    ),
+                    'TCSEK',
+                    ''
+                )
+
+                =
+
+                REPLACE(
+                    REPLACE(
+                        e.emp_id,
+                        ' ',
+                        ''
+                    ),
+                    'TCSEK',
+                    ''
+                )
+
+            WHERE b.id = ?
+
+        `).get(
+            req.params.id
+        );
+
+    res.json(row);
+});
+
+app.post(
+'/api/edit-entry/:id',
+
+isAuthenticated,
+
+(req, res) => {
+
+    const id =
+        req.params.id;
+
+    const {
+
+        emp_id,
+
+        station,
+
+        shift_type,
+
+        break1,
+
+        break2,
+
+        break3,
+
+        break4,
+
+        break5,
+
+        break6,
+
+        edited_by_name,
+
+        edited_by_emp,
+
+        edit_reason
+
+    } = req.body;
+
+    const total =
+
+        Number(break1) +
+        Number(break2) +
+        Number(break3) +
+        Number(break4) +
+        Number(break5) +
+        Number(break6);
+
+    db.prepare(`
+
+        UPDATE break_summary
+
+        SET
+
+            emp_id = ?,
+
+            station = ?,
+
+            shift_type = ?,
+
+            break1 = ?,
+
+            break2 = ?,
+
+            break3 = ?,
+
+            break4 = ?,
+
+            break5 = ?,
+
+            break6 = ?,
+
+            total = ?,
+
+            edited_by_name = ?,
+
+            edited_by_emp = ?,
+
+            edit_reason = ?,
+
+            edited_at =
+                datetime('now')
+
+        WHERE id = ?
+
+    `).run(
+
+        emp_id,
+
+        station,
+
+        shift_type,
+
+        break1,
+
+        break2,
+
+        break3,
+
+        break4,
+
+        break5,
+
+        break6,
+
+        total,
+
+        edited_by_name,
+
+        edited_by_emp,
+
+        edit_reason,
+
+        id
+    );
+
+    res.json({
+        success: true
+    });
 });
 
 app.listen(3000, () => {

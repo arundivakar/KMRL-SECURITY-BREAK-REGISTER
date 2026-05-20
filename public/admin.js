@@ -15,20 +15,18 @@ async function loadLogs() {
 
     logs.forEach(log => {
 
-        const limit =
-            log.shift_type === 'DOUBLE'
-            ? 80
-            : 40;
+        const total =
+            Number(log.total) || 0;
 
         const exceeded =
-            log.total > limit;
+            total > 40;
 
         body.innerHTML += `
 
         <tr style="
             background:
             ${exceeded
-                ? '#ffcccc'
+                ? '#ffb3b3'
                 : 'white'}
         ">
 
@@ -50,16 +48,18 @@ async function loadLogs() {
             <td>${log.break6}</td>
 
             <td>
+
                 <b>
-                    ${log.total}
+                    ${total}
                 </b>
+
             </td>
 
             <td>
 
                 ${
                     exceeded
-                    ? 'BREAK EXCEEDED'
+                    ? '<b style="color:red;">BREAK EXCEEDED</b>'
                     : 'NORMAL'
                 }
 
