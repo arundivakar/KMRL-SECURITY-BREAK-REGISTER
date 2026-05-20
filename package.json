@@ -2,21 +2,18 @@
   "name": "tcs-break-tracker",
   "version": "1.0.0",
   "description": "KMRL TCS Break Register",
-
   "engines": {
     "node": "22.x"
   },
-
   "main": "server.js",
-
   "scripts": {
     "start": "node server.js"
   },
-
   "dependencies": {
     "bcrypt": "^5.1.1",
     "better-sqlite3": "^9.4.0",
     "cors": "^2.8.5",
+    "csv-parser": "^3.2.1",
     "express": "^4.19.2",
     "express-session": "^1.18.0"
   }

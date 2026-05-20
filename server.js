@@ -1,106 +1,234 @@
 const express = require('express');
 const Database = require('better-sqlite3');
-const cors = require('cors');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const path = require('path');
 
 const app = express();
-const db = new Database('./db/breaks.db');
 
-app.use(cors());
+const db =
+    new Database('./db/breaks.db');
 
 app.use(express.json());
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({
+    extended: true
+}));
 
 app.use(session({
-    secret: 'kmrl-secret-key',
+
+    secret: 'kmrl-secret',
+
     resave: false,
+
     saveUninitialized: false
 }));
 
 app.use(express.static('public'));
 
 db.prepare(`
-CREATE TABLE IF NOT EXISTS breaks (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    emp_id TEXT,
-    break_no TEXT,
-    start_time TEXT,
-    end_time TEXT,
-    duration_minutes INTEGER,
-    status TEXT
-)
-`).run();
 
-db.prepare(`
 CREATE TABLE IF NOT EXISTS employees (
+
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    emp_id TEXT UNIQUE,
+
+    emp_id TEXT,
+
     name TEXT,
+
     designation TEXT
 )
+
 `).run();
 
 db.prepare(`
+
 CREATE TABLE IF NOT EXISTS admins (
+
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE,
+
+    username TEXT,
+
     password TEXT
 )
+
 `).run();
 
-const adminExists = db.prepare(`
-SELECT * FROM admins WHERE username = ?
-`).get('admin');
+db.prepare(`
 
-if (!adminExists) {
+CREATE TABLE IF NOT EXISTS break_summary (
 
-    const hashedPassword = bcrypt.hashSync('admin123', 10);
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    entry_date TEXT,
+
+    emp_id TEXT,
+
+    station TEXT,
+
+    shift_type TEXT,
+
+    break1 INTEGER DEFAULT 0,
+
+    break2 INTEGER DEFAULT 0,
+
+    break3 INTEGER DEFAULT 0,
+
+    break4 INTEGER DEFAULT 0,
+
+    break5 INTEGER DEFAULT 0,
+
+    break6 INTEGER DEFAULT 0,
+
+    total INTEGER DEFAULT 0,
+
+    current_open_break TEXT,
+
+    current_start_time TEXT,
+
+    edited_by_name TEXT,
+
+    edited_by_emp TEXT,
+
+    edit_reason TEXT,
+
+    edited_at TEXT
+)
+
+`).run();
+
+const admin =
+    db.prepare(`
+        SELECT *
+        FROM admins
+        WHERE username = ?
+    `).get('admin');
+
+if (!admin) {
+
+    const hashed =
+        bcrypt.hashSync(
+            'admin123',
+            10
+        );
 
     db.prepare(`
-        INSERT INTO admins (username, password)
+
+        INSERT INTO admins
+        (
+            username,
+            password
+        )
+
         VALUES (?, ?)
-    `).run('admin', hashedPassword);
+
+    `).run(
+        'admin',
+        hashed
+    );
 }
 
-function isAuthenticated(req, res, next) {
+function normalize(id) {
 
-    if (req.session.loggedIn) {
+    return id
+
+        .replace(/\s/g, '')
+
+        .replace('TCSEK', '')
+
+        .trim()
+        .toUpperCase();
+}
+
+function auth(
+    req,
+    res,
+    next
+) {
+
+    if (
+        req.session.loggedIn
+    ) {
+
         return next();
     }
 
-    return res.redirect('/login.html');
+    res.redirect(
+        '/login.html'
+    );
 }
 
-app.post('/api/login', (req, res) => {
+app.get(
+'/dashboard',
 
-    const { username, password } = req.body;
+auth,
 
-    const admin = db.prepare(`
-        SELECT * FROM admins
-        WHERE username = ?
-    `).get(username);
+(req, res) => {
+
+    res.sendFile(
+
+        path.join(
+            __dirname,
+            'public/dashboard.html'
+        )
+    );
+});
+
+app.get(
+'/logout',
+
+(req, res) => {
+
+    req.session.destroy(() => {
+
+        res.redirect(
+            '/login.html'
+        );
+    });
+});
+
+app.post(
+'/api/login',
+
+(req, res) => {
+
+    const {
+        username,
+        password
+    } = req.body;
+
+    const admin =
+        db.prepare(`
+            SELECT *
+            FROM admins
+            WHERE username = ?
+        `).get(username);
 
     if (!admin) {
 
         return res.json({
+
             success: false,
-            message: 'Invalid username'
+
+            message:
+            'Invalid Username'
         });
     }
 
-    const validPassword = bcrypt.compareSync(
-        password,
-        admin.password
-    );
+    const valid =
+        bcrypt.compareSync(
+            password,
+            admin.password
+        );
 
-    if (!validPassword) {
+    if (!valid) {
 
         return res.json({
+
             success: false,
-            message: 'Invalid password'
+
+            message:
+            'Invalid Password'
         });
     }
 
@@ -111,76 +239,38 @@ app.post('/api/login', (req, res) => {
     });
 });
 
-app.get('/logout', (req, res) => {
+app.get(
+'/api/employee/:id',
 
-    req.session.destroy(() => {
+(req, res) => {
 
-        res.redirect('/login.html');
-    });
-});
+    const entered =
+        normalize(
+            req.params.id
+        );
 
-app.post('/api/breaks', (req, res) => {
-
-    const { emp_id, break_no, action } = req.body;
-
-    if (action === 'START') {
-
+    const employees =
         db.prepare(`
-            INSERT INTO breaks
-            (emp_id, break_no, start_time, status)
-            VALUES (?, ?, datetime('now'), 'OPEN')
-        `).run(emp_id, break_no);
+            SELECT *
+            FROM employees
+        `).all();
 
-        return res.json({
-            message: `${break_no} started`
-        });
-    }
+    let found = null;
 
-    if (action === 'COMPLETE') {
+    for (const emp of employees) {
 
-        const row = db.prepare(`
-            SELECT * FROM breaks
-            WHERE emp_id = ?
-            AND break_no = ?
-            AND status = 'OPEN'
-            ORDER BY id DESC
-            LIMIT 1
-        `).get(emp_id, break_no);
+        if (
+            normalize(emp.emp_id)
+            === entered
+        ) {
 
-        if (!row) {
+            found = emp;
 
-            return res.json({
-                message: 'No active break found'
-            });
+            break;
         }
-
-        db.prepare(`
-            UPDATE breaks
-            SET
-                end_time = datetime('now'),
-                duration_minutes =
-                    CAST(
-                        (julianday(datetime('now')) - julianday(start_time))
-                        * 24 * 60
-                    AS INTEGER),
-                status = 'CLOSED'
-            WHERE id = ?
-        `).run(row.id);
-
-        return res.json({
-            message: `${break_no} completed`
-        });
     }
-});
 
-app.get('/api/employee/:emp_id', (req, res) => {
-
-    const emp = db.prepare(`
-        SELECT * FROM employees
-        WHERE emp_id = ?
-    `).get(req.params.emp_id);
-
-    if (!emp) {
+    if (!found) {
 
         return res.json({
             found: false
@@ -188,31 +278,283 @@ app.get('/api/employee/:emp_id', (req, res) => {
     }
 
     res.json({
+
         found: true,
-        employee: emp
+
+        employee: found
     });
 });
 
-app.get('/dashboard', isAuthenticated, (req, res) => {
+app.post(
+'/api/breaks',
 
-    res.sendFile(
-        path.join(__dirname, 'public/dashboard.html')
-    );
+(req, res) => {
+
+    const {
+
+        emp_id,
+
+        station,
+
+        shift_type,
+
+        break_no,
+
+        action
+
+    } = req.body;
+
+    const today =
+        new Date()
+        .toISOString()
+        .split('T')[0];
+
+    let row =
+        db.prepare(`
+
+            SELECT *
+
+            FROM break_summary
+
+            WHERE
+                emp_id = ?
+                AND entry_date = ?
+
+        `).get(
+            emp_id,
+            today
+        );
+
+    if (!row) {
+
+        db.prepare(`
+
+            INSERT INTO break_summary
+
+            (
+                entry_date,
+                emp_id,
+                station,
+                shift_type
+            )
+
+            VALUES (?, ?, ?, ?)
+
+        `).run(
+            today,
+            emp_id,
+            station,
+            shift_type
+        );
+
+        row =
+            db.prepare(`
+
+                SELECT *
+
+                FROM break_summary
+
+                WHERE
+                    emp_id = ?
+                    AND entry_date = ?
+
+            `).get(
+                emp_id,
+                today
+            );
+    }
+
+    const map = {
+
+        'Break 1': 'break1',
+        'Break 2': 'break2',
+        'Break 3': 'break3',
+        'Break 4': 'break4',
+        'Break 5': 'break5',
+        'Break 6': 'break6'
+    };
+
+    const column =
+        map[break_no];
+
+    if (action === 'START') {
+
+        if (
+            row.current_open_break
+        ) {
+
+            return res.json({
+
+                message:
+                'Complete previous break first'
+            });
+        }
+
+        db.prepare(`
+
+            UPDATE break_summary
+
+            SET
+
+                current_open_break = ?,
+
+                current_start_time =
+                    datetime('now')
+
+            WHERE id = ?
+
+        `).run(
+            break_no,
+            row.id
+        );
+
+        return res.json({
+
+            message:
+            `${break_no} started`
+        });
+    }
+
+    if (action === 'COMPLETE') {
+
+        if (
+            row.current_open_break
+            !== break_no
+        ) {
+
+            return res.json({
+
+                message:
+                'No active break found'
+            });
+        }
+
+        const duration =
+            db.prepare(`
+
+                SELECT
+
+                CAST(
+
+                    (
+
+                        julianday(
+                            datetime('now')
+                        )
+
+                        -
+
+                        julianday(
+                            current_start_time
+                        )
+
+                    )
+
+                    * 24 * 60
+
+                AS INTEGER)
+
+                AS mins
+
+                FROM break_summary
+
+                WHERE id = ?
+
+            `).get(row.id);
+
+        const mins =
+            duration.mins || 0;
+
+        db.prepare(`
+
+            UPDATE break_summary
+
+            SET
+
+                ${column} = ?,
+
+                total =
+                    break1 +
+                    break2 +
+                    break3 +
+                    break4 +
+                    break5 +
+                    break6 +
+                    ?,
+
+                current_open_break = NULL,
+
+                current_start_time = NULL
+
+            WHERE id = ?
+
+        `).run(
+            mins,
+            mins,
+            row.id
+        );
+
+        return res.json({
+
+            message:
+            `${break_no} completed`
+        });
+    }
 });
 
-app.get('/api/logs', isAuthenticated, (req, res) => {
+app.get(
+'/api/logs',
 
-    const rows = db.prepare(`
-        SELECT * FROM breaks
-        ORDER BY id DESC
-    `).all();
+auth,
+
+(req, res) => {
+
+    const rows =
+        db.prepare(`
+
+            SELECT
+
+                b.*,
+
+                e.name
+
+            FROM break_summary b
+
+            LEFT JOIN employees e
+
+            ON
+                REPLACE(
+                    REPLACE(
+                        b.emp_id,
+                        ' ',
+                        ''
+                    ),
+                    'TCSEK',
+                    ''
+                )
+
+                =
+
+                REPLACE(
+                    REPLACE(
+                        e.emp_id,
+                        ' ',
+                        ''
+                    ),
+                    'TCSEK',
+                    ''
+                )
+
+            ORDER BY b.id DESC
+
+        `).all();
 
     res.json(rows);
 });
 
-const PORT = process.env.PORT || 3000;
+app.listen(3000, () => {
 
-app.listen(PORT, () => {
-
-    console.log(`Server running on port ${PORT}`);
+    console.log(
+        'Server running on port 3000'
+    );
 });

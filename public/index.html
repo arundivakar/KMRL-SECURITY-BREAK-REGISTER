@@ -1,34 +1,119 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>KMRL TCS Break Register</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KMRL TCS Break Register</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="style.css">
+
 </head>
+
 <body>
 
 <div class="container">
 
-<h1>KMRL TCS BREAK REGISTER</h1>
+    <h2>KMRL TCS Break Register</h2>
 
-<input type="text" id="emp_id" placeholder="Enter Employee ID">
+    <select id="station">
 
-<select id="break_no">
-  <option value="Break 1">Break 1</option>
-  <option value="Break 2">Break 2</option>
-  <option value="Break 3">Break 3</option>
-  <option value="Break 4">Break 4</option>
-  <option value="Break 5">Break 5</option>
-  <option value="Break 6">Break 6</option>
-</select>
+        <option value="">
+            Select Station
+        </option>
 
-<button onclick="submitBreak('START')">
-  START BREAK
-</button>
+        <option value="ALVA">ALVA</option>
+        <option value="PNCU">PNCU</option>
+        <option value="CPPY">CPPY</option>
+        <option value="AATK">AATK</option>
+        <option value="MUTT">MUTT</option>
+        <option value="KLMT">KLMT</option>
+        <option value="CCUV">CCUV</option>
+        <option value="PDPM">PDPM</option>
+        <option value="EDAP">EDAP</option>
+        <option value="CGPP">CGPP</option>
+        <option value="PARV">PARV</option>
+        <option value="JLSD">JLSD</option>
+        <option value="KALR">KALR</option>
+        <option value="TNHL">TNHL</option>
+        <option value="MGRD">MGRD</option>
+        <option value="MACE">MACE</option>
+        <option value="ERSH">ERSH</option>
+        <option value="KVTR">KVTR</option>
+        <option value="EMKM">EMKM</option>
+        <option value="VYTA">VYTA</option>
+        <option value="TKDM">TKDM</option>
+        <option value="PETT">PETT</option>
+        <option value="VAKK">VAKK</option>
+        <option value="SNJN">SNJN</option>
+        <option value="TPHT">TPHT</option>
 
-<button onclick="submitBreak('COMPLETE')">
-  COMPLETE BREAK
-</button>
+    </select>
+
+    <select id="shift_type">
+
+        <option value="NORMAL">
+            Normal Shift
+        </option>
+
+        <option value="DOUBLE">
+            Double Shift
+        </option>
+
+    </select>
+
+    <input type="text"
+           id="emp_id"
+           placeholder="Enter Employee Number">
+
+    <div id="employee_info"></div>
+
+    <select id="break_no">
+
+        <option value="Break 1">
+            Break 1
+        </option>
+
+        <option value="Break 2">
+            Break 2
+        </option>
+
+        <option value="Break 3">
+            Break 3
+        </option>
+
+        <option value="Break 4">
+            Break 4
+        </option>
+
+        <option value="Break 5">
+            Break 5
+        </option>
+
+        <option value="Break 6">
+            Break 6
+        </option>
+
+    </select>
+
+    <button onclick="submitBreak('START')">
+        START BREAK
+    </button>
+
+    <button onclick="submitBreak('COMPLETE')">
+        COMPLETE BREAK
+    </button>
+
+    <a href="/login.html">
+
+        <button class="admin-btn">
+            CHECK LOGS
+        </button>
+
+    </a>
 
 </div>
 

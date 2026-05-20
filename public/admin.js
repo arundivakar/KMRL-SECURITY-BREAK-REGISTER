@@ -1,44 +1,4 @@
-async function login() {
-
-    const username =
-        document.getElementById('username').value;
-
-    const password =
-        document.getElementById('password').value;
-
-    const response = await fetch('/api/login', {
-
-        method: 'POST',
-
-        headers: {
-            'Content-Type': 'application/json'
-        },
-
-        body: JSON.stringify({
-            username,
-            password
-        })
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-
-        window.location.href = '/dashboard';
-
-    } else {
-
-        document.getElementById('message').innerText =
-            data.message;
-    }
-}
-
 async function loadLogs() {
-
-    const tableBody =
-        document.getElementById('logs-body');
-
-    if (!tableBody) return;
 
     const response =
         await fetch('/api/logs');
@@ -46,20 +6,79 @@ async function loadLogs() {
     const logs =
         await response.json();
 
-    tableBody.innerHTML = '';
+    const body =
+        document.getElementById(
+            'logs-body'
+        );
+
+    body.innerHTML = '';
 
     logs.forEach(log => {
 
-        tableBody.innerHTML += `
+        const limit =
+            log.shift_type === 'DOUBLE'
+            ? 80
+            : 40;
 
-        <tr>
-            <td>${log.id}</td>
+        const exceeded =
+            log.total > limit;
+
+        body.innerHTML += `
+
+        <tr style="
+            background:
+            ${exceeded
+                ? '#ffcccc'
+                : 'white'}
+        ">
+
+            <td>${log.entry_date}</td>
+
             <td>${log.emp_id}</td>
-            <td>${log.break_no}</td>
-            <td>${log.start_time || ''}</td>
-            <td>${log.end_time || ''}</td>
-            <td>${log.duration_minutes || ''}</td>
-            <td>${log.status}</td>
+
+            <td>${log.name || ''}</td>
+
+            <td>${log.station}</td>
+
+            <td>${log.shift_type}</td>
+
+            <td>${log.break1}</td>
+            <td>${log.break2}</td>
+            <td>${log.break3}</td>
+            <td>${log.break4}</td>
+            <td>${log.break5}</td>
+            <td>${log.break6}</td>
+
+            <td>
+                <b>
+                    ${log.total}
+                </b>
+            </td>
+
+            <td>
+
+                ${
+                    exceeded
+                    ? 'BREAK EXCEEDED'
+                    : 'NORMAL'
+                }
+
+            </td>
+
+            <td>
+
+                <a href="/edit/${log.id}">
+
+                    <button>
+
+                        ✏️
+
+                    </button>
+
+                </a>
+
+            </td>
+
         </tr>
         `;
     });

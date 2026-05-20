@@ -5,36 +5,100 @@
 
     <title>Admin Login</title>
 
-    <link rel="stylesheet" href="admin.css">
-
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
+
+    <style>
+
+        body {
+
+            font-family: Arial;
+
+            background: #f2f2f2;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+        }
+
+        .login-box {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 10px;
+
+            width: 300px;
+
+            box-shadow:
+                0 0 10px rgba(0,0,0,0.2);
+        }
+
+        input {
+
+            width: 100%;
+
+            padding: 10px;
+
+            margin-top: 10px;
+        }
+
+        button {
+
+            width: 100%;
+
+            padding: 10px;
+
+            margin-top: 15px;
+
+            cursor: pointer;
+        }
+
+        #message {
+
+            color: red;
+
+            margin-top: 10px;
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-<div class="login-container">
+<div class="login-box">
 
-    <h2>KMRL Admin Login</h2>
+    <h2>Admin Login</h2>
 
-    <input type="text"
-           id="username"
-           placeholder="Username">
+    <input
+        type="text"
+        id="username"
+        placeholder="Username"
+    >
 
-    <input type="password"
-           id="password"
-           placeholder="Password">
+    <input
+        type="password"
+        id="password"
+        placeholder="Password"
+    >
 
     <button onclick="login()">
+
         LOGIN
+
     </button>
 
-    <p id="message"></p>
+    <div id="message"></div>
 
 </div>
 
-<script src="admin.js"></script>
+<script src="login.js"></script>
 
 </body>
 </html>
