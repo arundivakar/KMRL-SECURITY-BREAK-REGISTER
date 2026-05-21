@@ -89,6 +89,11 @@ router.post(
         .toISOString()
         .split('T')[0];
 
+    const shift_session =
+        shift_type === 'DOUBLE'
+        ? 'DOUBLE'
+        : 'NORMAL';
+
     let row =
         db.prepare(`
 
@@ -99,10 +104,12 @@ router.post(
             WHERE
                 emp_id = ?
                 AND entry_date = ?
+                AND shift_session = ?
 
         `).get(
             emp_id,
-            today
+            today,
+            shift_session
         );
 
     if (!row) {
@@ -115,16 +122,18 @@ router.post(
                 entry_date,
                 emp_id,
                 station,
-                shift_type
+                shift_type,
+                shift_session
             )
 
-            VALUES (?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?)
 
         `).run(
             today,
             emp_id,
             station,
-            shift_type
+            shift_type,
+            shift_session
         );
 
         row =
@@ -137,10 +146,12 @@ router.post(
                 WHERE
                     emp_id = ?
                     AND entry_date = ?
+                    AND shift_session = ?
 
             `).get(
                 emp_id,
-                today
+                today,
+                shift_session
             );
     }
 
@@ -175,14 +186,38 @@ router.post(
 
     if (action === 'START') {
 
+        const latestRow =
+            db.prepare(`
+
+                SELECT *
+
+                FROM break_summary
+
+                WHERE id = ?
+
+            `).get(row.id);
+
         if (
-            row.current_open_break
+            latestRow.current_open_break
         ) {
 
             return res.json({
 
                 message:
                 'Complete previous break first'
+            });
+        }
+
+        if (
+            Number(
+                latestRow[column]
+            ) > 0
+        ) {
+
+            return res.json({
+
+                message:
+                `${break_no} already used in this shift`
             });
         }
 
@@ -213,8 +248,19 @@ router.post(
 
     if (action === 'COMPLETE') {
 
+        const latestRow =
+            db.prepare(`
+
+                SELECT *
+
+                FROM break_summary
+
+                WHERE id = ?
+
+            `).get(row.id);
+
         if (
-            row.current_open_break
+            latestRow.current_open_break
             !== break_no
         ) {
 
