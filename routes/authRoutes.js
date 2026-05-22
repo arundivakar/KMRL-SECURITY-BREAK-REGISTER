@@ -7,8 +7,8 @@ const bcrypt =
 const path =
     require('path');
 
-const db =
-    require('../db/database');
+const supabase =
+    require('../lib/supabase');
 
 const router =
     express.Router();
@@ -79,19 +79,45 @@ router.get(
 router.post(
 '/api/login',
 
-(req, res) => {
+async (req, res) => {
 
     const {
         username,
         password
     } = req.body;
 
+    const {
+        data,
+        error
+    } = await supabase
+
+        .from('admins')
+
+        .select('*')
+
+        .eq(
+            'username',
+            username
+        );
+
+    if (error) {
+
+        console.log(
+            'LOGIN ERROR:',
+            error
+        );
+
+        return res.json({
+
+            success: false,
+
+            message:
+            'Server Error'
+        });
+    }
+
     const admin =
-        db.prepare(`
-            SELECT *
-            FROM admins
-            WHERE username = ?
-        `).get(username);
+        data?.[0];
 
     if (!admin) {
 
@@ -123,8 +149,11 @@ router.post(
 
     req.session.loggedIn = true;
 
-    res.json({
-        success: true
+    req.session.save(() => {
+
+        res.json({
+            success: true
+        });
     });
 });
 
