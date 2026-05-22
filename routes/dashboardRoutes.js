@@ -4,9 +4,6 @@ const express =
 const path =
     require('path');
 
-const db =
-    require('../db/database');
-
 const supabase =
     require('../lib/supabase');
 
@@ -42,6 +39,21 @@ function normalize(id) {
         .trim()
         .toUpperCase();
 }
+
+router.get(
+'/dashboard',
+
+isAuthenticated,
+
+(req, res) => {
+
+    res.sendFile(
+        path.join(
+            __dirname,
+            '../public/dashboard.html'
+        )
+    );
+});
 
 router.get(
 '/api/logs',
@@ -165,129 +177,6 @@ isAuthenticated,
             '../public/habitual.html'
         )
     );
-});
-
-router.get(
-'/api/today-exceeded',
-
-isAuthenticated,
-
-(req, res) => {
-
-    const today =
-        new Date()
-        .toISOString()
-        .split('T')[0];
-
-    const rows =
-        db.prepare(`
-
-            SELECT
-
-                b.*,
-
-                e.name
-
-            FROM break_summary b
-
-            LEFT JOIN employees e
-
-            ON
-                REPLACE(
-                    REPLACE(
-                        b.emp_id,
-                        ' ',
-                        ''
-                    ),
-                    'TCSEK',
-                    ''
-                )
-
-                =
-
-                REPLACE(
-                    REPLACE(
-                        e.emp_id,
-                        ' ',
-                        ''
-                    ),
-                    'TCSEK',
-                    ''
-                )
-
-            WHERE
-                b.entry_date = ?
-                AND b.total > 40
-
-            ORDER BY b.total DESC
-
-        `).all(today);
-
-    res.json(rows);
-});
-
-router.get(
-'/api/habitual-offenders',
-
-isAuthenticated,
-
-(req, res) => {
-
-    const rows =
-        db.prepare(`
-
-            SELECT
-
-                b.emp_id,
-
-                e.name,
-
-                COUNT(*) as exceed_count,
-
-                MAX(b.entry_date)
-                as latest_date,
-
-                MAX(b.station)
-                as latest_station
-
-            FROM break_summary b
-
-            LEFT JOIN employees e
-
-            ON
-                REPLACE(
-                    REPLACE(
-                        b.emp_id,
-                        ' ',
-                        ''
-                    ),
-                    'TCSEK',
-                    ''
-                )
-
-                =
-
-                REPLACE(
-                    REPLACE(
-                        e.emp_id,
-                        ' ',
-                        ''
-                    ),
-                    'TCSEK',
-                    ''
-                )
-
-            WHERE b.total > 40
-
-            GROUP BY b.emp_id
-
-            HAVING COUNT(*) >= 3
-
-            ORDER BY exceed_count DESC
-
-        `).all();
-
-    res.json(rows);
 });
 
 module.exports =

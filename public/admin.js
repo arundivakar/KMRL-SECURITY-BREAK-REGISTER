@@ -1,7 +1,5 @@
 let currentPage = 1;
 
-let totalPages = 1;
-
 async function loadLogs() {
 
     const response =
@@ -12,115 +10,83 @@ async function loadLogs() {
     const data =
         await response.json();
 
-    const logs =
-        data.rows || [];
-
-    totalPages =
-        data.totalPages || 1;
-
-    const body =
+    const tbody =
         document.getElementById(
             'logs-body'
         );
 
-    body.innerHTML = '';
+    tbody.innerHTML = '';
 
-    logs.forEach(log => {
+    for (const row of data.rows) {
 
-        const total =
-            Number(log.total) || 0;
+        const tr =
+            document.createElement('tr');
 
-        const exceeded =
-            total > 40;
+        tr.innerHTML = `
 
-        body.innerHTML += `
+            <td>${row.entry_date || ''}</td>
 
-        <tr style="
-            background:
-            ${exceeded
-                ? '#ffb3b3'
-                : 'white'}
-        ">
+            <td>${row.emp_id || ''}</td>
 
-            <td>${log.entry_date || ''}</td>
+            <td>${row.name || ''}</td>
 
-            <td>${log.emp_id || ''}</td>
+            <td>${row.station || ''}</td>
 
-            <td>${log.name || ''}</td>
+            <td>${row.shift_type || ''}</td>
 
-            <td>${log.station || ''}</td>
+            <td>${row.shift_session || ''}</td>
 
-            <td>${log.shift_type || ''}</td>
+            <td>${row.break1 || 0}</td>
 
-            <td>${log.shift_session || ''}</td>
+            <td>${row.break2 || 0}</td>
 
-            <td>${log.break1 || 0}</td>
-            <td>${log.break2 || 0}</td>
-            <td>${log.break3 || 0}</td>
-            <td>${log.break4 || 0}</td>
-            <td>${log.break5 || 0}</td>
-            <td>${log.break6 || 0}</td>
+            <td>${row.break3 || 0}</td>
+
+            <td>${row.break4 || 0}</td>
+
+            <td>${row.break5 || 0}</td>
+
+            <td>${row.break6 || 0}</td>
+
+            <td>${row.total || 0}</td>
 
             <td>
 
-                <b>
-                    ${total}
-                </b>
+                ${row.current_open_break
+                    ? 'BREAK RUNNING'
+                    : 'COMPLETED'}
 
             </td>
 
             <td>
 
-                ${
-                    exceeded
-                    ? '<b style="color:red;">BREAK EXCEEDED</b>'
-                    : 'NORMAL'
-                }
-
-            </td>
-
-            <td>
-
-                <a href="/edit/${log.id}">
-
-                    <button>
-
-                        ✏️
-
-                    </button>
-
+                <a href="/edit.html?id=${row.id}">
+                    Edit
                 </a>
 
             </td>
-
-        </tr>
         `;
-    });
+
+        tbody.appendChild(tr);
+    }
 
     document.getElementById(
         'page-info'
     ).innerText =
 
-        `Page ${currentPage} of ${totalPages}`;
+        `Page ${currentPage} of ${data.totalPages}`;
 }
 
 function nextPage() {
 
-    if (
-        currentPage < totalPages
-    ) {
+    currentPage++;
 
-        currentPage++;
-
-        loadLogs();
-    }
+    loadLogs();
 }
 
 function prevPage() {
 
-    if (
-        currentPage > 1
-    ) {
+    if (currentPage > 1) {
 
         currentPage--;
 

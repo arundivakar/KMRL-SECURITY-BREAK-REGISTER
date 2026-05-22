@@ -1,8 +1,8 @@
 const express =
     require('express');
 
-const db =
-    require('../db/database');
+const supabase =
+    require('../lib/supabase');
 
 const router =
     express.Router();
@@ -22,18 +22,33 @@ function normalize(id) {
 router.get(
 '/api/employee/:id',
 
-(req, res) => {
+async (req, res) => {
 
     const entered =
         normalize(
             req.params.id
         );
 
-    const employees =
-        db.prepare(`
-            SELECT *
-            FROM employees
-        `).all();
+    const {
+        data: employees,
+        error
+    } = await supabase
+
+        .from('employees')
+
+        .select('*');
+
+    if (error) {
+
+        console.log(
+            'EMPLOYEE ERROR:',
+            error
+        );
+
+        return res.json({
+            found: false
+        });
+    }
 
     let found = null;
 
@@ -68,278 +83,377 @@ router.get(
 router.post(
 '/api/breaks',
 
-(req, res) => {
+async (req, res) => {
 
-    const {
+    try {
 
-        emp_id,
+        const {
 
-        station,
-
-        shift_type,
-
-        break_no,
-
-        action
-
-    } = req.body;
-
-    const today =
-        new Date()
-        .toISOString()
-        .split('T')[0];
-
-    const shift_session =
-        shift_type === 'DOUBLE'
-        ? 'DOUBLE'
-        : 'NORMAL';
-
-    let row =
-        db.prepare(`
-
-            SELECT *
-
-            FROM break_summary
-
-            WHERE
-                emp_id = ?
-                AND entry_date = ?
-                AND shift_session = ?
-
-        `).get(
             emp_id,
-            today,
-            shift_session
-        );
 
-    if (!row) {
+            station,
 
-        db.prepare(`
+            shift_type,
 
-            INSERT INTO break_summary
+            break_no,
 
-            (
-                entry_date,
-                emp_id,
-                station,
-                shift_type,
-                shift_session
+            action
+
+        } = req.body;
+
+        const today =
+            new Date()
+            .toISOString()
+            .split('T')[0];
+
+        const shift_session =
+            shift_type === 'DOUBLE'
+            ? 'DOUBLE'
+            : 'NORMAL';
+
+        const {
+            data: existingRows,
+            error: selectError
+        } = await supabase
+
+            .from('break_summary')
+
+            .select('*')
+
+            .eq(
+                'emp_id',
+                emp_id
             )
 
-            VALUES (?, ?, ?, ?, ?)
+            .eq(
+                'entry_date',
+                today
+            )
 
-        `).run(
-            today,
-            emp_id,
-            station,
-            shift_type,
-            shift_session
-        );
-
-        row =
-            db.prepare(`
-
-                SELECT *
-
-                FROM break_summary
-
-                WHERE
-                    emp_id = ?
-                    AND entry_date = ?
-                    AND shift_session = ?
-
-            `).get(
-                emp_id,
-                today,
+            .eq(
+                'shift_session',
                 shift_session
             );
-    }
 
-    db.prepare(`
+        if (selectError) {
 
-        UPDATE break_summary
-
-        SET
-            station = ?,
-            shift_type = ?
-
-        WHERE id = ?
-
-    `).run(
-        station,
-        shift_type,
-        row.id
-    );
-
-    const map = {
-
-        'Break 1': 'break1',
-        'Break 2': 'break2',
-        'Break 3': 'break3',
-        'Break 4': 'break4',
-        'Break 5': 'break5',
-        'Break 6': 'break6'
-    };
-
-    const column =
-        map[break_no];
-
-    if (action === 'START') {
-
-        const latestRow =
-            db.prepare(`
-
-                SELECT *
-
-                FROM break_summary
-
-                WHERE id = ?
-
-            `).get(row.id);
-
-        if (
-            latestRow.current_open_break
-        ) {
+            console.log(
+                'SELECT ERROR:',
+                selectError
+            );
 
             return res.json({
 
                 message:
-                'Complete previous break first'
+                'Select failed'
             });
         }
 
-        if (
-            Number(
-                latestRow[column]
-            ) > 0
-        ) {
+        let row =
+            existingRows?.[0];
+
+        if (!row) {
+
+            const {
+                error: insertError
+            } = await supabase
+
+                .from('break_summary')
+
+                .insert([{
+
+                    entry_date:
+                        today,
+
+                    emp_id,
+
+                    station,
+
+                    shift_type,
+
+                    shift_session,
+
+                    break1: 0,
+
+                    break2: 0,
+
+                    break3: 0,
+
+                    break4: 0,
+
+                    break5: 0,
+
+                    break6: 0,
+
+                    total: 0
+                }]);
+
+            if (insertError) {
+
+                console.log(
+                    'INSERT ERROR:',
+                    insertError
+                );
+
+                return res.json({
+
+                    message:
+                    insertError.message
+                });
+            }
+
+            const {
+                data: newRows
+            } = await supabase
+
+                .from('break_summary')
+
+                .select('*')
+
+                .eq(
+                    'emp_id',
+                    emp_id
+                )
+
+                .eq(
+                    'entry_date',
+                    today
+                )
+
+                .eq(
+                    'shift_session',
+                    shift_session
+                );
+
+            row =
+                newRows?.[0];
+        }
+
+        const map = {
+
+            'Break 1': 'break1',
+
+            'Break 2': 'break2',
+
+            'Break 3': 'break3',
+
+            'Break 4': 'break4',
+
+            'Break 5': 'break5',
+
+            'Break 6': 'break6'
+        };
+
+        const column =
+            map[break_no];
+
+        if (action === 'START') {
+
+            const {
+                data: latestRows
+            } = await supabase
+
+                .from('break_summary')
+
+                .select('*')
+
+                .eq(
+                    'id',
+                    row.id
+                );
+
+            const latestRow =
+                latestRows?.[0];
+
+            if (
+                latestRow.current_open_break
+            ) {
+
+                return res.json({
+
+                    message:
+                    'Complete previous break first'
+                });
+            }
+
+            if (
+                Number(
+                    latestRow[column]
+                ) > 0
+            ) {
+
+                return res.json({
+
+                    message:
+                    `${break_no} already used in this shift`
+                });
+            }
+
+            const {
+                error: startError
+            } = await supabase
+
+                .from('break_summary')
+
+                .update({
+
+                    station,
+
+                    shift_type,
+
+                    current_open_break:
+                        break_no,
+
+                    current_start_time:
+                        new Date()
+                        .toISOString()
+
+                })
+
+                .eq(
+                    'id',
+                    row.id
+                );
+
+            if (startError) {
+
+                console.log(
+                    'START ERROR:',
+                    startError
+                );
+            }
 
             return res.json({
 
                 message:
-                `${break_no} already used in this shift`
+                `${break_no} started`
             });
         }
 
-        db.prepare(`
+        if (action === 'COMPLETE') {
 
-            UPDATE break_summary
+            const {
+                data: latestRows
+            } = await supabase
 
-            SET
+                .from('break_summary')
 
-                current_open_break = ?,
+                .select('*')
 
-                current_start_time =
-                    datetime('now')
+                .eq(
+                    'id',
+                    row.id
+                );
 
-            WHERE id = ?
+            const latestRow =
+                latestRows?.[0];
 
-        `).run(
-            break_no,
-            row.id
+            if (
+                latestRow.current_open_break
+                !== break_no
+            ) {
+
+                return res.json({
+
+                    message:
+                    'No active break found'
+                });
+            }
+
+            const start =
+                new Date(
+                    latestRow.current_start_time
+                );
+
+            const now =
+                new Date();
+
+            const mins =
+                Math.floor(
+                    (now - start)
+                    / 1000 / 60
+                );
+
+            const total =
+
+                Number(
+                    latestRow.break1 || 0
+                ) +
+
+                Number(
+                    latestRow.break2 || 0
+                ) +
+
+                Number(
+                    latestRow.break3 || 0
+                ) +
+
+                Number(
+                    latestRow.break4 || 0
+                ) +
+
+                Number(
+                    latestRow.break5 || 0
+                ) +
+
+                Number(
+                    latestRow.break6 || 0
+                ) +
+
+                mins;
+
+            const {
+                error: completeError
+            } = await supabase
+
+                .from('break_summary')
+
+                .update({
+
+                    [column]:
+                        mins,
+
+                    total,
+
+                    current_open_break:
+                        null,
+
+                    current_start_time:
+                        null
+
+                })
+
+                .eq(
+                    'id',
+                    row.id
+                );
+
+            if (completeError) {
+
+                console.log(
+                    'COMPLETE ERROR:',
+                    completeError
+                );
+            }
+
+            return res.json({
+
+                message:
+                `${break_no} completed`
+            });
+        }
+
+    } catch (err) {
+
+        console.log(
+            'SERVER ERROR:',
+            err
         );
 
-        return res.json({
+        res.json({
 
             message:
-            `${break_no} started`
-        });
-    }
-
-    if (action === 'COMPLETE') {
-
-        const latestRow =
-            db.prepare(`
-
-                SELECT *
-
-                FROM break_summary
-
-                WHERE id = ?
-
-            `).get(row.id);
-
-        if (
-            latestRow.current_open_break
-            !== break_no
-        ) {
-
-            return res.json({
-
-                message:
-                'No active break found'
-            });
-        }
-
-        const duration =
-            db.prepare(`
-
-                SELECT
-
-                CAST(
-
-                    (
-
-                        julianday(
-                            datetime('now')
-                        )
-
-                        -
-
-                        julianday(
-                            current_start_time
-                        )
-
-                    )
-
-                    * 24 * 60
-
-                AS INTEGER)
-
-                AS mins
-
-                FROM break_summary
-
-                WHERE id = ?
-
-            `).get(row.id);
-
-        const mins =
-            duration.mins || 0;
-
-        db.prepare(`
-
-            UPDATE break_summary
-
-            SET
-
-                ${column} = ?,
-
-                total =
-                    break1 +
-                    break2 +
-                    break3 +
-                    break4 +
-                    break5 +
-                    break6 +
-                    ?,
-
-                current_open_break = NULL,
-
-                current_start_time = NULL
-
-            WHERE id = ?
-
-        `).run(
-            mins,
-            mins,
-            row.id
-        );
-
-        return res.json({
-
-            message:
-            `${break_no} completed`
+            'Server Error'
         });
     }
 });
