@@ -3,46 +3,155 @@
 
 <head>
 
-<title>Edit Entry</title>
+<title>Edit Break Entry</title>
 
-<style>
-
-body {
-
-    font-family: Arial;
-
-    padding: 20px;
-}
-
-input {
-
-    width: 100%;
-
-    padding: 10px;
-
-    margin-top: 5px;
-
-    margin-bottom: 15px;
-}
-
-button {
-
-    padding: 10px 20px;
-
-    cursor: pointer;
-}
-
-</style>
+<link rel="stylesheet"
+href="admin.css">
 
 </head>
 
 <body>
 
+<div class="dashboard">
+
 <h2>Edit Break Entry</h2>
 
-<div id="edit-form"></div>
+<p>
+<b>Date:</b>
+<span id="date"></span>
+</p>
 
-<script src="/edit.js"></script>
+<p>
+<b>Security Name:</b>
+<span id="security-name"></span>
+</p>
+
+<br>
+
+<label>Employee ID</label>
+
+<br>
+
+<input
+type="text"
+id="emp_id">
+
+<br><br>
+
+<label>Station</label>
+
+<br>
+
+<input
+type="text"
+id="station">
+
+<br><br>
+
+<label>Shift Type</label>
+
+<br>
+
+<select id="shift_type">
+
+<option value="NORMAL">
+NORMAL
+</option>
+
+<option value="DOUBLE">
+DOUBLE
+</option>
+
+</select>
+
+<br><br>
+
+<label>Break 1</label>
+<br>
+<input type="number" id="break1">
+
+<br><br>
+
+<label>Break 2</label>
+<br>
+<input type="number" id="break2">
+
+<br><br>
+
+<label>Break 3</label>
+<br>
+<input type="number" id="break3">
+
+<br><br>
+
+<label>Break 4</label>
+<br>
+<input type="number" id="break4">
+
+<br><br>
+
+<label>Break 5</label>
+<br>
+<input type="number" id="break5">
+
+<br><br>
+
+<label>Break 6</label>
+<br>
+<input type="number" id="break6">
+
+<br><br>
+
+<label>Edited By Name</label>
+
+<br>
+
+<input
+type="text"
+id="edited_by_name">
+
+<br><br>
+
+<label>Edited By Employee ID</label>
+
+<br>
+
+<input
+type="text"
+id="edited_by_emp">
+
+<br><br>
+
+<label>Edit Reason</label>
+
+<br>
+
+<textarea
+id="edit_reason"></textarea>
+
+<br><br>
+
+<button onclick="saveEdit()">
+
+Save Changes
+
+</button>
+
+<br><br>
+
+<a href="/dashboard">
+
+<button>
+
+Back to Dashboard
+
+</button>
+
+</a>
+
+</div>
+
+<script src="edit.js"></script>
 
 </body>
 </html>

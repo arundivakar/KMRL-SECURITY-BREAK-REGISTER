@@ -21,6 +21,13 @@ async function loadLogs() {
 
         const tr =
             document.createElement('tr');
+if (
+    Number(row.total) > 40
+) {
+
+    tr.style.background =
+        '#ffcccc';
+}
 
         tr.innerHTML = `
 
@@ -53,8 +60,14 @@ async function loadLogs() {
             <td>
 
                 ${row.current_open_break
-                    ? 'BREAK RUNNING'
-                    : 'COMPLETED'}
+
+    ? 'BREAK RUNNING'
+
+    : Number(row.total) > 40
+
+        ? 'BREAK EXCEEDED'
+
+        : 'NORMAL'}
 
             </td>
 

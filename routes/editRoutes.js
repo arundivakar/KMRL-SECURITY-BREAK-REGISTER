@@ -25,6 +25,18 @@ function isAuthenticated(
     );
 }
 
+function normalize(id) {
+
+    return id
+
+        .replace(/\s/g, '')
+
+        .replace('TCSEK', '')
+
+        .trim()
+        .toUpperCase();
+}
+
 router.get(
 '/api/edit-entry/:id',
 
@@ -32,8 +44,19 @@ isAuthenticated,
 
 async (req, res) => {
 
-    const { data, error } =
-        await supabase
+    const id =
+
+        Number(req.params.id);
+
+    if (isNaN(id)) {
+
+        return res.json({});
+    }
+
+    const {
+        data,
+        error
+    } = await supabase
 
         .from('break_summary')
 
@@ -41,19 +64,45 @@ async (req, res) => {
 
         .eq(
             'id',
-            req.params.id
+            id
         )
 
         .single();
 
-    if (error) {
+    if (error || !data) {
 
-        return res.json({
-            success: false,
-            error:
-                error.message
-        });
+        console.log(
+            'EDIT FETCH ERROR:',
+            error
+        );
+
+        return res.json({});
     }
+
+    const {
+        data: employees
+    } = await supabase
+
+        .from('employees')
+
+        .select('*');
+
+    const found =
+        employees.find(emp =>
+
+            normalize(
+                emp.emp_id
+            )
+
+            ===
+
+            normalize(
+                data.emp_id
+            )
+        );
+
+    data.name =
+        found?.name || '';
 
     res.json(data);
 });
@@ -66,7 +115,15 @@ isAuthenticated,
 async (req, res) => {
 
     const id =
-        req.params.id;
+
+        Number(req.params.id);
+
+    if (isNaN(id)) {
+
+        return res.json({
+            success: false
+        });
+    }
 
     const {
 
@@ -98,21 +155,28 @@ async (req, res) => {
 
     const total =
 
-        Number(break1) +
-        Number(break2) +
-        Number(break3) +
-        Number(break4) +
-        Number(break5) +
-        Number(break6);
+        Number(break1 || 0) +
 
-    const { error } =
-        await supabase
+        Number(break2 || 0) +
+
+        Number(break3 || 0) +
+
+        Number(break4 || 0) +
+
+        Number(break5 || 0) +
+
+        Number(break6 || 0);
+
+    const {
+        error
+    } = await supabase
 
         .from('break_summary')
 
         .update({
 
-            emp_id,
+            emp_id:
+                normalize(emp_id),
 
             station,
 
@@ -144,18 +208,20 @@ async (req, res) => {
 
         })
 
-        .eq('id', id);
+        .eq(
+            'id',
+            id
+        );
 
     if (error) {
 
-        console.log(error);
+        console.log(
+            'EDIT UPDATE ERROR:',
+            error
+        );
 
         return res.json({
-
-            success: false,
-
-            error:
-                error.message
+            success: false
         });
     }
 

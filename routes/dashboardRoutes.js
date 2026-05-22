@@ -30,7 +30,7 @@ function isAuthenticated(
 
 function normalize(id) {
 
-    return id
+    return String(id || '')
 
         .replace(/\s/g, '')
 
@@ -133,8 +133,7 @@ async (req, res) => {
                 ...row,
 
                 name:
-                    found?.name
-                    || ''
+                    found?.name || ''
             };
         });
 
@@ -177,6 +176,181 @@ isAuthenticated,
             '../public/habitual.html'
         )
     );
+});
+
+router.get(
+'/api/today-exceeded',
+
+isAuthenticated,
+
+async (req, res) => {
+
+    const today =
+        new Date()
+        .toISOString()
+        .split('T')[0];
+
+    const {
+        data,
+        error
+    } = await supabase
+
+        .from('break_summary')
+
+        .select('*')
+
+        .eq(
+            'entry_date',
+            today
+        )
+
+        .gt(
+            'total',
+            40
+        );
+
+    if (error) {
+
+        console.log(error);
+
+        return res.json([]);
+    }
+
+    const {
+        data: employees
+    } = await supabase
+
+        .from('employees')
+
+        .select('*');
+
+    const rows =
+        (data || []).map(row => {
+
+            const found =
+                employees.find(emp =>
+
+                    normalize(
+                        emp.emp_id
+                    )
+
+                    ===
+
+                    normalize(
+                        row.emp_id
+                    )
+                );
+
+            return {
+
+                ...row,
+
+                name:
+                    found?.name || ''
+            };
+        });
+
+    res.json(rows);
+});
+
+router.get(
+'/api/habitual-offenders',
+
+isAuthenticated,
+
+async (req, res) => {
+
+    const {
+        data,
+        error
+    } = await supabase
+
+        .from('break_summary')
+
+        .select('*')
+
+        .gt(
+            'total',
+            40
+        );
+
+    if (error) {
+
+        console.log(error);
+
+        return res.json([]);
+    }
+
+    const grouped = {};
+
+    for (const row of data || []) {
+
+        const id =
+            normalize(
+                row.emp_id
+            );
+
+        if (!grouped[id]) {
+
+            grouped[id] = {
+
+                emp_id: id,
+
+                exceed_count: 0,
+
+                latest_date:
+                    row.entry_date,
+
+                latest_station:
+                    row.station
+            };
+        }
+
+        grouped[id]
+            .exceed_count++;
+    }
+
+    const {
+        data: employees
+    } = await supabase
+
+        .from('employees')
+
+        .select('*');
+
+    const result =
+        Object.values(grouped)
+
+        .filter(row =>
+            row.exceed_count >= 3
+        )
+
+        .map(row => {
+
+            const found =
+                employees.find(emp =>
+
+                    normalize(
+                        emp.emp_id
+                    )
+
+                    ===
+
+                    normalize(
+                        row.emp_id
+                    )
+                );
+
+            return {
+
+                ...row,
+
+                name:
+                    found?.name || ''
+            };
+        });
+
+    res.json(result);
 });
 
 module.exports =

@@ -9,7 +9,7 @@ const router =
 
 function normalize(id) {
 
-    return id
+    return String(id || '')
 
         .replace(/\s/g, '')
 
@@ -101,6 +101,10 @@ async (req, res) => {
 
         } = req.body;
 
+        const normalizedEmpId =
+
+            normalize(emp_id);
+
         const today =
             new Date()
             .toISOString()
@@ -122,7 +126,7 @@ async (req, res) => {
 
             .eq(
                 'emp_id',
-                emp_id
+                normalizedEmpId
             )
 
             .eq(
@@ -165,7 +169,8 @@ async (req, res) => {
                     entry_date:
                         today,
 
-                    emp_id,
+                    emp_id:
+                        normalizedEmpId,
 
                     station,
 
@@ -212,7 +217,7 @@ async (req, res) => {
 
                 .eq(
                     'emp_id',
-                    emp_id
+                    normalizedEmpId
                 )
 
                 .eq(
@@ -246,6 +251,15 @@ async (req, res) => {
 
         const column =
             map[break_no];
+
+        if (!column) {
+
+            return res.json({
+
+                message:
+                'Invalid break'
+            });
+        }
 
         if (action === 'START') {
 
@@ -321,6 +335,12 @@ async (req, res) => {
                     'START ERROR:',
                     startError
                 );
+
+                return res.json({
+
+                    message:
+                    'Break start failed'
+                });
             }
 
             return res.json({
@@ -434,6 +454,12 @@ async (req, res) => {
                     'COMPLETE ERROR:',
                     completeError
                 );
+
+                return res.json({
+
+                    message:
+                    'Break complete failed'
+                });
             }
 
             return res.json({
@@ -442,6 +468,12 @@ async (req, res) => {
                 `${break_no} completed`
             });
         }
+
+        return res.json({
+
+            message:
+            'Invalid action'
+        });
 
     } catch (err) {
 

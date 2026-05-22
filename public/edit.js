@@ -1,7 +1,11 @@
+const params =
+
+    new URLSearchParams(
+        window.location.search
+    );
+
 const id =
-    window.location.pathname
-    .split('/')
-    .pop();
+    params.get('id');
 
 async function loadEntry() {
 
@@ -10,229 +14,174 @@ async function loadEntry() {
             `/api/edit-entry/${id}`
         );
 
-    const log =
+    const data =
         await response.json();
 
-    const form =
-        document.getElementById(
-            'edit-form'
-        );
+    document.getElementById(
+        'date'
+    ).innerText =
+        data.entry_date || '';
 
-    form.innerHTML = `
+    document.getElementById(
+        'security-name'
+    ).innerText =
+        data.name || '';
 
-    <p>
+    document.getElementById(
+        'emp_id'
+    ).value =
+        data.emp_id || '';
 
-        <b>Date:</b>
+    document.getElementById(
+        'station'
+    ).value =
+        data.station || '';
 
-        ${log.entry_date}
+    document.getElementById(
+        'shift_type'
+    ).value =
+        data.shift_type || '';
 
-    </p>
+    document.getElementById(
+        'break1'
+    ).value =
+        data.break1 || 0;
 
-    <p>
+    document.getElementById(
+        'break2'
+    ).value =
+        data.break2 || 0;
 
-        <b>Security Name:</b>
+    document.getElementById(
+        'break3'
+    ).value =
+        data.break3 || 0;
 
-        ${log.name || ''}
+    document.getElementById(
+        'break4'
+    ).value =
+        data.break4 || 0;
 
-    </p>
+    document.getElementById(
+        'break5'
+    ).value =
+        data.break5 || 0;
 
-    <label>Employee ID</label>
-
-    <input
-    id="emp_id"
-    value="${log.emp_id}">
-
-    <label>Station</label>
-
-    <input
-    id="station"
-    value="${log.station}">
-
-    <label>Shift Type</label>
-
-    <input
-    id="shift_type"
-    value="${log.shift_type}">
-
-    <label>Break 1</label>
-
-    <input
-    id="break1"
-    value="${log.break1}">
-
-    <label>Break 2</label>
-
-    <input
-    id="break2"
-    value="${log.break2}">
-
-    <label>Break 3</label>
-
-    <input
-    id="break3"
-    value="${log.break3}">
-
-    <label>Break 4</label>
-
-    <input
-    id="break4"
-    value="${log.break4}">
-
-    <label>Break 5</label>
-
-    <input
-    id="break5"
-    value="${log.break5}">
-
-    <label>Break 6</label>
-
-    <input
-    id="break6"
-    value="${log.break6}">
-
-    <hr>
-
-    <label>Edited By SC Name</label>
-
-    <input id="edited_by_name">
-
-    <label>Edited By SC Employee No</label>
-
-    <input id="edited_by_emp">
-
-    <label>Reason For Edit</label>
-
-    <input id="edit_reason">
-
-    <button onclick="saveEdit()">
-
-        SAVE CHANGES
-
-    </button>
-
-    <hr>
-
-    <h3>Previous Edit Details</h3>
-
-    <p>
-
-        Edited By:
-        ${log.edited_by_name || '-'}
-
-    </p>
-
-    <p>
-
-        SC Employee:
-        ${log.edited_by_emp || '-'}
-
-    </p>
-
-    <p>
-
-        Reason:
-        ${log.edit_reason || '-'}
-
-    </p>
-
-    <p>
-
-        Edited At:
-        ${log.edited_at || '-'}
-
-    </p>
-    `;
+    document.getElementById(
+        'break6'
+    ).value =
+        data.break6 || 0;
 }
 
 async function saveEdit() {
 
-    const body = {
+    const response =
+        await fetch(
+            `/api/edit-entry/${id}`,
+            {
 
-        emp_id:
-        document.getElementById(
-            'emp_id'
-        ).value,
+                method: 'POST',
 
-        station:
-        document.getElementById(
-            'station'
-        ).value,
+                headers: {
+                    'Content-Type':
+                    'application/json'
+                },
 
-        shift_type:
-        document.getElementById(
-            'shift_type'
-        ).value,
+                body: JSON.stringify({
 
-        break1:
-        document.getElementById(
-            'break1'
-        ).value,
+                    emp_id:
+                        document
+                        .getElementById(
+                            'emp_id'
+                        ).value,
 
-        break2:
-        document.getElementById(
-            'break2'
-        ).value,
+                    station:
+                        document
+                        .getElementById(
+                            'station'
+                        ).value,
 
-        break3:
-        document.getElementById(
-            'break3'
-        ).value,
+                    shift_type:
+                        document
+                        .getElementById(
+                            'shift_type'
+                        ).value,
 
-        break4:
-        document.getElementById(
-            'break4'
-        ).value,
+                    break1:
+                        document
+                        .getElementById(
+                            'break1'
+                        ).value,
 
-        break5:
-        document.getElementById(
-            'break5'
-        ).value,
+                    break2:
+                        document
+                        .getElementById(
+                            'break2'
+                        ).value,
 
-        break6:
-        document.getElementById(
-            'break6'
-        ).value,
+                    break3:
+                        document
+                        .getElementById(
+                            'break3'
+                        ).value,
 
-        edited_by_name:
-        document.getElementById(
-            'edited_by_name'
-        ).value,
+                    break4:
+                        document
+                        .getElementById(
+                            'break4'
+                        ).value,
 
-        edited_by_emp:
-        document.getElementById(
-            'edited_by_emp'
-        ).value,
+                    break5:
+                        document
+                        .getElementById(
+                            'break5'
+                        ).value,
 
-        edit_reason:
-        document.getElementById(
-            'edit_reason'
-        ).value
-    };
+                    break6:
+                        document
+                        .getElementById(
+                            'break6'
+                        ).value,
 
-    await fetch(
+                    edited_by_name:
+                        document
+                        .getElementById(
+                            'edited_by_name'
+                        ).value,
 
-        `/api/edit-entry/${id}`,
+                    edited_by_emp:
+                        document
+                        .getElementById(
+                            'edited_by_emp'
+                        ).value,
 
-        {
+                    edit_reason:
+                        document
+                        .getElementById(
+                            'edit_reason'
+                        ).value
+                })
+            }
+        );
 
-            method: 'POST',
+    const data =
+        await response.json();
 
-            headers: {
+    if (data.success) {
 
-                'Content-Type':
-                'application/json'
-            },
+        alert(
+            'Updated Successfully'
+        );
 
-            body:
-            JSON.stringify(body)
-        });
+        window.location.href =
+            '/dashboard';
 
-    alert(
-        'Entry Updated'
-    );
+    } else {
 
-    window.location.href =
-        '/dashboard';
+        alert(
+            'Update Failed'
+        );
+    }
 }
 
 loadEntry();
