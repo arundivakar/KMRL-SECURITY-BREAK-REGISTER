@@ -15,13 +15,25 @@ app.use(express.urlencoded({
     extended: true
 }));
 
+app.set(
+    'trust proxy',
+    1
+);
+
 app.use(session({
 
     secret: 'kmrl-secret',
 
     resave: false,
 
-    saveUninitialized: false
+    saveUninitialized: false,
+
+    cookie: {
+
+        secure: true,
+
+        sameSite: 'none'
+    }
 }));
 
 app.use(express.static('public'));
