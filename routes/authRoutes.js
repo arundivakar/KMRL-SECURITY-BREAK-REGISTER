@@ -131,10 +131,8 @@ async (req, res) => {
     }
 
     const valid =
-        bcrypt.compareSync(
-            password,
-            admin.password
-        );
+    password ===
+    admin.password;
 
     if (!valid) {
 
