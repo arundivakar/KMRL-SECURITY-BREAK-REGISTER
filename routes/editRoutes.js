@@ -1,8 +1,8 @@
 const express =
     require('express');
 
-const db =
-    require('../db/database');
+const supabase =
+    require('../lib/supabase');
 
 const router =
     express.Router();
@@ -30,51 +30,32 @@ router.get(
 
 isAuthenticated,
 
-(req, res) => {
+async (req, res) => {
 
-    const row =
-        db.prepare(`
+    const { data, error } =
+        await supabase
 
-            SELECT
+        .from('break_summary')
 
-                b.*,
+        .select('*')
 
-                e.name
-
-            FROM break_summary b
-
-            LEFT JOIN employees e
-
-            ON
-                REPLACE(
-                    REPLACE(
-                        b.emp_id,
-                        ' ',
-                        ''
-                    ),
-                    'TCSEK',
-                    ''
-                )
-
-                =
-
-                REPLACE(
-                    REPLACE(
-                        e.emp_id,
-                        ' ',
-                        ''
-                    ),
-                    'TCSEK',
-                    ''
-                )
-
-            WHERE b.id = ?
-
-        `).get(
+        .eq(
+            'id',
             req.params.id
-        );
+        )
 
-    res.json(row);
+        .single();
+
+    if (error) {
+
+        return res.json({
+            success: false,
+            error:
+                error.message
+        });
+    }
+
+    res.json(data);
 });
 
 router.post(
@@ -82,7 +63,7 @@ router.post(
 
 isAuthenticated,
 
-(req, res) => {
+async (req, res) => {
 
     const id =
         req.params.id;
@@ -124,73 +105,59 @@ isAuthenticated,
         Number(break5) +
         Number(break6);
 
-    db.prepare(`
+    const { error } =
+        await supabase
 
-        UPDATE break_summary
+        .from('break_summary')
 
-        SET
+        .update({
 
-            emp_id = ?,
+            emp_id,
 
-            station = ?,
+            station,
 
-            shift_type = ?,
+            shift_type,
 
-            break1 = ?,
+            break1,
 
-            break2 = ?,
+            break2,
 
-            break3 = ?,
+            break3,
 
-            break4 = ?,
+            break4,
 
-            break5 = ?,
+            break5,
 
-            break6 = ?,
+            break6,
 
-            total = ?,
+            total,
 
-            edited_by_name = ?,
+            edited_by_name,
 
-            edited_by_emp = ?,
+            edited_by_emp,
 
-            edit_reason = ?,
+            edit_reason,
 
-            edited_at =
-                datetime('now')
+            edited_at:
+                new Date()
+                .toISOString()
 
-        WHERE id = ?
+        })
 
-    `).run(
+        .eq('id', id);
 
-        emp_id,
+    if (error) {
 
-        station,
+        console.log(error);
 
-        shift_type,
+        return res.json({
 
-        break1,
+            success: false,
 
-        break2,
-
-        break3,
-
-        break4,
-
-        break5,
-
-        break6,
-
-        total,
-
-        edited_by_name,
-
-        edited_by_emp,
-
-        edit_reason,
-
-        id
-    );
+            error:
+                error.message
+        });
+    }
 
     res.json({
         success: true

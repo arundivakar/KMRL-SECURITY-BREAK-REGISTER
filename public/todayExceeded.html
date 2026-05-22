@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Today's Extra Breaks</title>
+
+<link rel="stylesheet"
+href="admin.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<div style="
+display:flex;
+gap:15px;
+margin-bottom:20px;
+">
+
+<a href="/dashboard">
+<button>Dashboard</button>
+</a>
+
+<a href="/today-exceeded">
+<button>Today's Extra Breaks</button>
+</a>
+
+<a href="/habitual-offenders">
+<button>Habitual Offenders</button>
+</a>
+
+<a href="/logout">
+<button>Logout</button>
+</a>
+
+</div>
+
+<h2>Today's Extra Breaks</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Date</th>
+<th>EMP ID</th>
+<th>Name</th>
+<th>Station</th>
+<th>Shift</th>
+<th>Session</th>
+<th>Total</th>
+
+</tr>
+
+</thead>
+
+<tbody id="logs-body">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script src="todayExceeded.js"></script>
+
+</body>
+</html>

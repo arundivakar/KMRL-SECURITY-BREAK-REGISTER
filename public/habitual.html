@@ -3,7 +3,7 @@
 
 <head>
 
-<title>KMRL Dashboard</title>
+<title>Habitual Offenders</title>
 
 <link rel="stylesheet"
 href="admin.css">
@@ -62,7 +62,7 @@ Logout
 
 </div>
 
-<h2>KMRL Break Logs</h2>
+<h2>Habitual Offenders</h2>
 
 <table>
 
@@ -70,25 +70,11 @@ Logout
 
 <tr>
 
-<th>Date</th>
 <th>EMP ID</th>
 <th>Name</th>
-<th>Station</th>
-<th>Shift</th>
-<th>Session</th>
-
-<th>B1</th>
-<th>B2</th>
-<th>B3</th>
-<th>B4</th>
-<th>B5</th>
-<th>B6</th>
-
-<th>Total</th>
-
-<th>Status</th>
-
-<th>Edit</th>
+<th>Exceeded Count</th>
+<th>Latest Date</th>
+<th>Latest Station</th>
 
 </tr>
 
@@ -98,34 +84,9 @@ Logout
 
 </table>
 
-<br>
-
-<div
-style="
-display:flex;
-gap:10px;
-align-items:center;
-">
-
-<button onclick="prevPage()">
-
-Previous
-
-</button>
-
-<span id="page-info"></span>
-
-<button onclick="nextPage()">
-
-Next
-
-</button>
-
 </div>
 
-</div>
-
-<script src="admin.js"></script>
+<script src="habitual.js"></script>
 
 </body>
 </html>
