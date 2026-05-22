@@ -7,9 +7,6 @@ const path =
 const db =
     require('../db/database');
 
-const supabase =
-    require('../lib/supabase');
-
 const router =
     express.Router();
 
@@ -31,24 +28,12 @@ function isAuthenticated(
     );
 }
 
-function normalize(id) {
-
-    return id
-
-        .replace(/\s/g, '')
-
-        .replace('TCSEK', '')
-
-        .trim()
-        .toUpperCase();
-}
-
 router.get(
 '/api/logs',
 
 isAuthenticated,
 
-async (req, res) => {
+(req, res) => {
 
     const page =
         Number(req.query.page) || 1;
@@ -58,73 +43,61 @@ async (req, res) => {
     const offset =
         (page - 1) * limit;
 
-    const {
-        data,
-        error,
-        count
-    } = await supabase
+    const rows =
+        db.prepare(`
 
-        .from('break_summary')
+            SELECT
 
-        .select('*', {
-            count: 'exact'
-        })
+                b.*,
 
-        .order('id', {
-            ascending: false
-        })
+                e.name
 
-        .range(
-            offset,
-            offset + limit - 1
+            FROM break_summary b
+
+            LEFT JOIN employees e
+
+            ON
+                REPLACE(
+                    REPLACE(
+                        b.emp_id,
+                        ' ',
+                        ''
+                    ),
+                    'TCSEK',
+                    ''
+                )
+
+                =
+
+                REPLACE(
+                    REPLACE(
+                        e.emp_id,
+                        ' ',
+                        ''
+                    ),
+                    'TCSEK',
+                    ''
+                )
+
+            ORDER BY b.id DESC
+
+            LIMIT ?
+
+            OFFSET ?
+
+        `).all(
+            limit,
+            offset
         );
 
-    if (error) {
+    const totalRows =
+        db.prepare(`
 
-        console.log(error);
+            SELECT COUNT(*) as count
 
-        return res.json({
+            FROM break_summary
 
-            rows: [],
-
-            totalPages: 0
-        });
-    }
-
-    const {
-        data: employees
-    } = await supabase
-
-        .from('employees')
-
-        .select('*');
-
-    const rows =
-        (data || []).map(row => {
-
-            const found =
-                employees.find(emp =>
-
-                    normalize(
-                        emp.emp_id
-                    )
-
-                    ===
-
-                    normalize(
-                        row.emp_id
-                    )
-                );
-
-            return {
-
-                ...row,
-
-                name:
-                    found?.name
-                    || ''
-            };
-        });
+        `).get().count;
 
     res.json({
 
@@ -132,7 +105,7 @@ async (req, res) => {
 
         totalPages:
             Math.ceil(
-                count / limit
+                totalRows / limit
             )
     });
 });
