@@ -104,21 +104,58 @@ async (req, res) => {
         const normalizedEmpId =
 
             normalize(emp_id);
+const {
+    data: employeeRows
+} = await supabase
+
+    .from('employees')
+
+    .select('*');
+
+const validEmployee =
+    employeeRows?.find(
+
+        emp =>
+
+        normalize(emp.emp_id)
+        === normalizedEmpId
+    );
+
+if (!validEmployee) {
+
+    return res.json({
+
+        message:
+        'Invalid Employee Number'
+    });
+}
 
         const today =
             new Date()
             .toISOString()
             .split('T')[0];
 
-        const hour = new Date().getHours();
+        const currentHour =
+    parseInt(
+
+        new Date().toLocaleString(
+            'en-US',
+            {
+                timeZone: 'Asia/Kolkata',
+                hour: 'numeric',
+                hour12: false
+            }
+        )
+    );
 
 let shift_session = 'NIGHT';
 
-if (hour >= 6 && hour < 14) {
+if (currentHour >= 6 && currentHour < 14) {
 
     shift_session = 'MORNING';
 
-} else if (hour >= 14 && hour < 22) {
+}
+else if (currentHour >= 14 && currentHour < 22) {
 
     shift_session = 'EVENING';
 }
@@ -138,14 +175,14 @@ if (hour >= 6 && hour < 14) {
             )
 
             .eq(
-                'entry_date',
-                today
-            )
+    'entry_date',
+    today
+)
 
-            .eq(
-                'shift_session',
-                shift_session
-            );
+.eq(
+    'shift_type',
+    shift_type
+);
 
         if (selectError) {
 
@@ -229,14 +266,14 @@ if (hour >= 6 && hour < 14) {
                 )
 
                 .eq(
-                    'entry_date',
-                    today
-                )
+    'entry_date',
+    today
+)
 
-                .eq(
-                    'shift_session',
-                    shift_session
-                );
+.eq(
+    'shift_type',
+    shift_type
+);
 
             row =
                 newRows?.[0];

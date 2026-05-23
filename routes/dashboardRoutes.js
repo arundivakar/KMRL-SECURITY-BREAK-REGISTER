@@ -261,54 +261,44 @@ isAuthenticated,
 async (req, res) => {
 
     const {
-        data,
-        error
-    } = await supabase
+    data,
+    error
+} = await supabase
 
-        .from('break_summary')
+    .from('habitual_offenders')
 
-        .select('*')
+    .select('*');
 
-        .gt(
-            'total',
-            40
+if (error) {
+
+    console.log(error);
+
+    return res.json([]);
+}
+
+const grouped = {};
+
+for (const row of data || []) {
+
+    const id =
+        normalize(
+            row.emp_id
         );
 
-    if (error) {
+    grouped[id] = {
 
-        console.log(error);
+        emp_id: id,
 
-        return res.json([]);
-    }
+        exceed_count:
+            row.total_violations || 0,
 
-    const grouped = {};
+        latest_date:
+            row.latest_date || '',
 
-    for (const row of data || []) {
-
-        const id =
-            normalize(
-                row.emp_id
-            );
-
-        if (!grouped[id]) {
-
-            grouped[id] = {
-
-                emp_id: id,
-
-                exceed_count: 0,
-
-                latest_date:
-                    row.entry_date,
-
-                latest_station:
-                    row.station
-            };
-        }
-
-        grouped[id]
-            .exceed_count++;
-    }
+        latest_station:
+            row.latest_station || ''
+    };
+}
 
     const {
         data: employees
@@ -319,13 +309,21 @@ async (req, res) => {
         .select('*');
 
     const result =
-        Object.values(grouped)
+    Object.values(grouped)
 
-        .filter(row =>
-            row.exceed_count >= 3
-        )
+    .filter(row =>
+        row.exceed_count >= 3
+    )
 
-        .map(row => {
+    .sort(
+        (a, b) =>
+
+        b.exceed_count
+        -
+        a.exceed_count
+    )
+
+    .map(row => {
 
             const found =
                 employees.find(emp =>

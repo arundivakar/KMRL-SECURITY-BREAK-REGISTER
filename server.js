@@ -22,17 +22,14 @@ app.set(
 
 app.use(session({
 
-    secret: 'kmrl-secret',
+    secret: 'tcs-secret',
 
     resave: false,
 
     saveUninitialized: false,
 
     cookie: {
-
-        secure: true,
-
-        sameSite: 'none'
+        secure: false
     }
 }));
 

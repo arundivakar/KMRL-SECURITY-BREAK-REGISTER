@@ -118,6 +118,8 @@ async (req, res) => {
 
     const admin =
         data?.[0];
+console.log('LOGIN DATA:', data);
+console.log('LOGIN ERROR:', error);
 
     if (!admin) {
 
