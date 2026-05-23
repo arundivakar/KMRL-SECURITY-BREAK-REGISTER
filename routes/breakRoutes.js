@@ -110,10 +110,18 @@ async (req, res) => {
             .toISOString()
             .split('T')[0];
 
-        const shift_session =
-            shift_type === 'DOUBLE'
-            ? 'DOUBLE'
-            : 'NORMAL';
+        const hour = new Date().getHours();
+
+let shift_session = 'NIGHT';
+
+if (hour >= 6 && hour < 14) {
+
+    shift_session = 'MORNING';
+
+} else if (hour >= 14 && hour < 22) {
+
+    shift_session = 'EVENING';
+}
 
         const {
             data: existingRows,
