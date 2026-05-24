@@ -23,7 +23,12 @@ async function loadExceeded() {
             background:#ffb3b3;
         ">
 
-            <td>${log.entry_date}</td>
+            <td>${
+log.entry_date
+?.split('-')
+.reverse()
+.join('/')
+}</td>
 
             <td>${log.emp_id}</td>
 

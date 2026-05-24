@@ -18,14 +18,13 @@ href="admin.css">
 display:flex;
 gap:15px;
 margin-bottom:20px;
+flex-wrap:wrap;
 ">
 
 <a href="/dashboard">
 
 <button>
-
 Dashboard
-
 </button>
 
 </a>
@@ -33,9 +32,7 @@ Dashboard
 <a href="/today-exceeded">
 
 <button>
-
 Today's Extra Breaks
-
 </button>
 
 </a>
@@ -43,9 +40,7 @@ Today's Extra Breaks
 <a href="/habitual-offenders">
 
 <button>
-
 Habitual Offenders
-
 </button>
 
 </a>
@@ -53,14 +48,26 @@ Habitual Offenders
 <a href="/logout">
 
 <button>
-
 Logout
-
 </button>
 
 </a>
 
 </div>
+
+<input
+type="text"
+id="searchInput"
+placeholder="Enter EMP ID"
+oninput="loadHabitual()"
+style="
+padding:10px;
+font-size:16px;
+margin-bottom:15px;
+width:250px;
+border-radius:6px;
+"
+/>
 
 <h2>Habitual Offenders</h2>
 
@@ -83,6 +90,26 @@ Logout
 <tbody id="logs-body"></tbody>
 
 </table>
+
+<br>
+
+<div style="
+display:flex;
+gap:10px;
+align-items:center;
+">
+
+<button onclick="prevPage()">
+Previous
+</button>
+
+<span id="page-info"></span>
+
+<button onclick="nextPage()">
+Next
+</button>
+
+</div>
 
 </div>
 

@@ -1,8 +1,12 @@
+let currentPage = 1;
+
+const limit = 50;
+
 async function loadHabitual() {
 
     const response =
         await fetch(
-            '/api/habitual-offenders'
+            `/api/habitual-offenders?page=${currentPage}`
         );
 
     const logs =
@@ -15,7 +19,35 @@ async function loadHabitual() {
 
     body.innerHTML = '';
 
-    logs.forEach(log => {
+    const searchValue =
+
+        document.getElementById(
+            'searchInput'
+        )
+
+        .value
+
+        .trim()
+
+        .toUpperCase();
+
+    const filtered =
+
+        searchValue
+
+        ?
+
+        logs.rows.filter(log =>
+
+            String(log.emp_id)
+            .includes(searchValue)
+        )
+
+        :
+
+        logs.rows;
+
+    filtered.forEach(log => {
 
         body.innerHTML += `
 
@@ -30,18 +62,58 @@ async function loadHabitual() {
             <td>
 
                 <b>
-                    ${log.exceed_count}
+                    ${log.total_violations || 0}
                 </b>
 
             </td>
 
-            <td>${log.latest_date}</td>
+            <td>
 
-            <td>${log.latest_station}</td>
+                ${
+                    log.latest_date
+
+                    ?
+
+                    log.latest_date
+                    .split('-')
+                    .reverse()
+                    .join('/')
+
+                    :
+
+                    ''
+                }
+
+            </td>
+
+            <td>${log.latest_station || ''}</td>
 
         </tr>
         `;
     });
+
+    document.getElementById(
+        'page-info'
+    ).innerText =
+
+        `Page ${currentPage} of ${logs.totalPages}`;
+}
+
+function nextPage() {
+
+    currentPage++;
+
+    loadHabitual();
+}
+
+function prevPage() {
+
+    if (currentPage > 1) {
+
+        currentPage--;
+
+        loadHabitual();
+    }
 }
 
 loadHabitual();

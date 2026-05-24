@@ -11,35 +11,51 @@ async function login() {
         ).value;
 
     const response =
-        await fetch('/api/login', {
+        await fetch(
+            '/api/login',
+            {
 
-        method: 'POST',
+                method: 'POST',
 
-        headers: {
-            'Content-Type':
-            'application/json'
-        },
+                headers: {
+                    'Content-Type':
+                    'application/json'
+                },
 
-        body: JSON.stringify({
+                body: JSON.stringify({
 
-            username,
-            password
-        })
-    });
+                    username,
+
+                    password
+                })
+            }
+        );
 
     const data =
         await response.json();
 
     if (data.success) {
 
-        window.location.href =
+        window.location =
             '/dashboard';
 
     } else {
 
-        document.getElementById(
-            'message'
-        ).innerText =
-            data.message;
+        alert(
+            data.message
+        );
     }
 }
+
+document.addEventListener(
+'keydown',
+
+function(event) {
+
+    if (
+        event.key === 'Enter'
+    ) {
+
+        login();
+    }
+});

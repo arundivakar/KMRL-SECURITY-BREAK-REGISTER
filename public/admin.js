@@ -17,21 +17,51 @@ async function loadLogs() {
 
     tbody.innerHTML = '';
 
-    for (const row of data.rows) {
+    const selectedStation =
+        document.getElementById(
+            'stationFilter'
+        )?.value;
+
+    const filteredRows =
+
+        selectedStation
+
+        ?
+
+        data.rows.filter(
+
+            row =>
+
+            row.station ===
+            selectedStation
+        )
+
+        :
+
+        data.rows;
+
+    for (const row of filteredRows) {
 
         const tr =
             document.createElement('tr');
-if (
-    Number(row.total) > 40
-) {
 
-    tr.style.background =
-        '#ffcccc';
-}
+        if (
+            Number(row.total) > 40
+        ) {
+
+            tr.style.background =
+                '#ffcccc';
+        }
 
         tr.innerHTML = `
 
-            <td>${row.entry_date || ''}</td>
+            <td>${
+                row.entry_date
+                ?.split('-')
+                .reverse()
+                .join('/')
+                || ''
+            }</td>
 
             <td>${row.emp_id || ''}</td>
 
@@ -61,13 +91,13 @@ if (
 
                 ${row.current_open_break
 
-    ? 'BREAK RUNNING'
+                    ? 'BREAK RUNNING'
 
-    : Number(row.total) > 40
+                    : Number(row.total) > 40
 
-        ? 'BREAK EXCEEDED'
+                        ? 'BREAK EXCEEDED'
 
-        : 'NORMAL'}
+                        : 'NORMAL'}
 
             </td>
 

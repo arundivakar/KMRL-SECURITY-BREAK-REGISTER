@@ -260,45 +260,58 @@ isAuthenticated,
 
 async (req, res) => {
 
+    const page =
+        Number(req.query.page) || 1;
+
+    const limit = 50;
+
+    const offset =
+        (page - 1) * limit;
+
     const {
-    data,
-    error
-} = await supabase
+        data,
+        error
+    } = await supabase
 
-    .from('habitual_offenders')
+        .from('habitual_offenders')
 
-    .select('*');
+        .select('*');
 
-if (error) {
+    if (error) {
 
-    console.log(error);
+        console.log(error);
 
-    return res.json([]);
-}
+        return res.json({
 
-const grouped = {};
+            rows: [],
 
-for (const row of data || []) {
+            totalPages: 0
+        });
+    }
 
-    const id =
-        normalize(
-            row.emp_id
-        );
+    const grouped = {};
 
-    grouped[id] = {
+    for (const row of data || []) {
 
-        emp_id: id,
+        const id =
+            normalize(
+                row.emp_id
+            );
 
-        exceed_count:
-            row.total_violations || 0,
+        grouped[id] = {
 
-        latest_date:
-            row.latest_date || '',
+            emp_id: id,
 
-        latest_station:
-            row.latest_station || ''
-    };
-}
+            total_violations:
+                row.total_violations || 0,
+
+            latest_date:
+                row.latest_date || '',
+
+            latest_station:
+                row.latest_station || ''
+        };
+    }
 
     const {
         data: employees
@@ -309,18 +322,17 @@ for (const row of data || []) {
         .select('*');
 
     const result =
-    Object.values(grouped)
+        Object.values(grouped)
 
-    
-    .sort(
-        (a, b) =>
+        .sort(
+            (a, b) =>
 
-        b.exceed_count
-        -
-        a.exceed_count
-    )
+            b.total_violations
+            -
+            a.total_violations
+        )
 
-    .map(row => {
+        .map(row => {
 
             const found =
                 employees.find(emp =>
@@ -345,7 +357,21 @@ for (const row of data || []) {
             };
         });
 
-    res.json(result);
+    const paginated =
+        result.slice(
+            offset,
+            offset + limit
+        );
+
+    res.json({
+
+        rows: paginated,
+
+        totalPages:
+            Math.ceil(
+                result.length / limit
+            )
+    });
 });
 
 module.exports =

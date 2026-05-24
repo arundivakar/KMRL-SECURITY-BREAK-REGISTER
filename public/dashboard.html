@@ -18,6 +18,7 @@ href="admin.css">
 display:flex;
 gap:15px;
 margin-bottom:20px;
+flex-wrap:wrap;
 ">
 
 <a href="/dashboard">
@@ -61,6 +62,71 @@ Logout
 </a>
 
 </div>
+
+<select id="stationFilter"
+onchange="loadLogs(1)"
+style="
+padding:10px;
+margin-bottom:15px;
+font-size:16px;
+border-radius:6px;
+">
+
+<option value="">
+ALL STATIONS
+</option>
+
+<option value="ALVA">ALVA</option>
+
+<option value="PNCU">PNCU</option>
+
+<option value="CPPY">CPPY</option>
+
+<option value="AATK">AATK</option>
+
+<option value="MUTT">MUTT</option>
+
+<option value="KLMT">KLMT</option>
+
+<option value="CCUV">CCUV</option>
+
+<option value="PDPM">PDPM</option>
+
+<option value="EDAP">EDAP</option>
+
+<option value="CGPP">CGPP</option>
+
+<option value="PARV">PARV</option>
+
+<option value="JLSD">JLSD</option>
+
+<option value="KALR">KALR</option>
+
+<option value="TNHL">TNHL</option>
+
+<option value="MGRD">MGRD</option>
+
+<option value="MACE">MACE</option>
+
+<option value="ERSH">ERSH</option>
+
+<option value="KVTR">KVTR</option>
+
+<option value="EMKM">EMKM</option>
+
+<option value="VYTA">VYTA</option>
+
+<option value="TKDM">TKDM</option>
+
+<option value="PETT">PETT</option>
+
+<option value="VAKK">VAKK</option>
+
+<option value="SNJN">SNJN</option>
+
+<option value="TPHT">TPHT</option>
+
+</select>
 
 <h2>KMRL Break Logs</h2>
 
