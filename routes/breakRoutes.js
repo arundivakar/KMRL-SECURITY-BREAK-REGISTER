@@ -104,61 +104,78 @@ async (req, res) => {
         const normalizedEmpId =
 
             normalize(emp_id);
-const {
-    data: employeeRows
-} = await supabase
 
-    .from('employees')
+        // VALID EMPLOYEE CHECK
 
-    .select('*');
+        const {
+            data: employeeRows
+        } = await supabase
 
-const validEmployee =
-    employeeRows?.find(
+            .from('employees')
 
-        emp =>
+            .select('*');
 
-        normalize(emp.emp_id)
-        === normalizedEmpId
-    );
+        const validEmployee =
+            employeeRows?.find(
 
-if (!validEmployee) {
+                emp =>
 
-    return res.json({
+                normalize(emp.emp_id)
+                === normalizedEmpId
+            );
 
-        message:
-        'Invalid Employee Number'
-    });
-}
+        if (!validEmployee) {
+
+            return res.json({
+
+                message:
+                'Invalid Employee Number'
+            });
+        }
 
         const today =
             new Date()
             .toISOString()
             .split('T')[0];
 
+        // SESSION DISPLAY
+
         const currentHour =
-    parseInt(
+            parseInt(
 
-        new Date().toLocaleString(
-            'en-US',
-            {
-                timeZone: 'Asia/Kolkata',
-                hour: 'numeric',
-                hour12: false
-            }
-        )
-    );
+                new Date().toLocaleString(
+                    'en-US',
+                    {
+                        timeZone: 'Asia/Kolkata',
+                        hour: 'numeric',
+                        hour12: false
+                    }
+                )
+            );
 
-let shift_session = 'NIGHT';
+        let shift_session = 'NIGHT';
 
-if (currentHour >= 6 && currentHour < 14) {
+        if (
+            currentHour >= 6
+            &&
+            currentHour < 14
+        ) {
 
-    shift_session = 'MORNING';
+            shift_session =
+                'MORNING';
+        }
 
-}
-else if (currentHour >= 14 && currentHour < 22) {
+        else if (
+            currentHour >= 14
+            &&
+            currentHour < 22
+        ) {
 
-    shift_session = 'EVENING';
-}
+            shift_session =
+                'EVENING';
+        }
+
+        // FIND SHIFT ROW
 
         const {
             data: existingRows,
@@ -175,14 +192,14 @@ else if (currentHour >= 14 && currentHour < 22) {
             )
 
             .eq(
-    'entry_date',
-    today
-)
+                'entry_date',
+                today
+            )
 
-.eq(
-    'shift_type',
-    shift_type
-);
+            .eq(
+                'shift_type',
+                shift_type
+            );
 
         if (selectError) {
 
@@ -200,6 +217,22 @@ else if (currentHour >= 14 && currentHour < 22) {
 
         let row =
             existingRows?.[0];
+
+        // STATION LOCK
+
+        if (
+            row &&
+            row.station !== station
+        ) {
+
+            return res.json({
+
+                message:
+                'Station cannot be changed in same shift'
+            });
+        }
+
+        // CREATE NEW SHIFT ROW
 
         if (!row) {
 
@@ -266,14 +299,14 @@ else if (currentHour >= 14 && currentHour < 22) {
                 )
 
                 .eq(
-    'entry_date',
-    today
-)
+                    'entry_date',
+                    today
+                )
 
-.eq(
-    'shift_type',
-    shift_type
-);
+                .eq(
+                    'shift_type',
+                    shift_type
+                );
 
             row =
                 newRows?.[0];
@@ -306,6 +339,8 @@ else if (currentHour >= 14 && currentHour < 22) {
             });
         }
 
+        // START BREAK
+
         if (action === 'START') {
 
             const {
@@ -325,34 +360,31 @@ else if (currentHour >= 14 && currentHour < 22) {
                 latestRows?.[0];
 
             if (
-    latestRow.current_open_break
-) {
+                latestRow.current_open_break
+            ) {
 
-    return res.json({
+                return res.json({
 
-        message:
-        'Complete previous break first'
-    });
-}
+                    message:
+                    'Complete previous break first'
+                });
+            }
 
-if (
+            // PREVENT REUSE
 
-    latestRow[column] !== null
+            if (
+                Number(
+                    latestRow[column]
+                ) !== 0
+            ) {
 
-    &&
+                return res.json({
 
-    latestRow[column] !== 0
+                    message:
+                    `${break_no} already used in this shift`
+                });
+            }
 
-) {
-
-    return res.json({
-
-        message:
-        `${break_no} already used in this shift`
-    });
-}
-
-            
             const {
                 error: startError
             } = await supabase
@@ -360,6 +392,9 @@ if (
                 .from('break_summary')
 
                 .update({
+
+                    [column]:
+                        -1,
 
                     station,
 
@@ -399,6 +434,8 @@ if (
                 `${break_no} started`
             });
         }
+
+        // COMPLETE BREAK
 
         if (action === 'COMPLETE') {
 
@@ -446,28 +483,46 @@ if (
 
             const total =
 
-                Number(
-                    latestRow.break1 || 0
+                Math.max(
+                    0,
+                    Number(
+                        latestRow.break1 || 0
+                    )
                 ) +
 
-                Number(
-                    latestRow.break2 || 0
+                Math.max(
+                    0,
+                    Number(
+                        latestRow.break2 || 0
+                    )
                 ) +
 
-                Number(
-                    latestRow.break3 || 0
+                Math.max(
+                    0,
+                    Number(
+                        latestRow.break3 || 0
+                    )
                 ) +
 
-                Number(
-                    latestRow.break4 || 0
+                Math.max(
+                    0,
+                    Number(
+                        latestRow.break4 || 0
+                    )
                 ) +
 
-                Number(
-                    latestRow.break5 || 0
+                Math.max(
+                    0,
+                    Number(
+                        latestRow.break5 || 0
+                    )
                 ) +
 
-                Number(
-                    latestRow.break6 || 0
+                Math.max(
+                    0,
+                    Number(
+                        latestRow.break6 || 0
+                    )
                 ) +
 
                 mins;

@@ -165,10 +165,10 @@ popup.style.color =
 'white';
 
 popup.style.padding =
-'20px 40px';
+'12px 20px';
 
 popup.style.fontSize =
-'28px';
+'18px';
 
 popup.style.fontWeight =
 'bold';
