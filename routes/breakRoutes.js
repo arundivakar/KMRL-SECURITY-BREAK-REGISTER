@@ -325,29 +325,34 @@ else if (currentHour >= 14 && currentHour < 22) {
                 latestRows?.[0];
 
             if (
-                latestRow.current_open_break
-            ) {
+    latestRow.current_open_break
+) {
 
-                return res.json({
+    return res.json({
 
-                    message:
-                    'Complete previous break first'
-                });
-            }
+        message:
+        'Complete previous break first'
+    });
+}
 
-            if (
-                Number(
-                    latestRow[column]
-                ) > 0
-            ) {
+if (
 
-                return res.json({
+    latestRow[column] !== null
 
-                    message:
-                    `${break_no} already used in this shift`
-                });
-            }
+    &&
 
+    latestRow[column] !== 0
+
+) {
+
+    return res.json({
+
+        message:
+        `${break_no} already used in this shift`
+    });
+}
+
+            
             const {
                 error: startError
             } = await supabase

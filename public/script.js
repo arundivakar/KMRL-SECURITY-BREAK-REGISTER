@@ -140,7 +140,57 @@ async function submitBreak(action) {
     const data =
         await response.json();
 
-    alert(data.message);
+    const popup =
+document.createElement('div');
+
+popup.innerText =
+data.message;
+
+popup.style.position =
+'fixed';
+
+popup.style.top =
+'20px';
+
+popup.style.left =
+'50%';
+
+popup.style.transform =
+'translateX(-50%)';
+
+popup.style.background =
+'#ff4444';
+
+popup.style.color =
+'white';
+
+popup.style.padding =
+'20px 40px';
+
+popup.style.fontSize =
+'28px';
+
+popup.style.fontWeight =
+'bold';
+
+popup.style.borderRadius =
+'12px';
+
+popup.style.zIndex =
+'9999';
+
+popup.style.boxShadow =
+'0 0 15px rgba(0,0,0,0.4)';
+
+document.body.appendChild(
+    popup
+);
+
+setTimeout(() => {
+
+    popup.remove();
+
+}, 3000);
 
     if (
         data.message.includes(

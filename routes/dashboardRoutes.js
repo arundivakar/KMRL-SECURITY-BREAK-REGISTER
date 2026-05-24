@@ -311,10 +311,7 @@ for (const row of data || []) {
     const result =
     Object.values(grouped)
 
-    .filter(row =>
-        row.exceed_count >= 3
-    )
-
+    
     .sort(
         (a, b) =>
 
