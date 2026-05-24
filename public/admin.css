@@ -1,100 +1,382 @@
+/* ===== CLEAN METRO ENTERPRISE DASHBOARD ===== */
+
 body {
-
-    font-family: Arial, sans-serif;
-
-    background: #f2f2f2;
 
     margin: 0;
 
     padding: 0;
+
+    font-family:
+    Arial,
+    sans-serif;
+
+    background:
+    #f6f7f8;
+
+    color:
+    #222;
 }
 
-.login-container {
-
-    width: 90%;
-
-    max-width: 350px;
-
-    margin: 100px auto;
-
-    background: white;
-
-    padding: 25px;
-
-    border-radius: 10px;
-
-    box-shadow:
-        0 0 10px rgba(0,0,0,0.1);
-}
-
-.login-container h2 {
-
-    text-align: center;
-}
+/* ===== MAIN DASHBOARD ===== */
 
 .dashboard {
 
-    padding: 20px;
+    width:
+    96%;
+
+    margin:
+    20px auto;
+
+    background:
+    white;
+
+    border:
+    1px solid #e5e5e5;
+
+    border-radius:
+    8px;
+
+    padding:
+    20px;
+
+    box-sizing:
+    border-box;
 }
 
-.topbar {
+/* ===== TOP MENU ===== */
 
-    display: flex;
+.top-menu {
 
-    justify-content: space-between;
+    display:
+    flex;
 
-    align-items: center;
+    gap:
+    15px;
 
-    margin-bottom: 20px;
+    margin-bottom:
+    25px;
+
+    flex-wrap:
+    wrap;
 }
 
-input,
-button {
+/* ===== BUTTONS ===== */
 
-    padding: 10px;
+button,
+.menu-btn {
 
-    border-radius: 5px;
+    background:
+    #0097a7;
 
-    border: 1px solid #ccc;
+    color:
+    white;
 
-    font-size: 15px;
+    border:
+    none;
+
+    border-radius:
+    8px;
+
+    padding:
+    14px 24px;
+
+    font-size:
+    15px;
+
+    font-weight:
+    bold;
+
+    cursor:
+    pointer;
+
+    transition:
+    0.2s;
 }
 
-button {
+button:hover,
+.menu-btn:hover {
 
-    background: #007bff;
-
-    color: white;
-
-    border: none;
-
-    cursor: pointer;
+    opacity:
+    0.92;
 }
+
+/* ===== DARKER GREEN BUTTON ===== */
+
+.green-btn {
+
+    background:
+    #4f8f00;
+}
+
+/* ===== DROPDOWN ===== */
+
+select {
+
+    padding:
+    12px 18px;
+
+    border:
+    1px solid #dcdcdc;
+
+    border-radius:
+    8px;
+
+    background:
+    white;
+
+    font-size:
+    15px;
+
+    margin-bottom:
+    20px;
+
+    min-width:
+    220px;
+}
+
+/* ===== HEADING ===== */
+
+h2 {
+
+    margin-top:
+    20px;
+
+    margin-bottom:
+    8px;
+
+    font-size:
+    20px;
+
+    color:
+    #222;
+}
+
+/* ===== SMALL GREEN LINE ===== */
+
+.heading-line {
+
+    width:
+    50px;
+
+    height:
+    4px;
+
+    background:
+    #4f8f00;
+
+    margin-bottom:
+    20px;
+
+    border-radius:
+    2px;
+}
+
+/* ===== TABLE ===== */
 
 table {
 
-    width: 100%;
+    width:
+    100%;
 
-    border-collapse: collapse;
+    border-collapse:
+    collapse;
 
-    background: white;
+    background:
+    white;
 }
+
+/* ===== TABLE HEADER ===== */
+
+thead {
+
+    background:
+    #0097a7;
+
+    color:
+    white;
+}
+
+/* ===== TABLE CELLS ===== */
 
 th,
 td {
 
-    border: 1px solid #ccc;
+    border:
+    1px solid #ececec;
 
-    padding: 10px;
+    padding:
+    16px 12px;
 
-    text-align: center;
+    text-align:
+    center;
 
-    font-size: 14px;
+    font-size:
+    14px;
 }
+
+/* ===== TABLE HEADER TEXT ===== */
 
 th {
 
-    background: #007bff;
+    font-weight:
+    bold;
+}
 
-    color: white;
+/* ===== TABLE ROWS ===== */
+
+tbody tr {
+
+    background:
+    white;
+}
+
+/* ===== LIGHT ALERT ROW ===== */
+
+.break-exceeded {
+
+    background:
+    #ffd6d6 !important;
+
+    border-left:
+    6px solid #d60000;
+}
+/* ===== STATUS NORMAL ===== */
+
+.status-normal {
+
+    background:
+    #e8f4dd;
+
+    color:
+    #5b9200;
+
+    padding:
+    6px 10px;
+
+    border-radius:
+    6px;
+
+    font-size:
+    12px;
+
+    font-weight:
+    bold;
+
+    display:
+    inline-block;
+}
+
+/* ===== STATUS DANGER ===== */
+
+.status-danger {
+
+    background:
+    #ffe4e4;
+
+    color:
+    #df2c2c;
+
+    padding:
+    6px 10px;
+
+    border-radius:
+    6px;
+
+    font-size:
+    12px;
+
+    font-weight:
+    bold;
+
+    display:
+    inline-block;
+}
+
+/* ===== EDIT ICON ===== */
+
+.edit-icon {
+
+    color:
+    #2e7d32;
+
+    font-size:
+    22px;
+
+    text-decoration:
+    none;
+
+    font-weight:
+    bold;
+}
+
+/* ===== PAGINATION ===== */
+
+.pagination {
+
+    display:
+    flex;
+
+    align-items:
+    center;
+
+    gap:
+    10px;
+
+    margin-top:
+    25px;
+}
+
+/* ===== PAGE INFO ===== */
+
+#page-info {
+
+    font-weight:
+    bold;
+}
+
+/* ===== FOOTER ===== */
+
+.footer {
+
+    text-align:
+    center;
+
+    margin-top:
+    40px;
+
+    color:
+    #777;
+
+    font-size:
+    13px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:768px){
+
+    .dashboard {
+
+        width:
+        100%;
+
+        padding:
+        10px;
+    }
+
+    th,
+    td {
+
+        padding:
+        10px 6px;
+
+        font-size:
+        12px;
+    }
+
+    button {
+
+        width:
+        100%;
+    }
 }
