@@ -14,43 +14,167 @@ href="admin.css">
 
 <div class="dashboard">
 
-<h2>Edit Break Entry</h2>
+<!-- ===== TOP ===== -->
 
-<p>
-<b>Date:</b>
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+flex-wrap:wrap;
+gap:15px;
+">
+
+<div>
+
+<h2 style="
+margin:0;
+">
+
+Edit Break Entry
+
+</h2>
+
+<p style="
+margin-top:8px;
+color:#666;
+">
+
+Modify employee break details safely
+
+</p>
+
+</div>
+
+<a href="/dashboard">
+
+<button>
+
+← Back to Dashboard
+
+</button>
+
+</a>
+
+</div>
+
+<!-- ===== SUMMARY ===== -->
+
+<div style="
+background:#f8fbfc;
+border:1px solid #e4eeee;
+border-radius:12px;
+padding:18px;
+margin-bottom:25px;
+">
+
+<div style="
+display:flex;
+gap:40px;
+flex-wrap:wrap;
+">
+
+<div>
+
+<div style="
+font-size:13px;
+color:#777;
+margin-bottom:5px;
+">
+
+DATE
+
+</div>
+
+<div style="
+font-size:18px;
+font-weight:bold;
+">
+
 <span id="date"></span>
-</p>
 
-<p>
-<b>Security Name:</b>
+</div>
+
+</div>
+
+<div>
+
+<div style="
+font-size:13px;
+color:#777;
+margin-bottom:5px;
+">
+
+SECURITY NAME
+
+</div>
+
+<div style="
+font-size:18px;
+font-weight:bold;
+color:#0097a7;
+">
+
 <span id="security-name"></span>
-</p>
 
-<br>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===== FORM ===== -->
+
+<div style="
+background:white;
+border:1px solid #ececec;
+border-radius:12px;
+padding:25px;
+">
+
+<!-- ===== EMPLOYEE ===== -->
+
+<h3 style="
+margin-top:0;
+">
+
+Employee Details
+
+</h3>
+
+<div style="
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+margin-bottom:25px;
+">
+
+<div>
 
 <label>Employee ID</label>
-
-<br>
 
 <input
 type="text"
 id="emp_id">
 
-<br><br>
+</div>
+
+<div>
 
 <label>Station</label>
-
-<br>
 
 <input
 type="text"
 id="station">
 
-<br><br>
+</div>
+
+<div>
 
 <label>Shift Type</label>
-
-<br>
 
 <select id="shift_type">
 
@@ -64,86 +188,160 @@ DOUBLE
 
 </select>
 
-<br><br>
+</div>
+
+</div>
+
+<!-- ===== BREAKS ===== -->
+
+<h3>
+
+Break Details
+
+</h3>
+
+<div style="
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(180px,1fr));
+gap:20px;
+margin-bottom:30px;
+">
+
+<div>
 
 <label>Break 1</label>
-<br>
 <input type="number" id="break1">
 
-<br><br>
+</div>
+
+<div>
 
 <label>Break 2</label>
-<br>
 <input type="number" id="break2">
 
-<br><br>
+</div>
+
+<div>
 
 <label>Break 3</label>
-<br>
 <input type="number" id="break3">
 
-<br><br>
+</div>
+
+<div>
 
 <label>Break 4</label>
-<br>
 <input type="number" id="break4">
 
-<br><br>
+</div>
+
+<div>
 
 <label>Break 5</label>
-<br>
 <input type="number" id="break5">
 
-<br><br>
+</div>
+
+<div>
 
 <label>Break 6</label>
-<br>
 <input type="number" id="break6">
 
-<br><br>
+</div>
+
+</div>
+
+<!-- ===== AUDIT ===== -->
+
+<h3>
+
+Edit Audit Information
+
+</h3>
+
+<div style="
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+margin-bottom:20px;
+">
+
+<div>
 
 <label>Edited By Name</label>
-
-<br>
 
 <input
 type="text"
 id="edited_by_name">
 
-<br><br>
+</div>
+
+<div>
 
 <label>Edited By Employee ID</label>
-
-<br>
 
 <input
 type="text"
 id="edited_by_emp">
 
-<br><br>
+</div>
+
+</div>
 
 <label>Edit Reason</label>
 
-<br>
-
 <textarea
-id="edit_reason"></textarea>
+id="edit_reason"
+style="
+width:100%;
+min-height:120px;
+padding:14px;
+border-radius:10px;
+border:1px solid #dcdcdc;
+font-size:14px;
+box-sizing:border-box;
+margin-top:10px;
+resize:vertical;
+"></textarea>
 
-<br><br>
+<!-- ===== BUTTONS ===== -->
 
-<button onclick="saveEdit()">
+<div style="
+display:flex;
+gap:15px;
+margin-top:30px;
+flex-wrap:wrap;
+">
+
+<button
+onclick="saveEdit()"
+style="
+flex:1;
+min-width:220px;
+">
 
 Save Changes
 
 </button>
 
-<br><br>
+<a
+href="/dashboard"
+style="
+flex:1;
+min-width:220px;
+text-decoration:none;
+">
 
-<a href="/dashboard">
+<button
+type="button"
+class="admin-btn"
+style="
+width:100%;
+">
 
-<button>
-
-Back to Dashboard
+Cancel
 
 </button>
 
@@ -151,7 +349,42 @@ Back to Dashboard
 
 </div>
 
+</div>
+
+<!-- ===== HISTORY ===== -->
+
+<div style="
+background:white;
+border:1px solid #ececec;
+border-radius:12px;
+padding:20px;
+margin-top:25px;
+">
+
+<h3 style="
+margin-top:0;
+">
+
+Edit History
+
+</h3>
+
+<div style="
+padding:15px 0;
+color:#777;
+font-size:14px;
+">
+
+Edit history tracking not enabled yet.
+
+</div>
+
+</div>
+
+</div>
+
 <script src="edit.js"></script>
 
 </body>
+
 </html>

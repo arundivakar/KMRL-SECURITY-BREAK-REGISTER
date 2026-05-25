@@ -3,13 +3,15 @@
 
 <head>
 
-    <title>KMRL TCS Break Register</title>
+<title>KMRL TCS Break Register</title>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet"
-          href="style.css">
+<link
+rel="stylesheet"
+href="style.css">
 
 </head>
 
@@ -17,107 +19,253 @@
 
 <div class="container">
 
-    <h2>KMRL TCS Break Register</h2>
+<!-- ===== HEADER ===== -->
 
-    <select id="station">
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:20px;
+">
 
-        <option value="">
-            Select Station
-        </option>
+<div>
 
-        <option value="ALVA">ALVA</option>
-        <option value="PNCU">PNCU</option>
-        <option value="CPPY">CPPY</option>
-        <option value="AATK">AATK</option>
-        <option value="MUTT">MUTT</option>
-        <option value="KLMT">KLMT</option>
-        <option value="CCUV">CCUV</option>
-        <option value="PDPM">PDPM</option>
-        <option value="EDAP">EDAP</option>
-        <option value="CGPP">CGPP</option>
-        <option value="PARV">PARV</option>
-        <option value="JLSD">JLSD</option>
-        <option value="KALR">KALR</option>
-        <option value="TNHL">TNHL</option>
-        <option value="MGRD">MGRD</option>
-        <option value="MACE">MACE</option>
-        <option value="ERSH">ERSH</option>
-        <option value="KVTR">KVTR</option>
-        <option value="EMKM">EMKM</option>
-        <option value="VYTA">VYTA</option>
-        <option value="TKDM">TKDM</option>
-        <option value="PETT">PETT</option>
-        <option value="VAKK">VAKK</option>
-        <option value="SNJN">SNJN</option>
-        <option value="TPHT">TPHT</option>
+<h2 style="
+margin:0;
+">
 
-    </select>
+KMRL TCS Break Register
 
-    <select id="shift_type">
+</h2>
 
-        <option value="NORMAL">
-            Normal Shift
-        </option>
+<div style="
+font-size:14px;
+color:#6b7280;
+margin-top:5px;
+">
 
-        <option value="DOUBLE">
-            Double Shift
-        </option>
+Security Break Monitoring Portal
 
-    </select>
+</div>
 
-    <input type="text"
-           id="emp_id"
-           placeholder="Enter Employee Number">
+</div>
 
-    <div id="employee_info"></div>
+<div style="
+font-size:14px;
+font-weight:600;
+color:#007F8C;
+">
 
-    <select id="break_no">
+CONTROL ROOM
 
-        <option value="Break 1">
-            Break 1
-        </option>
+</div>
 
-        <option value="Break 2">
-            Break 2
-        </option>
+</div>
 
-        <option value="Break 3">
-            Break 3
-        </option>
+<!-- ===== TOP FORM ===== -->
 
-        <option value="Break 4">
-            Break 4
-        </option>
+<div style="
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-bottom:15px;
+">
 
-        <option value="Break 5">
-            Break 5
-        </option>
+<select id="station">
 
-        <option value="Break 6">
-            Break 6
-        </option>
+<option value="">
+Select Station
+</option>
 
-    </select>
+<option value="ALVA">ALVA</option>
+<option value="PNCU">PNCU</option>
+<option value="CPPY">CPPY</option>
+<option value="AATK">AATK</option>
+<option value="MUTT">MUTT</option>
+<option value="KLMT">KLMT</option>
+<option value="CCUV">CCUV</option>
+<option value="PDPM">PDPM</option>
+<option value="EDAP">EDAP</option>
+<option value="CGPP">CGPP</option>
+<option value="PARV">PARV</option>
+<option value="JLSD">JLSD</option>
+<option value="KALR">KALR</option>
+<option value="TNHL">TNHL</option>
+<option value="MGRD">MGRD</option>
+<option value="MACE">MACE</option>
+<option value="ERSH">ERSH</option>
+<option value="KVTR">KVTR</option>
+<option value="EMKM">EMKM</option>
+<option value="VYTA">VYTA</option>
+<option value="TKDM">TKDM</option>
+<option value="PETT">PETT</option>
+<option value="VAKK">VAKK</option>
+<option value="SNJN">SNJN</option>
+<option value="TPHT">TPHT</option>
 
-    <button onclick="submitBreak('START')">
-        START BREAK
-    </button>
+</select>
 
-    <button onclick="submitBreak('COMPLETE')">
-        COMPLETE BREAK
-    </button>
+<select id="shift_type">
 
-    <a href="/login.html">
+<option value="NORMAL">
+Normal Shift
+</option>
 
-        <button class="admin-btn">
-            CHECK LOGS
-        </button>
+<option value="DOUBLE">
+Double Shift
+</option>
 
-    </a>
+</select>
+
+</div>
+
+<!-- ===== EMPLOYEE INPUT ===== -->
+
+<input
+type="text"
+id="emp_id"
+placeholder="Enter Employee Number">
+
+<!-- ===== EMPLOYEE CARD ===== -->
+
+<div id="employee_info"
+style="
+margin-top:18px;
+background:#f8fbfc;
+border:1px solid #dcecec;
+border-radius:18px;
+padding:18px;
+display:flex;
+align-items:center;
+gap:18px;
+min-height:85px;
+box-sizing:border-box;
+">
+
+<div style="
+width:55px;
+height:55px;
+border-radius:16px;
+background:linear-gradient(135deg,#0097a7,#007F8C);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+color:white;
+font-weight:bold;
+flex-shrink:0;
+">
+
+👤
+
+</div>
+
+<div>
+
+<div style="
+font-size:18px;
+font-weight:700;
+color:#1f2937;
+">
+
+Employee details will appear here
+
+</div>
+
+<div style="
+font-size:14px;
+color:#6b7280;
+margin-top:5px;
+">
+
+Enter employee number to continue
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ===== BREAK SELECTION ===== -->
+
+<div style="
+margin-top:18px;
+">
+
+<select id="break_no">
+
+<option value="Break 1">
+Break 1
+</option>
+
+<option value="Break 2">
+Break 2
+</option>
+
+<option value="Break 3">
+Break 3
+</option>
+
+<option value="Break 4">
+Break 4
+</option>
+
+<option value="Break 5">
+Break 5
+</option>
+
+<option value="Break 6">
+Break 6
+</option>
+
+</select>
+
+</div>
+
+<!-- ===== ACTION BUTTONS ===== -->
+
+<div style="
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-top:22px;
+">
+
+<button onclick="submitBreak('START')">
+
+▶ START BREAK
+
+</button>
+
+<button onclick="submitBreak('COMPLETE')">
+
+⏹ COMPLETE BREAK
+
+</button>
+
+<a href="/login.html"
+style="text-decoration:none;">
+
+<button
+class="admin-btn"
+style="width:100%;">
+
+📋 CHECK LOGS
+
+</button>
+
+</a>
+
+</div>
 
 </div>
 
 <script src="script.js"></script>
 
 </body>
+
 </html>

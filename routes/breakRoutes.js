@@ -7,6 +7,8 @@ const supabase =
 const router =
     express.Router();
 
+/* ===== NORMALIZE ===== */
+
 function normalize(id) {
 
     return String(id || '')
@@ -16,15 +18,20 @@ function normalize(id) {
         .replace('TCSEK', '')
 
         .trim()
+
         .toUpperCase();
 }
 
+/* ===== EMPLOYEE FETCH ===== */
+
 router.get(
+
 '/api/employee/:id',
 
 async (req, res) => {
 
     const entered =
+
         normalize(
             req.params.id
         );
@@ -55,8 +62,14 @@ async (req, res) => {
     for (const emp of employees) {
 
         if (
-            normalize(emp.emp_id)
-            === entered
+
+            normalize(
+                emp.emp_id
+            )
+
+            ===
+
+            entered
         ) {
 
             found = emp;
@@ -80,7 +93,10 @@ async (req, res) => {
     });
 });
 
+/* ===== BREAK API ===== */
+
 router.post(
+
 '/api/breaks',
 
 async (req, res) => {
@@ -105,7 +121,7 @@ async (req, res) => {
 
             normalize(emp_id);
 
-        // VALID EMPLOYEE CHECK
+        /* ===== VALID EMPLOYEE ===== */
 
         const {
             data: employeeRows
@@ -116,12 +132,16 @@ async (req, res) => {
             .select('*');
 
         const validEmployee =
+
             employeeRows?.find(
 
                 emp =>
 
-                normalize(emp.emp_id)
-                === normalizedEmpId
+                    normalize(emp.emp_id)
+
+                    ===
+
+                    normalizedEmpId
             );
 
         if (!validEmployee) {
@@ -133,27 +153,40 @@ async (req, res) => {
             });
         }
 
+        /* ===== DATE ===== */
+
         const today =
+
             new Date()
             .toISOString()
             .split('T')[0];
 
-        // SESSION DISPLAY
+        /* ===== SESSION ===== */
 
         const currentHour =
+
             parseInt(
 
-                new Date().toLocaleString(
+                new Date()
+                .toLocaleString(
+
                     'en-US',
+
                     {
-                        timeZone: 'Asia/Kolkata',
-                        hour: 'numeric',
-                        hour12: false
+                        timeZone:
+                        'Asia/Kolkata',
+
+                        hour:
+                        'numeric',
+
+                        hour12:
+                        false
                     }
                 )
             );
 
-        let shift_session = 'NIGHT';
+        let shift_session =
+            'NIGHT';
 
         if (
             currentHour >= 6
@@ -175,11 +208,14 @@ async (req, res) => {
                 'EVENING';
         }
 
-        // FIND SHIFT ROW
+        /* ===== FETCH ROW ===== */
 
         const {
+
             data: existingRows,
+
             error: selectError
+
         } = await supabase
 
             .from('break_summary')
@@ -218,7 +254,7 @@ async (req, res) => {
         let row =
             existingRows?.[0];
 
-        // STATION LOCK
+        /* ===== STATION LOCK ===== */
 
         if (
             row &&
@@ -232,7 +268,7 @@ async (req, res) => {
             });
         }
 
-        // CREATE NEW SHIFT ROW
+        /* ===== CREATE ROW ===== */
 
         if (!row) {
 
@@ -268,7 +304,13 @@ async (req, res) => {
 
                     break6: 0,
 
-                    total: 0
+                    total: 0,
+
+                    current_open_break:
+                        null,
+
+                    current_start_time:
+                        null
                 }]);
 
             if (insertError) {
@@ -312,6 +354,8 @@ async (req, res) => {
                 newRows?.[0];
         }
 
+        /* ===== BREAK MAP ===== */
+
         const map = {
 
             'Break 1': 'break1',
@@ -339,7 +383,7 @@ async (req, res) => {
             });
         }
 
-        // START BREAK
+        /* ===== START BREAK ===== */
 
         if (action === 'START') {
 
@@ -359,9 +403,24 @@ async (req, res) => {
             const latestRow =
                 latestRows?.[0];
 
-            if (
-                latestRow.current_open_break
-            ) {
+            /* ===== RUNNING CHECK ===== */
+
+            const hasRunningBreak =
+
+                [
+                    Number(latestRow.break1),
+                    Number(latestRow.break2),
+                    Number(latestRow.break3),
+                    Number(latestRow.break4),
+                    Number(latestRow.break5),
+                    Number(latestRow.break6)
+                ]
+
+                .some(
+                    value => value < 0
+                );
+
+            if (hasRunningBreak) {
 
                 return res.json({
 
@@ -370,7 +429,7 @@ async (req, res) => {
                 });
             }
 
-            // PREVENT REUSE
+            /* ===== PREVENT REUSE ===== */
 
             if (
                 Number(
@@ -384,6 +443,8 @@ async (req, res) => {
                     `${break_no} already used in this shift`
                 });
             }
+
+            /* ===== START ===== */
 
             const {
                 error: startError
@@ -435,7 +496,7 @@ async (req, res) => {
             });
         }
 
-        // COMPLETE BREAK
+        /* ===== COMPLETE BREAK ===== */
 
         if (action === 'COMPLETE') {
 
@@ -455,10 +516,15 @@ async (req, res) => {
             const latestRow =
                 latestRows?.[0];
 
-            if (
-                latestRow.current_open_break
-                !== break_no
-            ) {
+            /* ===== VERIFY ACTIVE ===== */
+
+            const isRunning =
+
+                Number(
+                    latestRow[column]
+                ) < 0;
+
+            if (!isRunning) {
 
                 return res.json({
 
@@ -468,6 +534,7 @@ async (req, res) => {
             }
 
             const start =
+
                 new Date(
                     latestRow.current_start_time
                 );
@@ -476,56 +543,51 @@ async (req, res) => {
                 new Date();
 
             const mins =
+
                 Math.floor(
+
                     (now - start)
+
                     / 1000 / 60
                 );
+
+            /* ===== TOTAL ===== */
 
             const total =
 
                 Math.max(
                     0,
-                    Number(
-                        latestRow.break1 || 0
-                    )
+                    Number(latestRow.break1 || 0)
                 ) +
 
                 Math.max(
                     0,
-                    Number(
-                        latestRow.break2 || 0
-                    )
+                    Number(latestRow.break2 || 0)
                 ) +
 
                 Math.max(
                     0,
-                    Number(
-                        latestRow.break3 || 0
-                    )
+                    Number(latestRow.break3 || 0)
                 ) +
 
                 Math.max(
                     0,
-                    Number(
-                        latestRow.break4 || 0
-                    )
+                    Number(latestRow.break4 || 0)
                 ) +
 
                 Math.max(
                     0,
-                    Number(
-                        latestRow.break5 || 0
-                    )
+                    Number(latestRow.break5 || 0)
                 ) +
 
                 Math.max(
                     0,
-                    Number(
-                        latestRow.break6 || 0
-                    )
+                    Number(latestRow.break6 || 0)
                 ) +
 
                 mins;
+
+            /* ===== COMPLETE ===== */
 
             const {
                 error: completeError
@@ -594,6 +656,8 @@ async (req, res) => {
         });
     }
 });
+
+/* ===== EXPORT ===== */
 
 module.exports =
     router;

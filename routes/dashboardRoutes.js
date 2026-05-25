@@ -10,6 +10,8 @@ const supabase =
 const router =
     express.Router();
 
+/* ===== AUTH ===== */
+
 function isAuthenticated(
     req,
     res,
@@ -28,6 +30,8 @@ function isAuthenticated(
     );
 }
 
+/* ===== NORMALIZE ===== */
+
 function normalize(id) {
 
     return String(id || '')
@@ -37,10 +41,14 @@ function normalize(id) {
         .replace('TCSEK', '')
 
         .trim()
+
         .toUpperCase();
 }
 
+/* ===== DASHBOARD ===== */
+
 router.get(
+
 '/dashboard',
 
 isAuthenticated,
@@ -48,14 +56,20 @@ isAuthenticated,
 (req, res) => {
 
     res.sendFile(
+
         path.join(
+
             __dirname,
+
             '../public/dashboard.html'
         )
     );
 });
 
+/* ===== LOGS API ===== */
+
 router.get(
+
 '/api/logs',
 
 isAuthenticated,
@@ -70,26 +84,51 @@ async (req, res) => {
     const offset =
         (page - 1) * limit;
 
-    const {
-        data,
-        error,
-        count
-    } = await supabase
+    const station =
+        req.query.station || '';
+
+    const search =
+        (req.query.search || '')
+        .toLowerCase();
+
+    /* ===== BASE QUERY ===== */
+
+    let query = supabase
 
         .from('break_summary')
 
-        .select('*', {
-            count: 'exact'
-        })
+        .select('*');
 
-        .order('id', {
+    /* ===== STATION FILTER ===== */
+
+    if (station) {
+
+        query =
+
+            query.eq(
+                'station',
+                station
+            );
+    }
+
+    /* ===== ORDER ===== */
+
+    query = query.order(
+
+        'id',
+
+        {
             ascending: false
-        })
+        }
+    );
 
-        .range(
-            offset,
-            offset + limit - 1
-        );
+    const {
+
+        data,
+
+        error
+
+    } = await query;
 
     if (error) {
 
@@ -99,9 +138,17 @@ async (req, res) => {
 
             rows: [],
 
-            totalPages: 0
+            totalPages: 0,
+
+            totalLogs: 0,
+
+            totalExceeded: 0,
+
+            runningBreaks: 0
         });
     }
+
+    /* ===== EMPLOYEE TABLE ===== */
 
     const {
         data: employees
@@ -111,10 +158,14 @@ async (req, res) => {
 
         .select('*');
 
-    const rows =
+    /* ===== MERGE EMPLOYEE NAME ===== */
+
+    let rows =
+
         (data || []).map(row => {
 
             const found =
+
                 employees.find(emp =>
 
                     normalize(
@@ -137,18 +188,106 @@ async (req, res) => {
             };
         });
 
+    /* ===== SEARCH ===== */
+
+    if (search) {
+
+        rows = rows.filter(row =>
+
+            row.emp_id
+            ?.toString()
+            .toLowerCase()
+            .includes(search)
+
+            ||
+
+            row.name
+            ?.toLowerCase()
+            .includes(search)
+
+            ||
+
+            row.station
+            ?.toLowerCase()
+            .includes(search)
+        );
+    }
+
+    /* ===== SUMMARY ===== */
+
+    const totalLogs =
+        rows.length;
+
+    const totalExceeded =
+
+        rows.filter(
+
+            row =>
+
+                Number(row.total) > 40
+        ).length;
+
+    const runningBreaks =
+
+        rows.filter(row =>
+
+            [
+                Number(row.break1),
+                Number(row.break2),
+                Number(row.break3),
+                Number(row.break4),
+                Number(row.break5),
+                Number(row.break6)
+            ]
+
+            .some(
+                value => value < 0
+            )
+        ).length;
+
+    /* ===== TOTAL PAGES ===== */
+
+    const totalPages =
+
+        Math.max(
+
+            1,
+
+            Math.ceil(
+                rows.length / limit
+            )
+        );
+
+    /* ===== PAGINATION ===== */
+
+    const paginatedRows =
+
+        rows.slice(
+            offset,
+            offset + limit
+        );
+
+    /* ===== RESPONSE ===== */
+
     res.json({
 
-        rows,
+        rows:
+            paginatedRows,
 
-        totalPages:
-            Math.ceil(
-                count / limit
-            )
+        totalPages,
+
+        totalLogs,
+
+        totalExceeded,
+
+        runningBreaks
     });
 });
 
+/* ===== TODAY EXCEEDED ===== */
+
 router.get(
+
 '/today-exceeded',
 
 isAuthenticated,
@@ -156,14 +295,20 @@ isAuthenticated,
 (req, res) => {
 
     res.sendFile(
+
         path.join(
+
             __dirname,
+
             '../public/todayExceeded.html'
         )
     );
 });
 
+/* ===== HABITUAL PAGE ===== */
+
 router.get(
+
 '/habitual-offenders',
 
 isAuthenticated,
@@ -171,14 +316,20 @@ isAuthenticated,
 (req, res) => {
 
     res.sendFile(
+
         path.join(
+
             __dirname,
+
             '../public/habitual.html'
         )
     );
 });
 
+/* ===== TODAY EXCEEDED API ===== */
+
 router.get(
+
 '/api/today-exceeded',
 
 isAuthenticated,
@@ -186,13 +337,17 @@ isAuthenticated,
 async (req, res) => {
 
     const today =
+
         new Date()
         .toISOString()
         .split('T')[0];
 
     const {
+
         data,
+
         error
+
     } = await supabase
 
         .from('break_summary')
@@ -225,9 +380,11 @@ async (req, res) => {
         .select('*');
 
     const rows =
+
         (data || []).map(row => {
 
             const found =
+
                 employees.find(emp =>
 
                     normalize(
@@ -253,7 +410,10 @@ async (req, res) => {
     res.json(rows);
 });
 
+/* ===== HABITUAL API ===== */
+
 router.get(
+
 '/api/habitual-offenders',
 
 isAuthenticated,
@@ -269,8 +429,11 @@ async (req, res) => {
         (page - 1) * limit;
 
     const {
+
         data,
+
         error
+
     } = await supabase
 
         .from('habitual_offenders')
@@ -294,6 +457,7 @@ async (req, res) => {
     for (const row of data || []) {
 
         const id =
+
             normalize(
                 row.emp_id
             );
@@ -322,19 +486,22 @@ async (req, res) => {
         .select('*');
 
     const result =
+
         Object.values(grouped)
 
         .sort(
+
             (a, b) =>
 
-            b.total_violations
-            -
-            a.total_violations
+                b.total_violations
+                -
+                a.total_violations
         )
 
         .map(row => {
 
             const found =
+
                 employees.find(emp =>
 
                     normalize(
@@ -358,6 +525,7 @@ async (req, res) => {
         });
 
     const paginated =
+
         result.slice(
             offset,
             offset + limit
@@ -365,14 +533,18 @@ async (req, res) => {
 
     res.json({
 
-        rows: paginated,
+        rows:
+            paginated,
 
         totalPages:
+
             Math.ceil(
                 result.length / limit
             )
     });
 });
+
+/* ===== EXPORT ===== */
 
 module.exports =
     router;

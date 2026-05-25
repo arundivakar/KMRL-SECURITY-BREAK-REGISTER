@@ -3,70 +3,377 @@
 
 <head>
 
-    <title>Admin Login</title>
+<title>KMRL Admin Login</title>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-    <style>
+<style>
 
-        body {
+/* ===== BODY ===== */
 
-            font-family: Arial;
+body {
 
-            background: #f2f2f2;
+    margin: 0;
 
-            display: flex;
+    padding: 0;
 
-            justify-content: center;
+    font-family:
+    'Segoe UI',
+    sans-serif;
 
-            align-items: center;
+    background:
+    linear-gradient(
+        135deg,
+        #0097a7,
+        #005f6b
+    );
 
-            height: 100vh;
-        }
+    display:
+    flex;
 
-        .login-box {
+    justify-content:
+    center;
 
-            background: white;
+    align-items:
+    center;
 
-            padding: 30px;
+    min-height:
+    100vh;
 
-            border-radius: 10px;
+    overflow:
+    hidden;
+}
 
-            width: 300px;
+/* ===== BACKGROUND GLOW ===== */
 
-            box-shadow:
-                0 0 10px rgba(0,0,0,0.2);
-        }
+body::before {
 
-        input {
+    content: '';
 
-            width: 100%;
+    position:
+    absolute;
 
-            padding: 10px;
+    width:
+    500px;
 
-            margin-top: 10px;
-        }
+    height:
+    500px;
 
-        button {
+    background:
+    rgba(255,255,255,0.08);
 
-            width: 100%;
+    border-radius:
+    50%;
 
-            padding: 10px;
+    top:
+    -120px;
 
-            margin-top: 15px;
+    right:
+    -120px;
 
-            cursor: pointer;
-        }
+    filter:
+    blur(20px);
+}
 
-        #message {
+body::after {
 
-            color: red;
+    content: '';
 
-            margin-top: 10px;
-        }
+    position:
+    absolute;
 
-    </style>
+    width:
+    400px;
+
+    height:
+    400px;
+
+    background:
+    rgba(183,213,51,0.12);
+
+    border-radius:
+    50%;
+
+    bottom:
+    -120px;
+
+    left:
+    -120px;
+
+    filter:
+    blur(20px);
+}
+
+/* ===== LOGIN CARD ===== */
+
+.login-box {
+
+    position:
+    relative;
+
+    z-index:
+    10;
+
+    width:
+    92%;
+
+    max-width:
+    400px;
+
+    background:
+    rgba(255,255,255,0.96);
+
+    backdrop-filter:
+    blur(10px);
+
+    border-radius:
+    22px;
+
+    padding:
+    35px;
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,0.18);
+
+    box-sizing:
+    border-box;
+}
+
+/* ===== LOGO ===== */
+
+.logo {
+
+    width:
+    80px;
+
+    height:
+    80px;
+
+    margin:
+    0 auto 20px;
+
+    border-radius:
+    20px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #0097a7,
+        #00707d
+    );
+
+    display:
+    flex;
+
+    align-items:
+    center;
+
+    justify-content:
+    center;
+
+    color:
+    white;
+
+    font-size:
+    30px;
+
+    font-weight:
+    bold;
+
+    box-shadow:
+    0 8px 20px rgba(0,151,167,0.25);
+}
+
+/* ===== TITLES ===== */
+
+h2 {
+
+    margin:
+    0;
+
+    text-align:
+    center;
+
+    color:
+    #1f2937;
+
+    font-size:
+    28px;
+}
+
+.subtitle {
+
+    text-align:
+    center;
+
+    margin-top:
+    10px;
+
+    color:
+    #6b7280;
+
+    font-size:
+    14px;
+
+    margin-bottom:
+    30px;
+}
+
+/* ===== INPUTS ===== */
+
+input {
+
+    width:
+    100%;
+
+    height:
+    52px;
+
+    margin-top:
+    16px;
+
+    padding:
+    0 16px;
+
+    border:
+    2px solid #ddeeee;
+
+    border-radius:
+    14px;
+
+    font-size:
+    15px;
+
+    box-sizing:
+    border-box;
+
+    transition:
+    0.25s;
+
+    background:
+    white;
+}
+
+input:focus {
+
+    outline:
+    none;
+
+    border-color:
+    #0097a7;
+
+    box-shadow:
+    0 0 12px rgba(0,151,167,0.15);
+}
+
+/* ===== BUTTON ===== */
+
+button {
+
+    width:
+    100%;
+
+    height:
+    52px;
+
+    margin-top:
+    22px;
+
+    border:
+    none;
+
+    border-radius:
+    14px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #0097a7,
+        #00707d
+    );
+
+    color:
+    white;
+
+    font-size:
+    15px;
+
+    font-weight:
+    700;
+
+    cursor:
+    pointer;
+
+    transition:
+    0.25s;
+}
+
+button:hover {
+
+    transform:
+    translateY(-1px);
+
+    box-shadow:
+    0 8px 18px rgba(0,151,167,0.25);
+}
+
+/* ===== MESSAGE ===== */
+
+#message {
+
+    margin-top:
+    16px;
+
+    text-align:
+    center;
+
+    color:
+    #dc2626;
+
+    font-size:
+    14px;
+
+    font-weight:
+    600;
+}
+
+/* ===== FOOTER ===== */
+
+.footer {
+
+    text-align:
+    center;
+
+    margin-top:
+    28px;
+
+    font-size:
+    12px;
+
+    color:
+    #888;
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:480px){
+
+    .login-box {
+
+        padding:
+        25px;
+    }
+
+    h2 {
+
+        font-size:
+        24px;
+    }
+}
+
+</style>
 
 </head>
 
@@ -74,31 +381,59 @@
 
 <div class="login-box">
 
-    <h2>Admin Login</h2>
+<div class="logo">
 
-    <input
-        type="text"
-        id="username"
-        placeholder="Username"
-    >
+K
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Password"
-    >
+</div>
 
-    <button onclick="login()">
+<h2>
 
-        LOGIN
+KMRL Portal
 
-    </button>
+</h2>
 
-    <div id="message"></div>
+<div class="subtitle">
+
+Security Break Monitoring System
+
+</div>
+
+<input
+type="text"
+id="username"
+placeholder="Username"
+>
+
+<input
+type="password"
+id="password"
+placeholder="Password"
+onkeydown="
+if(event.key==='Enter'){
+login();
+}
+"
+>
+
+<button onclick="login()">
+
+LOGIN
+
+</button>
+
+<div id="message"></div>
+
+<div class="footer">
+
+Kochi Metro Rail Ltd • Control Room Access
+
+</div>
 
 </div>
 
 <script src="login.js"></script>
 
 </body>
+
 </html>

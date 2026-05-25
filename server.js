@@ -7,33 +7,55 @@ const session =
 const path =
     require('path');
 
-const app = express();
+const app =
+    express();
 
-app.use(express.json());
+/* ===== BODY PARSER ===== */
 
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(
+    express.json()
+);
+
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
+
+/* ===== TRUST PROXY ===== */
 
 app.set(
     'trust proxy',
     1
 );
 
-app.use(session({
+/* ===== SESSION ===== */
 
-    secret: 'tcs-secret',
+app.use(
+    session({
 
-    resave: false,
+        secret:
+            'tcs-secret',
 
-    saveUninitialized: false,
+        resave:
+            false,
 
-    cookie: {
-        secure: false
-    }
-}));
+        saveUninitialized:
+            false,
 
-app.use(express.static('public'));
+        cookie: {
+            secure: false
+        }
+    })
+);
+
+/* ===== STATIC ===== */
+
+app.use(
+    express.static('public')
+);
+
+/* ===== ROUTES ===== */
 
 const authRoutes =
     require('./routes/authRoutes');
@@ -47,17 +69,39 @@ const dashboardRoutes =
 const editRoutes =
     require('./routes/editRoutes');
 
-app.use(authRoutes);
+app.use(
+    authRoutes
+);
 
-app.use(breakRoutes);
+app.use(
+    breakRoutes
+);
 
-app.use(dashboardRoutes);
+app.use(
+    dashboardRoutes
+);
 
-app.use(editRoutes);
+app.use(
+    editRoutes
+);
 
-app.listen(3000, () => {
+/* ===== SERVER ===== */
 
-    console.log(
-        'Server running on port 3000'
-    );
-});
+const PORT =
+    process.env.PORT || 3000;
+
+app.listen(
+
+    PORT,
+
+    '0.0.0.0',
+
+    () => {
+
+        console.log(
+
+            `Server running on port ${PORT}`
+
+        );
+    }
+);

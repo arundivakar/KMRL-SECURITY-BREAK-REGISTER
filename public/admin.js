@@ -1,51 +1,99 @@
 let currentPage = 1;
 
+/* ===== LOAD LOGS ===== */
+
 async function loadLogs() {
 
+    /* ===== FILTER VALUES ===== */
+
+    const selectedStation =
+
+        document
+        .getElementById(
+            'stationFilter'
+        )
+        ?.value
+        || '';
+
+    const searchValue =
+
+        document
+        .getElementById(
+            'searchInput'
+        )
+        ?.value
+        || '';
+
+    /* ===== FETCH ===== */
+
     const response =
+
         await fetch(
-            `/api/logs?page=${currentPage}`
+
+            `/api/logs?page=${currentPage}&station=${selectedStation}&search=${searchValue}`
+
         );
 
     const data =
         await response.json();
 
+    /* ===== PAGE SAFETY ===== */
+
+    if (
+
+        currentPage > data.totalPages
+
+        &&
+
+        data.totalPages > 0
+
+    ) {
+
+        currentPage =
+            data.totalPages;
+
+        return loadLogs();
+    }
+
     const tbody =
+
         document.getElementById(
             'logs-body'
         );
 
     tbody.innerHTML = '';
 
-    const selectedStation =
-        document.getElementById(
-            'stationFilter'
-        )?.value;
+    const rows =
+        data.rows || [];
 
-    const filteredRows =
+    /* ===== SUMMARY ===== */
 
-        selectedStation
+    document.getElementById(
+        'totalLogs'
+    ).innerText =
 
-        ?
+        data.totalLogs || 0;
 
-        data.rows.filter(
+    document.getElementById(
+        'totalExceeded'
+    ).innerText =
 
-            row =>
+        data.totalExceeded || 0;
 
-            row.station ===
-            selectedStation
-        )
+    document.getElementById(
+        'runningBreaks'
+    ).innerText =
 
-        :
+        data.runningBreaks || 0;
 
-        data.rows;
+    /* ===== TABLE ===== */
 
-    for (const row of filteredRows) {
+    for (const row of rows) {
 
         const tr =
             document.createElement('tr');
 
-        /* ===== ROW ALERT ===== */
+        /* ===== EXCEEDED ===== */
 
         if (
             Number(row.total) > 40
@@ -56,16 +104,35 @@ async function loadLogs() {
             );
         }
 
-        /* ===== STATUS BADGE ===== */
+        /* ===== RUNNING CHECK ===== */
+
+        const isRunning =
+
+            [
+                Number(row.break1),
+                Number(row.break2),
+                Number(row.break3),
+                Number(row.break4),
+                Number(row.break5),
+                Number(row.break6)
+            ]
+
+            .some(
+                value => value < 0
+            );
+
+        /* ===== STATUS ===== */
 
         let statusHTML = '';
 
-        if (row.current_open_break) {
+        if (isRunning) {
 
             statusHTML =
 
-                `<span class="status-danger">
+                `<span class="status-running">
+
                     BREAK RUNNING
+
                 </span>`;
         }
 
@@ -76,7 +143,9 @@ async function loadLogs() {
             statusHTML =
 
                 `<span class="status-danger">
+
                     BREAK EXCEEDED
+
                 </span>`;
         }
 
@@ -85,80 +154,117 @@ async function loadLogs() {
             statusHTML =
 
                 `<span class="status-normal">
+
                     NORMAL
+
                 </span>`;
         }
 
-        /* ===== TABLE ROW ===== */
+        /* ===== ROW ===== */
 
         tr.innerHTML = `
 
             <td>
+
                 ${
+
                     row.entry_date
+
                     ?.split('-')
+
                     .reverse()
+
                     .join('/')
+
                     || ''
                 }
+
             </td>
 
             <td>
+
                 ${row.emp_id || ''}
+
             </td>
 
             <td>
+
                 ${row.name || ''}
+
             </td>
 
             <td>
+
                 ${row.station || ''}
+
             </td>
 
             <td>
+
                 ${row.shift_type || ''}
+
             </td>
 
             <td>
+
                 ${row.shift_session || ''}
+
             </td>
 
             <td>
-                ${row.break1 || 0}
+
+                ${Math.max(0, row.break1 || 0)}
+
             </td>
 
             <td>
-                ${row.break2 || 0}
+
+                ${Math.max(0, row.break2 || 0)}
+
             </td>
 
             <td>
-                ${row.break3 || 0}
+
+                ${Math.max(0, row.break3 || 0)}
+
             </td>
 
             <td>
-                ${row.break4 || 0}
+
+                ${Math.max(0, row.break4 || 0)}
+
             </td>
 
             <td>
-                ${row.break5 || 0}
+
+                ${Math.max(0, row.break5 || 0)}
+
             </td>
 
             <td>
-                ${row.break6 || 0}
+
+                ${Math.max(0, row.break6 || 0)}
+
             </td>
 
             <td>
+
                 ${row.total || 0}
+
             </td>
 
             <td>
+
                 ${statusHTML}
+
             </td>
 
             <td>
 
                 <a
+
                 class="edit-icon"
+
                 href="/edit.html?id=${row.id}">
 
                     &#9998;
@@ -170,6 +276,8 @@ async function loadLogs() {
 
         tbody.appendChild(tr);
     }
+
+    /* ===== PAGE INFO ===== */
 
     document.getElementById(
         'page-info'
@@ -199,6 +307,57 @@ function prevPage() {
     }
 }
 
-/* ===== INITIAL LOAD ===== */
+/* ===== STATION FILTER ===== */
+
+document
+
+.getElementById(
+    'stationFilter'
+)
+
+.addEventListener(
+
+    'change',
+
+    () => {
+
+        currentPage = 1;
+
+        loadLogs();
+    }
+);
+
+/* ===== SEARCH INPUT ===== */
+
+document
+
+.getElementById(
+    'searchInput'
+)
+
+.addEventListener(
+
+    'keydown',
+
+    (e) => {
+
+        if (e.key === 'Enter') {
+
+            currentPage = 1;
+
+            loadLogs();
+        }
+    }
+);
+
+/* ===== AUTO REFRESH ===== */
+
+setInterval(() => {
+
+    loadLogs();
+
+}, 30000);
+
+/* ===== INITIAL ===== */
 
 loadLogs();

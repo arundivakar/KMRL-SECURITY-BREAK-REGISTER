@@ -3,13 +3,13 @@
 :root{
 
     --primary:
-    #00A9B7;
+    #0097A7;
 
     --primary-dark:
-    #007F8C;
+    #007C89;
 
     --green:
-    #B7D533;
+    #7FAF00;
 
     --bg:
     #F4F8F9;
@@ -39,8 +39,8 @@ body{
     background:
     linear-gradient(
         180deg,
-        #F9FCFC,
-        #EEF7F7
+        #F8FCFC,
+        #EEF5F6
     );
 
     color:
@@ -53,25 +53,28 @@ body{
 
     width: 92%;
 
-    max-width: 1200px;
+    max-width: 950px;
 
     margin:
-    40px auto;
+    25px auto;
 
     background:
-    rgba(255,255,255,0.92);
+    rgba(255,255,255,0.95);
 
     backdrop-filter:
     blur(10px);
 
     padding:
-    30px;
+    24px;
 
     border-radius:
     22px;
 
     box-shadow:
-    0 8px 30px rgba(0,0,0,0.08);
+    0 6px 24px rgba(0,0,0,0.06);
+
+    box-sizing:
+    border-box;
 }
 
 /* ===== HEADINGS ===== */
@@ -86,7 +89,7 @@ h3 {
     var(--primary-dark);
 
     margin-bottom:
-    20px;
+    18px;
 }
 
 /* ===== INPUTS ===== */
@@ -96,25 +99,34 @@ select {
 
     width: 100%;
 
-    padding: 14px;
+    height: 52px;
 
-    margin-top: 15px;
+    padding:
+    0 16px;
 
-    border-radius: 14px;
+    margin-top:
+    14px;
+
+    border-radius:
+    14px;
 
     border:
-    2px solid #DDEEEE;
+    2px solid #DCECEC;
 
-    box-sizing: border-box;
+    box-sizing:
+    border-box;
 
-    font-size: 16px;
+    font-size:
+    15px;
 
     background:
     white;
 
     transition:
-    0.3s;
+    0.25s;
 }
+
+/* ===== INPUT FOCUS ===== */
 
 input:focus,
 select:focus {
@@ -125,7 +137,7 @@ select:focus {
     var(--primary);
 
     box-shadow:
-    0 0 10px rgba(0,169,183,0.15);
+    0 0 10px rgba(0,151,167,0.12);
 }
 
 /* ===== BUTTONS ===== */
@@ -134,13 +146,16 @@ button {
 
     width: 100%;
 
-    padding: 14px;
+    height: 52px;
 
-    margin-top: 18px;
+    margin-top:
+    16px;
 
-    border-radius: 14px;
+    border-radius:
+    14px;
 
-    border: none;
+    border:
+    none;
 
     background:
     linear-gradient(
@@ -149,24 +164,31 @@ button {
         var(--primary-dark)
     );
 
-    color: white;
+    color:
+    white;
 
-    font-size: 16px;
+    font-size:
+    15px;
 
-    font-weight: 600;
+    font-weight:
+    700;
 
-    cursor: pointer;
+    cursor:
+    pointer;
 
-    transition: 0.3s;
+    transition:
+    0.25s;
 }
+
+/* ===== BUTTON HOVER ===== */
 
 button:hover {
 
     transform:
-    translateY(-2px);
+    translateY(-1px);
 
     box-shadow:
-    0 8px 18px rgba(0,169,183,0.25);
+    0 6px 16px rgba(0,151,167,0.22);
 }
 
 /* ===== ADMIN BUTTON ===== */
@@ -185,9 +207,11 @@ button:hover {
 
 #employee_info {
 
-    margin-top: 20px;
+    margin-top:
+    18px;
 
-    padding: 18px;
+    padding:
+    16px;
 
     background:
     #F8FBFB;
@@ -197,30 +221,35 @@ button:hover {
 
     border-left:
     5px solid var(--primary);
+
+    font-size:
+    15px;
 }
 
-/* ===== TABLE STYLING ===== */
+/* ===== TABLE ===== */
 
 table {
 
-    width: 100%;
+    width:
+    100%;
 
     border-collapse:
     collapse;
 
-    overflow: hidden;
+    overflow:
+    hidden;
 
     border-radius:
-    18px;
+    16px;
 
     background:
     white;
 
     margin-top:
-    20px;
+    18px;
 
     box-shadow:
-    0 8px 30px rgba(0,0,0,0.05);
+    0 6px 22px rgba(0,0,0,0.05);
 }
 
 /* ===== TABLE HEADER ===== */
@@ -244,13 +273,16 @@ th,
 td {
 
     padding:
-    16px;
+    12px;
 
     text-align:
     center;
 
     border-bottom:
     1px solid #EEF2F2;
+
+    font-size:
+    14px;
 }
 
 /* ===== TABLE ROWS ===== */
@@ -264,7 +296,7 @@ tbody tr:nth-child(even){
 tbody tr:hover {
 
     background:
-    #E8F8F9;
+    #EAF7F8;
 
     transition:
     0.2s;
@@ -292,13 +324,13 @@ tbody tr:hover {
     #2E7D32;
 
     padding:
-    6px 12px;
+    5px 10px;
 
     border-radius:
     999px;
 
     font-size:
-    12px;
+    11px;
 
     font-weight:
     700;
@@ -313,34 +345,99 @@ tbody tr:hover {
     #DC2626;
 
     padding:
-    6px 12px;
+    5px 10px;
 
     border-radius:
     999px;
 
     font-size:
-    12px;
+    11px;
 
     font-weight:
     700;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== MOBILE ===== */
 
 @media(max-width:768px){
 
     .container{
 
-        width: 95%;
+        width:
+        96%;
 
-        padding: 20px;
+        margin:
+        12px auto;
+
+        padding:
+        18px;
+    }
+
+    h1,
+    h2,
+    h3 {
+
+        font-size:
+        20px;
+    }
+
+    input,
+    select,
+    button {
+
+        height:
+        48px;
+
+        font-size:
+        14px;
     }
 
     th,
     td{
 
-        padding: 10px;
+        padding:
+        8px 6px;
 
-        font-size: 14px;
+        font-size:
+        12px;
+    }
+
+    table {
+
+        display:
+        block;
+
+        overflow-x:
+        auto;
+    }
+}
+
+/* ===== SMALL MOBILE ===== */
+
+@media(max-width:480px){
+
+    .container{
+
+        padding:
+        14px;
+    }
+
+    input,
+    select,
+    button {
+
+        height:
+        46px;
+
+        font-size:
+        13px;
+    }
+
+    h1,
+    h2,
+    h3 {
+
+        font-size:
+        18px;
     }
 }

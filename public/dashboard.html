@@ -14,6 +14,8 @@ href="admin.css">
 
 <div class="dashboard">
 
+<!-- ===== TOP MENU ===== -->
+
 <div style="
 display:flex;
 gap:15px;
@@ -63,13 +65,34 @@ Logout
 
 </div>
 
+<!-- ===== FILTER + SEARCH ===== -->
+
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:15px;
+margin-bottom:25px;
+">
+
+<div style="
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+align-items:stretch;
+">
+
 <select id="stationFilter"
-onchange="loadLogs(1)"
+onchange="loadLogs()"
 style="
-padding:10px;
-margin-bottom:15px;
-font-size:16px;
-border-radius:6px;
+padding:12px 18px;
+font-size:15px;
+border-radius:8px;
+border:1px solid #dcdcdc;
+width:240px;
+height:48px;
+box-sizing:border-box;
 ">
 
 <option value="">
@@ -77,58 +100,106 @@ ALL STATIONS
 </option>
 
 <option value="ALVA">ALVA</option>
-
 <option value="PNCU">PNCU</option>
-
 <option value="CPPY">CPPY</option>
-
 <option value="AATK">AATK</option>
-
 <option value="MUTT">MUTT</option>
-
 <option value="KLMT">KLMT</option>
-
 <option value="CCUV">CCUV</option>
-
 <option value="PDPM">PDPM</option>
-
 <option value="EDAP">EDAP</option>
-
 <option value="CGPP">CGPP</option>
-
 <option value="PARV">PARV</option>
-
 <option value="JLSD">JLSD</option>
-
 <option value="KALR">KALR</option>
-
 <option value="TNHL">TNHL</option>
-
 <option value="MGRD">MGRD</option>
-
 <option value="MACE">MACE</option>
-
 <option value="ERSH">ERSH</option>
-
 <option value="KVTR">KVTR</option>
-
 <option value="EMKM">EMKM</option>
-
 <option value="VYTA">VYTA</option>
-
 <option value="TKDM">TKDM</option>
-
 <option value="PETT">PETT</option>
-
 <option value="VAKK">VAKK</option>
-
 <option value="SNJN">SNJN</option>
-
 <option value="TPHT">TPHT</option>
 
 </select>
 
+<input
+type="text"
+id="searchInput"
+placeholder="Search EMP ID / Name / Station"
+style="
+padding:12px 18px;
+font-size:15px;
+border-radius:8px;
+border:1px solid #dcdcdc;
+width:240px;
+height:48px;
+box-sizing:border-box;
+"
+onkeydown="
+if(event.key==='Enter'){
+loadLogs();
+}
+"
+/>
+
+<button
+onclick="
+currentPage = 1;
+loadLogs();
+"
+style="
+height:48px;
+padding:0 24px;
+">
+Search
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ===== SUMMARY CARDS ===== -->
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<h3>Total Logs</h3>
+
+<h1 id="totalLogs">0</h1>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Break Exceeded</h3>
+
+<h1 id="totalExceeded">0</h1>
+
+</div>
+
+<div class="stat-card">
+
+<h3>Running Breaks</h3>
+
+<h1 id="runningBreaks">0</h1>
+
+</div>
+
+
+</div>
+
+<!-- ===== TITLE ===== -->
+
 <h2>KMRL Break Logs</h2>
+
+<!-- ===== TABLE ===== -->
 
 <table>
 
@@ -166,8 +237,9 @@ ALL STATIONS
 
 <br>
 
-<div
-style="
+<!-- ===== PAGINATION ===== -->
+
+<div style="
 display:flex;
 gap:10px;
 align-items:center;
@@ -194,4 +266,5 @@ Next
 <script src="admin.js"></script>
 
 </body>
+
 </html>

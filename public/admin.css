@@ -37,33 +37,15 @@ body {
     8px;
 
     padding:
-    20px;
+    18px;
 
     box-sizing:
     border-box;
 }
 
-/* ===== TOP MENU ===== */
-
-.top-menu {
-
-    display:
-    flex;
-
-    gap:
-    15px;
-
-    margin-bottom:
-    25px;
-
-    flex-wrap:
-    wrap;
-}
-
 /* ===== BUTTONS ===== */
 
-button,
-.menu-btn {
+button {
 
     background:
     #0097a7;
@@ -78,10 +60,10 @@ button,
     8px;
 
     padding:
-    14px 24px;
+    12px 20px;
 
     font-size:
-    15px;
+    14px;
 
     font-weight:
     bold;
@@ -93,19 +75,10 @@ button,
     0.2s;
 }
 
-button:hover,
-.menu-btn:hover {
+button:hover {
 
     opacity:
     0.92;
-}
-
-/* ===== DARKER GREEN BUTTON ===== */
-
-.green-btn {
-
-    background:
-    #4f8f00;
 }
 
 /* ===== DROPDOWN ===== */
@@ -113,7 +86,7 @@ button:hover,
 select {
 
     padding:
-    12px 18px;
+    10px 14px;
 
     border:
     1px solid #dcdcdc;
@@ -125,13 +98,27 @@ select {
     white;
 
     font-size:
-    15px;
+    14px;
+}
 
-    margin-bottom:
-    20px;
+/* ===== SEARCH ===== */
 
-    min-width:
-    220px;
+#searchInput {
+
+    outline:
+    none;
+
+    transition:
+    0.2s;
+}
+
+#searchInput:focus {
+
+    border:
+    1px solid #0097a7;
+
+    box-shadow:
+    0 0 5px rgba(0,151,167,0.15);
 }
 
 /* ===== HEADING ===== */
@@ -139,10 +126,10 @@ select {
 h2 {
 
     margin-top:
-    20px;
+    15px;
 
     margin-bottom:
-    8px;
+    12px;
 
     font-size:
     20px;
@@ -151,24 +138,68 @@ h2 {
     #222;
 }
 
-/* ===== SMALL GREEN LINE ===== */
+/* ===== STATS GRID ===== */
 
-.heading-line {
+.stats-grid {
 
-    width:
-    50px;
+    display:
+    grid;
 
-    height:
-    4px;
+    grid-template-columns:
+    repeat(auto-fit,minmax(180px,1fr));
 
-    background:
-    #4f8f00;
+    gap:
+    15px;
 
     margin-bottom:
-    20px;
+    25px;
+}
+
+/* ===== STAT CARD ===== */
+
+.stat-card {
+
+    background:
+    white;
+
+    border:
+    1px solid #ececec;
 
     border-radius:
-    2px;
+    10px;
+
+    padding:
+    16px;
+
+    box-shadow:
+    0 2px 6px rgba(0,0,0,0.04);
+}
+
+.stat-card h3 {
+
+    margin:
+    0 0 10px 0;
+
+    color:
+    #666;
+
+    font-size:
+    14px;
+}
+
+.stat-card h1 {
+
+    margin:
+    0;
+
+    color:
+    #0097a7;
+
+    font-size:
+    28px;
+
+    font-weight:
+    bold;
 }
 
 /* ===== TABLE ===== */
@@ -185,7 +216,7 @@ table {
     white;
 }
 
-/* ===== TABLE HEADER ===== */
+/* ===== STICKY HEADER ===== */
 
 thead {
 
@@ -194,6 +225,13 @@ thead {
 
     color:
     white;
+
+    position:
+    sticky;
+
+    top: 0;
+
+    z-index: 5;
 }
 
 /* ===== TABLE CELLS ===== */
@@ -205,16 +243,16 @@ td {
     1px solid #ececec;
 
     padding:
-    16px 12px;
+    10px 8px;
 
     text-align:
     center;
 
     font-size:
-    14px;
+    13px;
 }
 
-/* ===== TABLE HEADER TEXT ===== */
+/* ===== TABLE HEADER ===== */
 
 th {
 
@@ -222,7 +260,7 @@ th {
     bold;
 }
 
-/* ===== TABLE ROWS ===== */
+/* ===== TABLE ROW ===== */
 
 tbody tr {
 
@@ -230,7 +268,15 @@ tbody tr {
     white;
 }
 
-/* ===== LIGHT ALERT ROW ===== */
+/* ===== HOVER ===== */
+
+tbody tr:hover {
+
+    background:
+    #f5fbfc;
+}
+
+/* ===== ALERT ROW ===== */
 
 .break-exceeded {
 
@@ -240,6 +286,7 @@ tbody tr {
     border-left:
     6px solid #d60000;
 }
+
 /* ===== STATUS NORMAL ===== */
 
 .status-normal {
@@ -251,13 +298,13 @@ tbody tr {
     #5b9200;
 
     padding:
-    6px 10px;
+    4px 8px;
 
     border-radius:
     6px;
 
     font-size:
-    12px;
+    11px;
 
     font-weight:
     bold;
@@ -277,13 +324,39 @@ tbody tr {
     #df2c2c;
 
     padding:
-    6px 10px;
+    4px 8px;
 
     border-radius:
     6px;
 
     font-size:
-    12px;
+    11px;
+
+    font-weight:
+    bold;
+
+    display:
+    inline-block;
+}
+
+/* ===== RUNNING STATUS ===== */
+
+.status-running {
+
+    background:
+    #fff1dc;
+
+    color:
+    #d97706;
+
+    padding:
+    4px 8px;
+
+    border-radius:
+    6px;
+
+    font-size:
+    11px;
 
     font-weight:
     bold;
@@ -300,7 +373,7 @@ tbody tr {
     #2e7d32;
 
     font-size:
-    22px;
+    18px;
 
     text-decoration:
     none;
@@ -311,44 +384,10 @@ tbody tr {
 
 /* ===== PAGINATION ===== */
 
-.pagination {
-
-    display:
-    flex;
-
-    align-items:
-    center;
-
-    gap:
-    10px;
-
-    margin-top:
-    25px;
-}
-
-/* ===== PAGE INFO ===== */
-
 #page-info {
 
     font-weight:
     bold;
-}
-
-/* ===== FOOTER ===== */
-
-.footer {
-
-    text-align:
-    center;
-
-    margin-top:
-    40px;
-
-    color:
-    #777;
-
-    font-size:
-    13px;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -368,15 +407,21 @@ tbody tr {
     td {
 
         padding:
-        10px 6px;
+        8px 4px;
 
         font-size:
-        12px;
+        11px;
     }
 
     button {
 
         width:
         100%;
+    }
+
+    .stats-grid {
+
+        grid-template-columns:
+        repeat(2,1fr);
     }
 }

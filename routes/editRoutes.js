@@ -7,6 +7,8 @@ const supabase =
 const router =
     express.Router();
 
+/* ===== AUTH ===== */
+
 function isAuthenticated(
     req,
     res,
@@ -25,19 +27,25 @@ function isAuthenticated(
     );
 }
 
+/* ===== NORMALIZE EMP ID ===== */
+
 function normalize(id) {
 
-    return id
+    return String(id || '')
 
         .replace(/\s/g, '')
 
         .replace('TCSEK', '')
 
         .trim()
+
         .toUpperCase();
 }
 
+/* ===== GET ENTRY ===== */
+
 router.get(
+
 '/api/edit-entry/:id',
 
 isAuthenticated,
@@ -45,13 +53,14 @@ isAuthenticated,
 async (req, res) => {
 
     const id =
-
         Number(req.params.id);
 
     if (isNaN(id)) {
 
         return res.json({});
     }
+
+    /* ===== FETCH ENTRY ===== */
 
     const {
         data,
@@ -78,6 +87,8 @@ async (req, res) => {
 
         return res.json({});
     }
+
+    /* ===== FETCH EMPLOYEE ===== */
 
     const {
         data: employees
@@ -107,7 +118,10 @@ async (req, res) => {
     res.json(data);
 });
 
+/* ===== SAVE EDIT ===== */
+
 router.post(
+
 '/api/edit-entry/:id',
 
 isAuthenticated,
@@ -115,7 +129,6 @@ isAuthenticated,
 async (req, res) => {
 
     const id =
-
         Number(req.params.id);
 
     if (isNaN(id)) {
@@ -124,6 +137,8 @@ async (req, res) => {
             success: false
         });
     }
+
+    /* ===== BODY ===== */
 
     const {
 
@@ -153,19 +168,60 @@ async (req, res) => {
 
     } = req.body;
 
+    /* ===== BREAK VALUES ===== */
+
+    const b1 =
+        Number(break1 || 0);
+
+    const b2 =
+        Number(break2 || 0);
+
+    const b3 =
+        Number(break3 || 0);
+
+    const b4 =
+        Number(break4 || 0);
+
+    const b5 =
+        Number(break5 || 0);
+
+    const b6 =
+        Number(break6 || 0);
+
+    /* ===== TOTAL ===== */
+
     const total =
 
-        Number(break1 || 0) +
+        Math.max(0, b1) +
 
-        Number(break2 || 0) +
+        Math.max(0, b2) +
 
-        Number(break3 || 0) +
+        Math.max(0, b3) +
 
-        Number(break4 || 0) +
+        Math.max(0, b4) +
 
-        Number(break5 || 0) +
+        Math.max(0, b5) +
 
-        Number(break6 || 0);
+        Math.max(0, b6);
+
+    /* ===== RUNNING STATUS ===== */
+
+    const current_open_break =
+
+        [
+            b1,
+            b2,
+            b3,
+            b4,
+            b5,
+            b6
+        ]
+
+        .some(
+            value => value < 0
+        );
+
+    /* ===== UPDATE ===== */
 
     const {
         error
@@ -182,19 +238,21 @@ async (req, res) => {
 
             shift_type,
 
-            break1,
+            break1: b1,
 
-            break2,
+            break2: b2,
 
-            break3,
+            break3: b3,
 
-            break4,
+            break4: b4,
 
-            break5,
+            break5: b5,
 
-            break6,
+            break6: b6,
 
             total,
+
+            current_open_break,
 
             edited_by_name,
 
@@ -213,6 +271,8 @@ async (req, res) => {
             id
         );
 
+    /* ===== ERROR ===== */
+
     if (error) {
 
         console.log(
@@ -225,10 +285,14 @@ async (req, res) => {
         });
     }
 
+    /* ===== SUCCESS ===== */
+
     res.json({
         success: true
     });
 });
+
+/* ===== EXPORT ===== */
 
 module.exports =
     router;
