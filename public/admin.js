@@ -205,47 +205,41 @@ async function loadLogs() {
 
             </td>
 
-            <td>
+        <td>
 
-                ${row.shift_session || ''}
+    ${Number(row.break1) < 0 ? '⏳' : Math.max(0, row.break1 || 0)}
 
-            </td>
+</td>
 
-            <td>
+<td>
 
-                ${Math.max(0, row.break1 || 0)}
+    ${Number(row.break2) < 0 ? '⏳' : Math.max(0, row.break2 || 0)}
 
-            </td>
+</td>
 
-            <td>
+<td>
 
-                ${Math.max(0, row.break2 || 0)}
+    ${Number(row.break3) < 0 ? '⏳' : Math.max(0, row.break3 || 0)}
 
-            </td>
+</td>
 
-            <td>
+<td>
 
-                ${Math.max(0, row.break3 || 0)}
+    ${Number(row.break4) < 0 ? '⏳' : Math.max(0, row.break4 || 0)}
 
-            </td>
+</td>
 
-            <td>
+<td>
 
-                ${Math.max(0, row.break4 || 0)}
+    ${Number(row.break5) < 0 ? '⏳' : Math.max(0, row.break5 || 0)}
 
-            </td>
+</td>
 
-            <td>
+<td>
 
-                ${Math.max(0, row.break5 || 0)}
+    ${Number(row.break6) < 0 ? '⏳' : Math.max(0, row.break6 || 0)}
 
-            </td>
-
-            <td>
-
-                ${Math.max(0, row.break6 || 0)}
-
-            </td>
+</td>
 
             <td>
 

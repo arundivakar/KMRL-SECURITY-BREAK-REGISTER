@@ -101,9 +101,24 @@ async function loadHabitual() {
 
 function nextPage() {
 
-    currentPage++;
+    const totalPages =
 
-    loadHabitual();
+        Number(
+
+            document
+            .getElementById(
+                'page-info'
+            )
+            .innerText
+            .split('of')[1]
+        );
+
+    if (currentPage < totalPages) {
+
+        currentPage++;
+
+        loadHabitual();
+    }
 }
 
 function prevPage() {
