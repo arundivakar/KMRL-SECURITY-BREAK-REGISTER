@@ -204,6 +204,11 @@ async function loadLogs() {
                 ${row.shift_type || ''}
 
             </td>
+            <td>
+
+    ${row.shift_session || ''}
+
+</td>
 
         <td>
 
