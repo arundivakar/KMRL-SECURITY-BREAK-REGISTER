@@ -22,7 +22,7 @@ function normalize(id) {
         .toUpperCase();
 }
 
-/* ===== EMPLOYEE FETCH ===== */
+//* ===== EMPLOYEE FETCH ===== */
 
 router.get(
 
@@ -85,11 +85,126 @@ async (req, res) => {
         });
     }
 
+    /* ===== TODAY STATUS ===== */
+
+    const today =
+
+        new Date()
+        .toISOString()
+        .split('T')[0];
+
+    const shift_type =
+
+        req.query.shift_type || 'NORMAL';
+
+    const {
+
+        data: breakRows
+
+    } = await supabase
+
+        .from('break_summary')
+
+        .select('*')
+
+        .eq(
+            'emp_id',
+            entered
+        )
+
+        .eq(
+            'entry_date',
+            today
+        )
+
+        .eq(
+            'shift_type',
+            shift_type
+        );
+
+    const breakRow =
+        breakRows?.[0];
+
+    let total =
+        0;
+
+    let status =
+        'No Break Started';
+
+    if (breakRow) {
+
+        total =
+            Number(
+                breakRow.total || 0
+            );
+
+        if (
+            breakRow.current_open_break
+        ) {
+
+            status =
+
+                `${breakRow.current_open_break} RUNNING`;
+
+        } else {
+
+            const completed =
+
+                [
+
+                    'Break 6',
+
+                    'Break 5',
+
+                    'Break 4',
+
+                    'Break 3',
+
+                    'Break 2',
+
+                    'Break 1'
+
+                ]
+
+                .find(label => {
+
+                    const column =
+
+                        label
+                        .toLowerCase()
+                        .replace(' ', '');
+
+                    return Number(
+                        breakRow[column]
+                    ) > 0;
+                });
+
+            if (completed) {
+
+                status =
+                    `${completed} COMPLETED`;
+            }
+        }
+    }
+
+    const balance =
+
+        Math.max(
+            0,
+            40 - total
+        );
+
     res.json({
 
         found: true,
 
-        employee: found
+        employee: found,
+
+        total,
+
+        balance,
+
+        status
     });
 });
 
