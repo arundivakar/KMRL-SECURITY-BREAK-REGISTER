@@ -367,8 +367,8 @@ async (req, res) => {
         }
 
         let row =
-            existingRows?.[0];
-
+    existingRows
+        ?.sort((a, b) => b.id - a.id)?.[0];
         /* ===== STATION LOCK ===== */
 
         if (
@@ -517,6 +517,14 @@ async (req, res) => {
 
             const latestRow =
                 latestRows?.[0];
+                if (latestRow?.current_open_break) {
+
+    return res.json({
+
+        message:
+            'Complete previous break first'
+    });
+}
 
             /* ===== RUNNING CHECK ===== */
 
@@ -658,13 +666,12 @@ async (req, res) => {
                 new Date();
 
             const mins =
-
-                Math.floor(
-
-                    (now - start)
-
-                    / 1000 / 60
-                );
+    Math.max(
+        1,
+        Math.floor(
+            (now - start) / 1000 / 60
+        )
+    );
 
             /* ===== TOTAL ===== */
 

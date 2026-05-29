@@ -90,6 +90,8 @@ async (req, res) => {
     const search =
         (req.query.search || '')
         .toLowerCase();
+        const filter =
+    req.query.filter || '';
 
     /* ===== BASE QUERY ===== */
 
@@ -212,6 +214,29 @@ async (req, res) => {
             .includes(search)
         );
     }
+    /* ===== DASHBOARD FILTER ===== */
+
+if (filter === 'exceeded') {
+
+    rows = rows.filter(
+
+        row =>
+            Number(row.total) > 40
+    );
+}
+
+if (filter === 'running') {
+
+    rows = rows.filter(
+
+        row =>
+            Boolean(
+                row.current_open_break
+            )
+    );
+}
+console.log('FILTER:', filter);
+console.log('ROWS:', rows.length);
 
     /* ===== SUMMARY ===== */
 
@@ -228,22 +253,9 @@ async (req, res) => {
         ).length;
 
     const runningBreaks =
-
-        rows.filter(row =>
-
-            [
-                Number(row.break1),
-                Number(row.break2),
-                Number(row.break3),
-                Number(row.break4),
-                Number(row.break5),
-                Number(row.break6)
-            ]
-
-            .some(
-                value => value < 0
-            )
-        ).length;
+    rows.filter(
+        row => Boolean(row.current_open_break)
+    ).length;
 
     /* ===== TOTAL PAGES ===== */
 

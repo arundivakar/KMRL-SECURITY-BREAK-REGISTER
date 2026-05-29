@@ -1,3 +1,4 @@
+let dashboardFilter = '';
 let currentPage = 1;
 
 /* ===== LOAD LOGS ===== */
@@ -27,12 +28,11 @@ async function loadLogs() {
     /* ===== FETCH ===== */
 
     const response =
+await fetch(
 
-        await fetch(
+`/api/logs?page=${currentPage}&station=${selectedStation}&search=${searchValue}&filter=${dashboardFilter}`
 
-            `/api/logs?page=${currentPage}&station=${selectedStation}&search=${searchValue}`
-
-        );
+);
 
     const data =
         await response.json();
@@ -107,19 +107,7 @@ async function loadLogs() {
         /* ===== RUNNING CHECK ===== */
 
         const isRunning =
-
-            [
-                Number(row.break1),
-                Number(row.break2),
-                Number(row.break3),
-                Number(row.break4),
-                Number(row.break5),
-                Number(row.break6)
-            ]
-
-            .some(
-                value => value < 0
-            );
+    Boolean(row.current_open_break);
 
         /* ===== STATUS ===== */
 
@@ -210,40 +198,40 @@ async function loadLogs() {
 
 </td>
 
-        <td>
-
-    ${Number(row.break1) < 0 ? '⏳' : Math.max(0, row.break1 || 0)}
-
+      <td>
+    ${row.current_open_break === 'Break 1'
+        ? '⏳'
+        : Math.max(0, row.break1 || 0)}
 </td>
 
 <td>
-
-    ${Number(row.break2) < 0 ? '⏳' : Math.max(0, row.break2 || 0)}
-
+    ${row.current_open_break === 'Break 2'
+        ? '⏳'
+        : Math.max(0, row.break2 || 0)}
 </td>
 
 <td>
-
-    ${Number(row.break3) < 0 ? '⏳' : Math.max(0, row.break3 || 0)}
-
+    ${row.current_open_break === 'Break 3'
+        ? '⏳'
+        : Math.max(0, row.break3 || 0)}
 </td>
 
 <td>
-
-    ${Number(row.break4) < 0 ? '⏳' : Math.max(0, row.break4 || 0)}
-
+    ${row.current_open_break === 'Break 4'
+        ? '⏳'
+        : Math.max(0, row.break4 || 0)}
 </td>
 
 <td>
-
-    ${Number(row.break5) < 0 ? '⏳' : Math.max(0, row.break5 || 0)}
-
+    ${row.current_open_break === 'Break 5'
+        ? '⏳'
+        : Math.max(0, row.break5 || 0)}
 </td>
 
 <td>
-
-    ${Number(row.break6) < 0 ? '⏳' : Math.max(0, row.break6 || 0)}
-
+    ${row.current_open_break === 'Break 6'
+        ? '⏳'
+        : Math.max(0, row.break6 || 0)}
 </td>
 
             <td>
@@ -360,3 +348,51 @@ setInterval(() => {
 /* ===== INITIAL ===== */
 
 loadLogs();
+document
+.getElementById('totalExceeded')
+.addEventListener(
+
+    'click',
+
+    () => {
+
+        dashboardFilter =
+            'exceeded';
+
+        currentPage = 1;
+
+        loadLogs();
+    }
+);
+
+document
+.getElementById('runningBreaks')
+.addEventListener(
+
+    'click',
+
+    () => {
+
+        dashboardFilter =
+            'running';
+
+        currentPage = 1;
+
+        loadLogs();
+    }
+);
+document
+.getElementById('totalLogs')
+.addEventListener(
+
+    'click',
+
+    () => {
+
+        dashboardFilter = '';
+
+        currentPage = 1;
+
+        loadLogs();
+    }
+);

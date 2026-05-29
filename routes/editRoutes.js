@@ -206,20 +206,14 @@ async (req, res) => {
 
     /* ===== RUNNING STATUS ===== */
 
-    const current_open_break =
+    let current_open_break = null;
 
-        [
-            b1,
-            b2,
-            b3,
-            b4,
-            b5,
-            b6
-        ]
-
-        .some(
-            value => value < 0
-        );
+if (b1 < 0) current_open_break = 'Break 1';
+else if (b2 < 0) current_open_break = 'Break 2';
+else if (b3 < 0) current_open_break = 'Break 3';
+else if (b4 < 0) current_open_break = 'Break 4';
+else if (b5 < 0) current_open_break = 'Break 5';
+else if (b6 < 0) current_open_break = 'Break 6';
 
     /* ===== UPDATE ===== */
 

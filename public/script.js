@@ -209,6 +209,13 @@ async function submitBreak(action) {
         return;
     }
 
+    if (window.breakRequestRunning) {
+    return;
+}
+
+window.breakRequestRunning = true;
+
+
     const response =
         await fetch('/api/breaks', {
 
@@ -235,6 +242,8 @@ async function submitBreak(action) {
 
     const data =
         await response.json();
+        
+        window.breakRequestRunning = false;
 
     const popup =
 document.createElement('div');
@@ -306,6 +315,7 @@ setTimeout(() => {
         document.body.style.background =
             '#d4edda';
     }
+   
 }
 startBtn.disabled = true;
 
