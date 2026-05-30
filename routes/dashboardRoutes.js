@@ -96,10 +96,9 @@ async (req, res) => {
     /* ===== BASE QUERY ===== */
 
     let query = supabase
-
-        .from('break_summary')
-
-        .select('*');
+    .from('break_summary')
+    .select('*', { count: 'exact' })
+    .range(0, 5000);
 
     /* ===== STATION FILTER ===== */
 
@@ -126,11 +125,15 @@ async (req, res) => {
 
     const {
 
-        data,
+    data,
 
-        error
+    error,
 
-    } = await query;
+    count
+
+} = await query;
+console.log('COUNT:', count);
+console.log('ROWS RETURNED:', data?.length);
 
     if (error) {
 
