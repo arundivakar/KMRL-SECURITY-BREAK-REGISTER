@@ -96,9 +96,10 @@ async (req, res) => {
     /* ===== BASE QUERY ===== */
 
     let query = supabase
+
     .from('break_summary')
-    .select('*', { count: 'exact' })
-    .range(0, 5000);
+
+    .select('*', { count: 'exact' });
 
     /* ===== STATION FILTER ===== */
 
@@ -111,19 +112,35 @@ async (req, res) => {
                 station
             );
     }
+    if (search) {
+
+    query = query.or(
+    `emp_id.ilike.%${search}%,station.ilike.%${search}%`
+);
+}
+ /* ===== DASHBOARD FILTER ===== */
+
+if (filter === 'exceeded') {
+
+    query = query.gt(
+        'total',
+        40
+    );
+}
+
+if (filter === 'running') {
+
+    query = query.not(
+        'current_open_break',
+        'is',
+        null
+    );
+}
+console.log('FILTER:', filter);
 
     /* ===== ORDER ===== */
 
-    query = query.order(
-
-        'id',
-
-        {
-            ascending: false
-        }
-    );
-
-    const {
+        const {
 
     data,
 
@@ -131,7 +148,20 @@ async (req, res) => {
 
     count
 
-} = await query;
+} = await query
+
+    .order(
+        'id',
+        {
+            ascending: false
+        }
+    )
+
+    .range(
+        offset,
+        offset + limit - 1
+    );
+
 console.log('COUNT:', count);
 console.log('ROWS RETURNED:', data?.length);
 
@@ -193,110 +223,77 @@ console.log('ROWS RETURNED:', data?.length);
             };
         });
 
-    /* ===== SEARCH ===== */
-
-    if (search) {
-
-        rows = rows.filter(row =>
-
-            row.emp_id
-            ?.toString()
-            .toLowerCase()
-            .includes(search)
-
-            ||
-
-            row.name
-            ?.toLowerCase()
-            .includes(search)
-
-            ||
-
-            row.station
-            ?.toLowerCase()
-            .includes(search)
-        );
-    }
-    /* ===== DASHBOARD FILTER ===== */
-
-if (filter === 'exceeded') {
-
-    rows = rows.filter(
-
-        row =>
-            Number(row.total) > 40
-    );
-}
-
-if (filter === 'running') {
-
-    rows = rows.filter(
-
-        row =>
-            Boolean(
-                row.current_open_break
-            )
-    );
-}
-console.log('FILTER:', filter);
-console.log('ROWS:', rows.length);
+   
 
     /* ===== SUMMARY ===== */
 
     const totalLogs =
-        rows.length;
+    count || 0;
 
-    const totalExceeded =
+    const {
+    count: totalExceeded
+} = await supabase
 
-        rows.filter(
+    .from('break_summary')
 
-            row =>
+    .select('*', {
+        count: 'exact',
+        head: true
+    })
 
-                Number(row.total) > 40
-        ).length;
+    .gt(
+        'total',
+        40
+    );
 
-    const runningBreaks =
-    rows.filter(
-        row => Boolean(row.current_open_break)
-    ).length;
+const {
+    count: runningBreaks
+} = await supabase
+
+    .from('break_summary')
+
+    .select('*', {
+        count: 'exact',
+        head: true
+    })
+
+    .not(
+        'current_open_break',
+        'is',
+        null
+    );
 
     /* ===== TOTAL PAGES ===== */
 
     const totalPages =
 
-        Math.max(
+    Math.max(
 
-            1,
+        1,
 
-            Math.ceil(
-                rows.length / limit
-            )
-        );
+        Math.ceil(
+            (count || 0) / limit
+        )
+    );
 
     /* ===== PAGINATION ===== */
 
-    const paginatedRows =
-
-        rows.slice(
-            offset,
-            offset + limit
-        );
-
+    
     /* ===== RESPONSE ===== */
 
-    res.json({
+   res.json({
 
-        rows:
-            paginatedRows,
+    rows:
+        rows,
 
-        totalPages,
+    totalPages,
 
-        totalLogs,
+    totalLogs,
 
-        totalExceeded,
+    totalExceeded,
 
-        runningBreaks
-    });
+    runningBreaks
+});
 });
 
 /* ===== TODAY EXCEEDED ===== */
