@@ -668,7 +668,7 @@ async (req, res) => {
             const mins =
     Math.max(
         1,
-        Math.floor(
+        Math.ceil(
             (now - start) / 1000 / 60
         )
     );
