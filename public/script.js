@@ -28,7 +28,7 @@ empInput.addEventListener(
     const empId =
         empInput.value.trim();
 
-    if (!empId || empId.length < 3) {
+    if (!empId || empId.length < 4) {
 
         employeeInfo.innerHTML =
             '';
