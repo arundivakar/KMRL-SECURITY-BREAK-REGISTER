@@ -339,12 +339,22 @@ document
 
 /* ===== AUTO REFRESH ===== */
 
+function shouldRefresh() {
+    const hour = new Date().getHours();
+
+    // Disable auto refresh from 10 PM to 7 AM
+    if (hour >= 22 || hour < 7) {
+        return false;
+    }
+
+    return document.visibilityState === 'visible';
+}
+
 setInterval(() => {
-
-    loadLogs();
-
-}, 30000);
-
+    if (shouldRefresh()) {
+        loadLogs();
+    }
+}, 480000); // 8 minutes
 /* ===== INITIAL ===== */
 
 loadLogs();

@@ -7,6 +7,10 @@ const path =
 const supabase =
     require('../lib/supabase');
 
+const { getEmployees } =
+    require('../lib/employeeCache');
+
+
 const router =
     express.Router();
 
@@ -185,13 +189,7 @@ console.log('ROWS RETURNED:', data?.length);
 
     /* ===== EMPLOYEE TABLE ===== */
 
-    const {
-        data: employees
-    } = await supabase
-
-        .from('employees')
-
-        .select('*');
+    const employees = await getEmployees();
 
     /* ===== MERGE EMPLOYEE NAME ===== */
 
@@ -383,13 +381,7 @@ async (req, res) => {
         return res.json([]);
     }
 
-    const {
-        data: employees
-    } = await supabase
-
-        .from('employees')
-
-        .select('*');
+    const employees = await getEmployees();
 
     const rows =
 
@@ -489,13 +481,7 @@ async (req, res) => {
         };
     }
 
-    const {
-        data: employees
-    } = await supabase
-
-        .from('employees')
-
-        .select('*');
+    const employees = await getEmployees();
 
     const result =
 

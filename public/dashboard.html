@@ -21,46 +21,29 @@ display:flex;
 gap:15px;
 margin-bottom:20px;
 flex-wrap:wrap;
+align-items:center;
 ">
 
 <a href="/dashboard">
-
-<button>
-
-Dashboard
-
-</button>
-
+<button>Dashboard</button>
 </a>
 
 <a href="/today-exceeded">
-
-<button>
-
-Today's Extra Breaks
-
-</button>
-
+<button>Today's Extra Breaks</button>
 </a>
 
 <a href="/habitual-offenders">
-
-<button>
-
-Habitual Offenders
-
-</button>
-
+<button>Habitual Offenders</button>
 </a>
 
-<a href="/logout">
-
-<button>
-
-Logout
-
+<div style="margin-left:auto;">
+<button onclick="loadLogs()">
+🔄 Refresh
 </button>
+</div>
 
+<a href="/logout">
+<button>Logout</button>
 </a>
 
 </div>

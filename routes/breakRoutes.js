@@ -4,6 +4,9 @@ const express =
 const supabase =
     require('../lib/supabase');
 
+const { getEmployees } = 
+    require('../lib/employeeCache');
+
 const router =
     express.Router();
 
@@ -36,20 +39,12 @@ async (req, res) => {
             req.params.id
         );
 
-    const {
-        data: employees,
-        error
-    } = await supabase
+    const employees = await getEmployees();
 
-        .from('employees')
-
-        .select('*');
-
-    if (error) {
+    if (!employees || employees.length === 0) {
 
         console.log(
-            'EMPLOYEE ERROR:',
-            error
+            'EMPLOYEE ERROR: Could not load employees'
         );
 
         return res.json({
@@ -238,13 +233,7 @@ async (req, res) => {
 
         /* ===== VALID EMPLOYEE ===== */
 
-        const {
-            data: employeeRows
-        } = await supabase
-
-            .from('employees')
-
-            .select('*');
+        const employeeRows = await getEmployees();
 
         const validEmployee =
 
@@ -552,6 +541,18 @@ async (req, res) => {
                 });
             }
 
+            /* ===== PREVENT OUT OF ORDER ===== */
+
+            const breakIndex = parseInt(break_no.replace('Break ', ''));
+            if (breakIndex > 1) {
+                const prevColumn = `break${breakIndex - 1}`;
+                if (Number(latestRow[prevColumn]) === 0) {
+                    return res.json({
+                        message: `Must complete Break ${breakIndex - 1} first`
+                    });
+                }
+            }
+
             /* ===== PREVENT REUSE ===== */
 
             if (
@@ -668,7 +669,7 @@ async (req, res) => {
             const mins =
     Math.max(
         1,
-        Math.ceil(
+        Math.floor(
             (now - start) / 1000 / 60
         )
     );

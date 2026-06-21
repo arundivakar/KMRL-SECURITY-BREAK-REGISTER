@@ -16,10 +16,14 @@ const completeBtn =
     document.getElementById(
         'completeBtn'
     );
+let debounceTimer;
 empInput.addEventListener(
 'input',
 
-async () => {
+() => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(async () => {
+
 
     const empId =
         empInput.value.trim();
@@ -167,6 +171,7 @@ completeBtn.disabled = false;
             </div>
         `;
     }
+    }, 500);
 });
 
 async function submitBreak(action) {
