@@ -28,7 +28,7 @@ empInput.addEventListener(
     const empId =
         empInput.value.trim();
 
-    if (!empId) {
+    if (!empId || empId.length < 3) {
 
         employeeInfo.innerHTML =
             '';
@@ -171,7 +171,7 @@ completeBtn.disabled = false;
             </div>
         `;
     }
-    }, 500);
+    }, 800);
 });
 
 async function submitBreak(action) {
