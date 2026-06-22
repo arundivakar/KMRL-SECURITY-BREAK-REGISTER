@@ -226,6 +226,20 @@ button:hover {
     15px;
 }
 
+/* ===== GRIDS ===== */
+.mobile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+.mobile-grid-action {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 22px;
+}
+
 /* ===== TABLE ===== */
 
 table {
@@ -403,12 +417,12 @@ tbody tr:hover {
     }
 
     table {
-
-        display:
-        block;
-
-        overflow-x:
-        auto;
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .mobile-grid, .mobile-grid-action {
+        grid-template-columns: 1fr; /* Stack vertically on small screens */
     }
 }
 

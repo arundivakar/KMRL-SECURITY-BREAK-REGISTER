@@ -18,8 +18,8 @@ href="admin.css">
 
 <div style="
 display:flex;
-gap:15px;
-margin-bottom:20px;
+gap:12px;
+margin-bottom:15px;
 flex-wrap:wrap;
 align-items:center;
 ">
@@ -56,8 +56,8 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 flex-wrap:wrap;
-gap:15px;
-margin-bottom:25px;
+gap:12px;
+margin-bottom:15px;
 ">
 
 <div style="
@@ -70,13 +70,7 @@ align-items:stretch;
 <select id="stationFilter"
 onchange="loadLogs()"
 style="
-padding:12px 18px;
-font-size:15px;
-border-radius:8px;
-border:1px solid #dcdcdc;
-width:240px;
-height:48px;
-box-sizing:border-box;
+width:200px;
 ">
 
 <option value="">
@@ -111,18 +105,11 @@ ALL STATIONS
 
 </select>
 
-<input
-type="text"
+<input type="text"
 id="searchInput"
-placeholder="Search EMP ID / Name / Station"
+placeholder="Search EMP ID / Name / Station..."
 style="
-padding:12px 18px;
-font-size:15px;
-border-radius:8px;
-border:1px solid #dcdcdc;
 width:240px;
-height:48px;
-box-sizing:border-box;
 "
 onkeydown="
 if(event.key==='Enter'){
@@ -191,6 +178,7 @@ Search
 
 <!-- ===== TABLE ===== -->
 
+<div class="table-wrapper">
 <table>
 
 <thead>
@@ -224,6 +212,7 @@ Search
 <tbody id="logs-body"></tbody>
 
 </table>
+</div>
 
 <br>
 
