@@ -168,18 +168,18 @@ thead {
 
 th, td {
     border-bottom: 1px solid #e2e8f0;
-    padding: 16px 14px;
+    padding: 10px 14px;
     text-align: center;
     font-size: 14px;
 }
 
 th {
-    font-weight: 600;
-    color: #475569;
+    font-weight: 700;
+    color: #0f172a;
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 2px solid #94a3b8;
 }
 
 tbody tr {
