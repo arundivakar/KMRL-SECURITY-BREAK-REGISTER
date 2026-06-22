@@ -148,6 +148,8 @@ h3 {
 /* ===== TABLE ===== */
 .table-wrapper {
     overflow-x: auto;
+    overflow-y: auto;
+    max-height: 65vh; /* Enables vertical scrolling so sticky header works */
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     background: white;
