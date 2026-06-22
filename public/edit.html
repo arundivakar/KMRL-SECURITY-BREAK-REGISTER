@@ -1,390 +1,123 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
-<title>Edit Break Entry</title>
-
-<link rel="stylesheet"
-href="admin.css">
-
+    <title>Edit Break Entry</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="admin.css">
 </head>
-
 <body>
-
-<div class="dashboard">
-
-<!-- ===== TOP ===== -->
-
-<div style="
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:25px;
-flex-wrap:wrap;
-gap:15px;
-">
-
-<div>
-
-<h2 style="
-margin:0;
-">
-
-Edit Break Entry
-
-</h2>
-
-<p style="
-margin-top:8px;
-color:#666;
-">
-
-Modify employee break details safely
-
-</p>
-
-</div>
-
-<a href="/dashboard">
-
-<button>
-
-← Back to Dashboard
-
-</button>
-
-</a>
-
-</div>
-
-<!-- ===== SUMMARY ===== -->
-
-<div style="
-background:#f8fbfc;
-border:1px solid #e4eeee;
-border-radius:12px;
-padding:18px;
-margin-bottom:25px;
-">
-
-<div style="
-display:flex;
-gap:40px;
-flex-wrap:wrap;
-">
-
-<div>
-
-<div style="
-font-size:13px;
-color:#777;
-margin-bottom:5px;
-">
-
-DATE
-
-</div>
-
-<div style="
-font-size:18px;
-font-weight:bold;
-">
-
-<span id="date"></span>
-
-</div>
-
-</div>
-
-<div>
-
-<div style="
-font-size:13px;
-color:#777;
-margin-bottom:5px;
-">
-
-SECURITY NAME
-
-</div>
-
-<div style="
-font-size:18px;
-font-weight:bold;
-color:#0097a7;
-">
-
-<span id="security-name"></span>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ===== FORM ===== -->
-
-<div style="
-background:white;
-border:1px solid #ececec;
-border-radius:12px;
-padding:25px;
-">
-
-<!-- ===== EMPLOYEE ===== -->
-
-<h3 style="
-margin-top:0;
-">
-
-Employee Details
-
-</h3>
-
-<div style="
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-margin-bottom:25px;
-">
-
-<div>
-
-<label>Employee ID</label>
-
-<input
-type="text"
-id="emp_id">
-
-</div>
-
-<div>
-
-<label>Station</label>
-
-<input
-type="text"
-id="station">
-
-</div>
-
-<div>
-
-<label>Shift Type</label>
-
-<select id="shift_type">
-
-<option value="NORMAL">
-NORMAL
-</option>
-
-<option value="DOUBLE">
-DOUBLE
-</option>
-
-</select>
-
-</div>
-
-</div>
-
-<!-- ===== BREAKS ===== -->
-
-<h3>
-
-Break Details
-
-</h3>
-
-<div style="
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(180px,1fr));
-gap:20px;
-margin-bottom:30px;
-">
-
-<div>
-
-<label>Break 1</label>
-<input type="number" id="break1">
-
-</div>
-
-<div>
-
-<label>Break 2</label>
-<input type="number" id="break2">
-
-</div>
-
-<div>
-
-<label>Break 3</label>
-<input type="number" id="break3">
-
-</div>
-
-<div>
-
-<label>Break 4</label>
-<input type="number" id="break4">
-
-</div>
-
-<div>
-
-<label>Break 5</label>
-<input type="number" id="break5">
-
-</div>
-
-<div>
-
-<label>Break 6</label>
-<input type="number" id="break6">
-
-</div>
-
-</div>
-
-<!-- ===== AUDIT ===== -->
-
-<h3>
-
-Edit Audit Information
-
-</h3>
-
-<div style="
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-margin-bottom:20px;
-">
-
-<div>
-
-<label>Edited By Name</label>
-
-<input
-type="text"
-id="edited_by_name">
-
-</div>
-
-<div>
-
-<label>Edited By Employee ID</label>
-
-<input
-type="text"
-id="edited_by_emp">
-
-</div>
-
-</div>
-
-<label>Edit Reason</label>
-
-<textarea
-id="edit_reason"
-style="
-width:100%;
-min-height:120px;
-padding:14px;
-border-radius:10px;
-border:1px solid #dcdcdc;
-font-size:14px;
-box-sizing:border-box;
-margin-top:10px;
-resize:vertical;
-"></textarea>
-
-<!-- ===== BUTTONS ===== -->
-
-<div style="
-display:flex;
-gap:15px;
-margin-top:30px;
-flex-wrap:wrap;
-">
-
-<button
-onclick="saveEdit()"
-style="
-flex:1;
-min-width:220px;
-">
-
-Save Changes
-
-</button>
-
-<a
-href="/dashboard"
-style="
-flex:1;
-min-width:220px;
-text-decoration:none;
-">
-
-<button
-type="button"
-class="admin-btn"
-style="
-width:100%;
-">
-
-Cancel
-
-</button>
-
-</a>
-
-</div>
-
-</div>
-
-<!-- ===== HISTORY ===== -->
-
-<div style="
-background:white;
-border:1px solid #ececec;
-border-radius:12px;
-padding:20px;
-margin-top:25px;
-">
-
-<h3 style="
-margin-top:0;
-">
-
-Edit History
-
-</h3>
-
-<div style="
-padding:15px 0;
-color:#777;
-font-size:14px;
-">
-
-Edit history tracking not enabled yet.
-
-</div>
-
-</div>
-
-</div>
-
-<script src="edit.js"></script>
-
+    <div class="dashboard">
+        
+        <!-- ===== TOP ===== -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; flex-wrap:wrap; gap:15px;">
+            <div>
+                <h2 style="margin:0;">Edit Break Entry</h2>
+                <p style="margin-top:8px; color:#64748b; font-size:15px;">Modify employee break details safely</p>
+            </div>
+            <a href="/dashboard" style="text-decoration:none;">
+                <button class="admin-btn">← Back to Dashboard</button>
+            </a>
+        </div>
+
+        <!-- ===== SUMMARY ===== -->
+        <div class="edit-summary-box">
+            <div>
+                <div class="summary-label">DATE</div>
+                <div class="summary-value"><span id="date"></span></div>
+            </div>
+            <div>
+                <div class="summary-label">SECURITY NAME</div>
+                <div class="summary-value highlight"><span id="security-name"></span></div>
+            </div>
+        </div>
+
+        <!-- ===== FORM ===== -->
+        <div class="edit-card">
+            
+            <!-- ===== EMPLOYEE ===== -->
+            <h3>Employee Details</h3>
+            <div class="form-grid">
+                <div>
+                    <label>Employee ID</label>
+                    <input type="text" id="emp_id" placeholder="Enter ID">
+                </div>
+                <div>
+                    <label>Station</label>
+                    <input type="text" id="station" placeholder="Enter Station">
+                </div>
+                <div>
+                    <label>Shift Type</label>
+                    <select id="shift_type">
+                        <option value="NORMAL">NORMAL</option>
+                        <option value="DOUBLE">DOUBLE</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- ===== BREAKS ===== -->
+            <h3 style="margin-top:40px;">Break Details (Minutes)</h3>
+            <div class="form-grid-small">
+                <div>
+                    <label>Break 1</label>
+                    <input type="number" id="break1" placeholder="0">
+                </div>
+                <div>
+                    <label>Break 2</label>
+                    <input type="number" id="break2" placeholder="0">
+                </div>
+                <div>
+                    <label>Break 3</label>
+                    <input type="number" id="break3" placeholder="0">
+                </div>
+                <div>
+                    <label>Break 4</label>
+                    <input type="number" id="break4" placeholder="0">
+                </div>
+                <div>
+                    <label>Break 5</label>
+                    <input type="number" id="break5" placeholder="0">
+                </div>
+                <div>
+                    <label>Break 6</label>
+                    <input type="number" id="break6" placeholder="0">
+                </div>
+            </div>
+
+            <!-- ===== AUDIT ===== -->
+            <h3 style="margin-top:40px;">Edit Audit Information</h3>
+            <div class="form-grid">
+                <div>
+                    <label>Edited By Name</label>
+                    <input type="text" id="edited_by_name" placeholder="Your Name">
+                </div>
+                <div>
+                    <label>Edited By Employee ID</label>
+                    <input type="text" id="edited_by_emp" placeholder="Your ID">
+                </div>
+            </div>
+
+            <label>Edit Reason</label>
+            <textarea id="edit_reason" placeholder="Provide a detailed reason for modifying these records..." style="min-height:120px; resize:vertical;"></textarea>
+
+            <!-- ===== BUTTONS ===== -->
+            <div style="display:flex; gap:15px; margin-top:35px; flex-wrap:wrap;">
+                <button onclick="saveEdit()" style="flex:1; min-width:220px;">Save Changes</button>
+                <a href="/dashboard" style="flex:1; min-width:220px; text-decoration:none;">
+                    <button type="button" class="admin-btn" style="width:100%;">Cancel</button>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- ===== HISTORY ===== -->
+        <div class="edit-card">
+            <h3 style="margin-top:0;">Edit History</h3>
+            <div style="padding:15px 0; color:#94a3b8; font-size:14px; font-weight:500;">
+                Edit history tracking not enabled yet.
+            </div>
+        </div>
+
+    </div>
+    <script src="edit.js"></script>
 </body>
-
 </html>
