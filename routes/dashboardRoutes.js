@@ -272,7 +272,7 @@ const {
         })
     );
 
-    if (currentHour >= 14 || currentHour >= 22) {
+    if (currentHour >= 14 || currentHour >= 20) {
         const today = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
         // We just use Date formatting to get local YYYY-MM-DD
         const todayStr = new Date(today).toISOString().split('T')[0];
@@ -288,6 +288,7 @@ const {
         if (runningData) {
             let morningStations = new Set();
             let eveningStations = new Set();
+            let generalStations = new Set();
 
             for (let r of runningData) {
                 if (r.shift_session === 'MORNING' && currentHour >= 14) {
@@ -296,6 +297,9 @@ const {
                 if (r.shift_session === 'EVENING' && currentHour >= 22) {
                     eveningStations.add(r.station);
                 }
+                if (r.shift_session === 'GENERAL' && currentHour >= 20) {
+                    generalStations.add(r.station);
+                }
             }
 
             if (morningStations.size > 0) {
@@ -303,6 +307,9 @@ const {
             }
             if (eveningStations.size > 0) {
                 scWarnings.push(`⚠️ URGENT: Station Controllers at [${Array.from(eveningStations).join(', ')}] - please close pending EVENING breaks immediately!`);
+            }
+            if (generalStations.size > 0) {
+                scWarnings.push(`⚠️ URGENT: Station Controllers at [${Array.from(generalStations).join(', ')}] - please close pending GENERAL breaks immediately!`);
             }
         }
     }

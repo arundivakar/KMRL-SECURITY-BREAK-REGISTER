@@ -570,6 +570,12 @@ async (req, res) => {
                 });
             }
 
+            /* ===== AUTO-UPGRADE TO GENERAL SHIFT ===== */
+            let updatedSession = latestRow.shift_session;
+            if (updatedSession === 'MORNING' && currentHour >= 14 && currentHour < 22) {
+                updatedSession = 'GENERAL';
+            }
+
             /* ===== START ===== */
 
             const {
@@ -586,6 +592,8 @@ async (req, res) => {
                     station,
 
                     shift_type,
+
+                    shift_session: updatedSession,
 
                     current_open_break:
                         break_no,
