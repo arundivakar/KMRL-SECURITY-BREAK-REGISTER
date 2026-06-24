@@ -175,7 +175,7 @@ th, td {
     font-size: 14px;
 }
 
-td[title] {
+td[onmousemove] {
     cursor: pointer;
 }
 
@@ -353,4 +353,33 @@ tbody tr:hover {
     .table-wrapper {
         -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
     }
+}
+/* ===== CUSTOM FLOATING TOOLTIP ===== */
+.floating-tooltip {
+    position: absolute;
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    pointer-events: none;
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, -10px);
+    border: 1px solid #334155;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+.floating-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #0f172a transparent transparent transparent;
 }

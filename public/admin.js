@@ -1,6 +1,25 @@
 let dashboardFilter = '';
 let currentPage = 1;
 
+/* ===== CUSTOM FLOATING TOOLTIP ===== */
+const tooltipElem = document.createElement('div');
+tooltipElem.className = 'floating-tooltip';
+document.body.appendChild(tooltipElem);
+
+window.showTooltip = function(e, text) {
+    if(!text) return;
+    tooltipElem.innerText = text;
+    tooltipElem.style.opacity = '1';
+    tooltipElem.style.visibility = 'visible';
+    tooltipElem.style.left = e.pageX + 'px';
+    tooltipElem.style.top = (e.pageY - 40) + 'px';
+};
+
+window.hideTooltip = function() {
+    tooltipElem.style.opacity = '0';
+    tooltipElem.style.visibility = 'hidden';
+};
+
 /* ===== LOAD LOGS ===== */
 
 async function loadLogs() {
@@ -165,7 +184,8 @@ await fetch(
         /* ===== TOOLTIP HELPER ===== */
         const getTooltip = (logs, breakKey) => {
             if (!logs || (!logs[`${breakKey}_start`] && !logs[`${breakKey}_end`])) return '';
-            return `title="Start: ${logs[`${breakKey}_start`] || 'N/A'} | End: ${logs[`${breakKey}_end`] || 'N/A'}"`;
+            const text = `Start: ${logs[`${breakKey}_start`] || 'N/A'}  |  End: ${logs[`${breakKey}_end`] || 'N/A'}`;
+            return `onmousemove="showTooltip(event, '${text}')" onmouseleave="hideTooltip()"`;
         };
 
         /* ===== ROW ===== */
