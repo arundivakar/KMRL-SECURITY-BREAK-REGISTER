@@ -37,6 +37,20 @@ await fetch(
     const data =
         await response.json();
 
+    /* ===== RENDER WARNINGS ===== */
+    const warningsContainer = document.getElementById('scWarningsContainer');
+    if (warningsContainer) {
+        if (data.scWarnings && data.scWarnings.length > 0) {
+            warningsContainer.innerHTML = data.scWarnings.map(msg => 
+                `<div style="background:#fef2f2; border:1px solid #f87171; color:#b91c1c; padding:12px 16px; border-radius:8px; margin-bottom:15px; font-weight:600; text-align:center;">
+                    ${msg}
+                </div>`
+            ).join('');
+        } else {
+            warningsContainer.innerHTML = '';
+        }
+    }
+
     /* ===== PAGE SAFETY ===== */
 
     if (

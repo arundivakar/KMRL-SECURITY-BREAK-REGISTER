@@ -261,6 +261,52 @@ const {
         null
     );
 
+    /* ===== SC WARNINGS ===== */
+    
+    let scWarnings = [];
+    const currentHour = parseInt(
+        new Date().toLocaleString('en-US', {
+            timeZone: 'Asia/Kolkata',
+            hour: 'numeric',
+            hour12: false
+        })
+    );
+
+    if (currentHour >= 14 || currentHour >= 22) {
+        const today = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+        // We just use Date formatting to get local YYYY-MM-DD
+        const todayStr = new Date(today).toISOString().split('T')[0];
+        // Note: the backend uses new Date().toISOString().split('T')[0] for entry_date in breakRoutes
+        const entryDateToday = new Date().toISOString().split('T')[0]; 
+
+        const { data: runningData } = await supabase
+            .from('break_summary')
+            .select('station, shift_session')
+            .eq('entry_date', entryDateToday)
+            .not('current_open_break', 'is', null);
+
+        if (runningData) {
+            let morningStations = new Set();
+            let eveningStations = new Set();
+
+            for (let r of runningData) {
+                if (r.shift_session === 'MORNING' && currentHour >= 14) {
+                    morningStations.add(r.station);
+                }
+                if (r.shift_session === 'EVENING' && currentHour >= 22) {
+                    eveningStations.add(r.station);
+                }
+            }
+
+            if (morningStations.size > 0) {
+                scWarnings.push(`⚠️ URGENT: Station Controllers at [${Array.from(morningStations).join(', ')}] - please close pending MORNING breaks immediately!`);
+            }
+            if (eveningStations.size > 0) {
+                scWarnings.push(`⚠️ URGENT: Station Controllers at [${Array.from(eveningStations).join(', ')}] - please close pending EVENING breaks immediately!`);
+            }
+        }
+    }
+
     /* ===== TOTAL PAGES ===== */
 
     const totalPages =
@@ -290,7 +336,9 @@ const {
 
     totalExceeded,
 
-    runningBreaks
+    runningBreaks,
+
+    scWarnings
 });
 });
 
