@@ -175,6 +175,10 @@ th, td {
     font-size: 14px;
 }
 
+td[title] {
+    cursor: pointer;
+}
+
 th {
     font-weight: 700;
     color: #0f172a;
