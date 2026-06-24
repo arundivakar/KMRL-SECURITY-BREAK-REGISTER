@@ -414,7 +414,9 @@ async (req, res) => {
                         null,
 
                     current_start_time:
-                        null
+                        null,
+
+                    break_logs: {}
                 }]);
 
             if (insertError) {
@@ -590,7 +592,12 @@ async (req, res) => {
 
                     current_start_time:
                         new Date()
-                        .toISOString()
+                        .toISOString(),
+
+                    break_logs: {
+                        ...(latestRow.break_logs || {}),
+                        [`${column}_start`]: new Date().toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' })
+                    }
 
                 })
 
@@ -729,7 +736,12 @@ async (req, res) => {
                         null,
 
                     current_start_time:
-                        null
+                        null,
+
+                    break_logs: {
+                        ...(latestRow.break_logs || {}),
+                        [`${column}_end`]: now.toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' })
+                    }
 
                 })
 

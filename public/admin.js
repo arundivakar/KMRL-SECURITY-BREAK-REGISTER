@@ -148,6 +148,12 @@ await fetch(
                 </span>`;
         }
 
+        /* ===== TOOLTIP HELPER ===== */
+        const getTooltip = (logs, breakKey) => {
+            if (!logs || (!logs[`${breakKey}_start`] && !logs[`${breakKey}_end`])) return '';
+            return `title="Start: ${logs[`${breakKey}_start`] || 'N/A'} | End: ${logs[`${breakKey}_end`] || 'N/A'}"`;
+        };
+
         /* ===== ROW ===== */
 
         tr.innerHTML = `
@@ -198,37 +204,37 @@ await fetch(
 
 </td>
 
-      <td>
+      <td ${getTooltip(row.break_logs, 'break1')}>
     ${row.current_open_break === 'Break 1'
         ? '⏳'
         : Math.max(0, row.break1 || 0)}
 </td>
 
-<td>
+<td ${getTooltip(row.break_logs, 'break2')}>
     ${row.current_open_break === 'Break 2'
         ? '⏳'
         : Math.max(0, row.break2 || 0)}
 </td>
 
-<td>
+<td ${getTooltip(row.break_logs, 'break3')}>
     ${row.current_open_break === 'Break 3'
         ? '⏳'
         : Math.max(0, row.break3 || 0)}
 </td>
 
-<td>
+<td ${getTooltip(row.break_logs, 'break4')}>
     ${row.current_open_break === 'Break 4'
         ? '⏳'
         : Math.max(0, row.break4 || 0)}
 </td>
 
-<td>
+<td ${getTooltip(row.break_logs, 'break5')}>
     ${row.current_open_break === 'Break 5'
         ? '⏳'
         : Math.max(0, row.break5 || 0)}
 </td>
 
-<td>
+<td ${getTooltip(row.break_logs, 'break6')}>
     ${row.current_open_break === 'Break 6'
         ? '⏳'
         : Math.max(0, row.break6 || 0)}
