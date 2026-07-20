@@ -7,7 +7,7 @@ const path =
 const supabase =
     require('../lib/supabase');
 
-const { getEmployees } =
+const { getEmployees, clearCache } =
     require('../lib/employeeCache');
 
 
@@ -597,7 +597,46 @@ async (req, res) => {
     });
 });
 
+/* ===== ADD EMPLOYEE (MUTT SC ONLY) ===== */
+
+router.post(
+    '/api/employees',
+    isAuthenticated,
+    express.json(),
+    async (req, res) => {
+        const { emp_id, name, designation } = req.body;
+
+        if (!emp_id || !name) {
+            return res.status(400).json({ error: 'Employee ID and Name are required' });
+        }
+
+        const normalizedEmpId = normalize(emp_id);
+
+        try {
+            const { error } = await supabase
+                .from('employees')
+                .insert([{ 
+                    emp_id: normalizedEmpId, 
+                    name: name.trim(), 
+                    designation: designation ? designation.trim() : null 
+                }]);
+
+            if (error) {
+                console.error('Error inserting new employee:', error);
+                return res.status(500).json({ error: 'Failed to add employee. ID might already exist.' });
+            }
+
+            // Invalidate the cache so the new employee is instantly available
+            clearCache();
+
+            res.json({ message: 'Employee added successfully!' });
+        } catch (err) {
+            console.error('Server error adding employee:', err);
+            res.status(500).json({ error: 'Server error' });
+        }
+    }
+);
+
 /* ===== EXPORT ===== */
 
-module.exports =
-    router;
+module.exports = router;
