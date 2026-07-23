@@ -97,6 +97,62 @@ async (req, res) => {
         const filter =
     req.query.filter || '';
 
+    /* ===== AUTO-CLEAR STALE BREAKS ===== */
+    /* Breaks stuck open from a PREVIOUS date are resolved automatically.
+       The break duration is calculated from current_start_time to now,
+       and current_open_break / current_start_time are cleared. */
+
+    try {
+        const todayStr = new Date().toISOString().split('T')[0];
+
+        const { data: staleRows } = await supabase
+            .from('break_summary')
+            .select('id, current_open_break, current_start_time, break1, break2, break3, break4, break5, break6, break_logs')
+            .not('current_open_break', 'is', null)
+            .lt('entry_date', todayStr);
+
+        if (staleRows && staleRows.length > 0) {
+            const colMap = {
+                'Break 1': 'break1', 'Break 2': 'break2',
+                'Break 3': 'break3', 'Break 4': 'break4',
+                'Break 5': 'break5', 'Break 6': 'break6'
+            };
+            for (const stale of staleRows) {
+                const col = colMap[stale.current_open_break];
+                if (!col) continue;
+                const start = stale.current_start_time ? new Date(stale.current_start_time) : null;
+                const now = new Date();
+                const mins = start ? Math.max(1, Math.floor((now - start) / 1000 / 60)) : 1;
+                const newTotal =
+                    Math.max(0, Number(stale.break1 || 0)) +
+                    Math.max(0, Number(stale.break2 || 0)) +
+                    Math.max(0, Number(stale.break3 || 0)) +
+                    Math.max(0, Number(stale.break4 || 0)) +
+                    Math.max(0, Number(stale.break5 || 0)) +
+                    Math.max(0, Number(stale.break6 || 0)) +
+                    mins;
+                await supabase
+                    .from('break_summary')
+                    .update({
+                        [col]: mins,
+                        total: newTotal,
+                        current_open_break: null,
+                        current_start_time: null,
+                        break_logs: {
+                            ...(stale.break_logs || {}),
+                            [`${col}_end`]: 'Auto-closed'
+                        }
+                    })
+                    .eq('id', stale.id);
+                console.log(`[AUTO-CLOSE] Stale break resolved: id=${stale.id}, col=${col}, mins=${mins}`);
+            }
+        }
+    } catch (cleanupErr) {
+        console.error('[AUTO-CLOSE] Stale break cleanup error:', cleanupErr);
+    }
+
+
+
     /* ===== BASE QUERY ===== */
 
     let query = supabase

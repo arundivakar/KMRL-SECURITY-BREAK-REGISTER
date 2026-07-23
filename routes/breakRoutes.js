@@ -372,95 +372,9 @@ async (req, res) => {
             });
         }
 
-        /* ===== CREATE ROW ===== */
-
-        if (!row) {
-
-            const {
-                error: insertError
-            } = await supabase
-
-                .from('break_summary')
-
-                .insert([{
-
-                    entry_date:
-                        today,
-
-                    emp_id:
-                        normalizedEmpId,
-
-                    station,
-
-                    shift_type,
-
-                    shift_session,
-
-                    break1: 0,
-
-                    break2: 0,
-
-                    break3: 0,
-
-                    break4: 0,
-
-                    break5: 0,
-
-                    break6: 0,
-
-                    total: 0,
-
-                    current_open_break:
-                        null,
-
-                    current_start_time:
-                        null,
-
-                    break_logs: {}
-                }]);
-
-            if (insertError) {
-
-                console.log(
-                    'INSERT ERROR:',
-                    insertError
-                );
-
-                return res.json({
-
-                    message:
-                    insertError.message
-                });
-            }
-
-            const {
-                data: newRows
-            } = await supabase
-
-                .from('break_summary')
-
-                .select('*')
-
-                .eq(
-                    'emp_id',
-                    normalizedEmpId
-                )
-
-                .eq(
-                    'entry_date',
-                    today
-                )
-
-                .eq(
-                    'shift_type',
-                    shift_type
-                );
-
-            row =
-                newRows?.[0];
-        }
 
         /* ===== BREAK MAP ===== */
+
 
         const map = {
 
@@ -492,6 +406,94 @@ async (req, res) => {
         /* ===== START BREAK ===== */
 
         if (action === 'START') {
+
+            /* ===== CREATE ROW IF MISSING (only on START) ===== */
+
+            if (!row) {
+
+                const {
+                    error: insertError
+                } = await supabase
+
+                    .from('break_summary')
+
+                    .insert([{
+
+                        entry_date:
+                            today,
+
+                        emp_id:
+                            normalizedEmpId,
+
+                        station,
+
+                        shift_type,
+
+                        shift_session,
+
+                        break1: 0,
+
+                        break2: 0,
+
+                        break3: 0,
+
+                        break4: 0,
+
+                        break5: 0,
+
+                        break6: 0,
+
+                        total: 0,
+
+                        current_open_break:
+                            null,
+
+                        current_start_time:
+                            null,
+
+                        break_logs: {}
+                    }]);
+
+                if (insertError) {
+
+                    console.log(
+                        'INSERT ERROR:',
+                        insertError
+                    );
+
+                    return res.json({
+
+                        message:
+                        insertError.message
+                    });
+                }
+
+                const {
+                    data: newRows
+                } = await supabase
+
+                    .from('break_summary')
+
+                    .select('*')
+
+                    .eq(
+                        'emp_id',
+                        normalizedEmpId
+                    )
+
+                    .eq(
+                        'entry_date',
+                        today
+                    )
+
+                    .eq(
+                        'shift_type',
+                        shift_type
+                    );
+
+                row =
+                    newRows?.[0];
+            }
 
             const {
                 data: latestRows
