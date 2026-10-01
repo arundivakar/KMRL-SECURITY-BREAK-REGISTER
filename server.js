@@ -69,6 +69,9 @@ const dashboardRoutes =
 const editRoutes =
     require('./routes/editRoutes');
 
+const archiveRoutes =
+    require('./routes/archiveRoutes');
+
 app.use(
     authRoutes
 );
@@ -83,6 +86,10 @@ app.use(
 
 app.use(
     editRoutes
+);
+
+app.use(
+    archiveRoutes
 );
 
 /* ===== SERVER ===== */

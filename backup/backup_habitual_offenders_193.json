@@ -1,0 +1,1160 @@
+[
+  {
+    "emp_id": "7172",
+    "total_violations": 5,
+    "latest_date": "2026-05-31",
+    "latest_station": "EDAP"
+  },
+  {
+    "emp_id": "7437",
+    "total_violations": 5,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7152",
+    "total_violations": 31,
+    "latest_date": "2026-09-22",
+    "latest_station": "TNHL"
+  },
+  {
+    "emp_id": "7374",
+    "total_violations": 6,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7241",
+    "total_violations": 11,
+    "latest_date": "2026-09-12",
+    "latest_station": "VAKK"
+  },
+  {
+    "emp_id": "7014",
+    "total_violations": 11,
+    "latest_date": "2026-09-11",
+    "latest_station": "ERSH"
+  },
+  {
+    "emp_id": "7515",
+    "total_violations": 16,
+    "latest_date": "2026-09-26",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7161",
+    "total_violations": 1,
+    "latest_date": "2026-08-18",
+    "latest_station": "CCUV"
+  },
+  {
+    "emp_id": "7584",
+    "total_violations": 6,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7593",
+    "total_violations": 2,
+    "latest_date": "2026-08-22",
+    "latest_station": "CPPY"
+  },
+  {
+    "emp_id": "7292",
+    "total_violations": 2,
+    "latest_date": "2026-09-11",
+    "latest_station": "MACE"
+  },
+  {
+    "emp_id": "7270",
+    "total_violations": 1,
+    "latest_date": "2026-08-24",
+    "latest_station": "ALVA"
+  },
+  {
+    "emp_id": "7088",
+    "total_violations": 7,
+    "latest_date": "2026-09-11",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7026",
+    "total_violations": 4,
+    "latest_date": "2026-08-31",
+    "latest_station": "EMKM"
+  },
+  {
+    "emp_id": "7133",
+    "total_violations": 5,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7587",
+    "total_violations": 15,
+    "latest_date": "2026-09-02",
+    "latest_station": "CGPP"
+  },
+  {
+    "emp_id": "7332",
+    "total_violations": 7,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7002",
+    "total_violations": 6,
+    "latest_date": "2026-06-28",
+    "latest_station": "PNCU"
+  },
+  {
+    "emp_id": "7445",
+    "total_violations": 1,
+    "latest_date": "2026-07-21",
+    "latest_station": "ALVA"
+  },
+  {
+    "emp_id": "7217",
+    "total_violations": 1,
+    "latest_date": "2026-06-15",
+    "latest_station": "PARV"
+  },
+  {
+    "emp_id": "7174",
+    "total_violations": 2,
+    "latest_date": "2026-06-26",
+    "latest_station": "ERSH"
+  },
+  {
+    "emp_id": "7605",
+    "total_violations": 12,
+    "latest_date": "2026-08-29",
+    "latest_station": "TPHT"
+  },
+  {
+    "emp_id": "7610",
+    "total_violations": 6,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7439",
+    "total_violations": 15,
+    "latest_date": "2026-05-23",
+    "latest_station": "TKDM"
+  },
+  {
+    "emp_id": "7338",
+    "total_violations": 11,
+    "latest_date": "2026-09-08",
+    "latest_station": "TKDM"
+  },
+  {
+    "emp_id": "7171",
+    "total_violations": 8,
+    "latest_date": "2026-07-15",
+    "latest_station": "KALR"
+  },
+  {
+    "emp_id": "7235",
+    "total_violations": 8,
+    "latest_date": "2026-08-19",
+    "latest_station": "MGRD"
+  },
+  {
+    "emp_id": "7111",
+    "total_violations": 15,
+    "latest_date": "2026-08-30",
+    "latest_station": "SNJN"
+  },
+  {
+    "emp_id": "7153",
+    "total_violations": 8,
+    "latest_date": "2026-09-17",
+    "latest_station": "ERSH"
+  },
+  {
+    "emp_id": "7399",
+    "total_violations": 5,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7602",
+    "total_violations": 1,
+    "latest_date": "2026-08-27",
+    "latest_station": "ALVA"
+  },
+  {
+    "emp_id": "7534",
+    "total_violations": 7,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7609",
+    "total_violations": 10,
+    "latest_date": "2026-09-23",
+    "latest_station": "KVTR"
+  },
+  {
+    "emp_id": "7351",
+    "total_violations": 18,
+    "latest_date": "2026-08-31",
+    "latest_station": "TNHL"
+  },
+  {
+    "emp_id": "7052",
+    "total_violations": 27,
+    "latest_date": "2026-08-26",
+    "latest_station": "KALR"
+  },
+  {
+    "emp_id": "7208",
+    "total_violations": 2,
+    "latest_date": "2026-08-07",
+    "latest_station": "VAKK"
+  },
+  {
+    "emp_id": "7001",
+    "total_violations": 5,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7463",
+    "total_violations": 7,
+    "latest_date": "2026-08-13",
+    "latest_station": "PDPM"
+  },
+  {
+    "emp_id": "7510",
+    "total_violations": 12,
+    "latest_date": "2026-09-07",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7501",
+    "total_violations": 4,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7590",
+    "total_violations": 5,
+    "latest_date": "2026-08-25",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7297",
+    "total_violations": 4,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7345",
+    "total_violations": 4,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7049",
+    "total_violations": 5,
+    "latest_date": "2026-05-29",
+    "latest_station": "ALVA"
+  },
+  {
+    "emp_id": "7263",
+    "total_violations": 29,
+    "latest_date": "2026-09-18",
+    "latest_station": "VAKK"
+  },
+  {
+    "emp_id": "7234",
+    "total_violations": 32,
+    "latest_date": "2026-08-20",
+    "latest_station": "KLMT"
+  },
+  {
+    "emp_id": "7352",
+    "total_violations": 16,
+    "latest_date": "2026-09-29",
+    "latest_station": "TNHL"
+  },
+  {
+    "emp_id": "7283",
+    "total_violations": 1,
+    "latest_date": "2026-09-01",
+    "latest_station": "PNCU"
+  },
+  {
+    "emp_id": "7395",
+    "total_violations": 10,
+    "latest_date": "2026-09-24",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7170",
+    "total_violations": 2,
+    "latest_date": "2026-08-06",
+    "latest_station": "EDAP"
+  },
+  {
+    "emp_id": "7600",
+    "total_violations": 3,
+    "latest_date": "2026-09-28",
+    "latest_station": "MUTT"
+  },
+  {
+    "emp_id": "7013",
+    "total_violations": 3,
+    "latest_date": "2026-09-12",
+    "latest_station": "PNCU"
+  },
+  {
+    "emp_id": "7154",
+    "total_violations": 1,
+    "latest_date": "2026-07-24",
+    "latest_station": "MGRD"
+  },
+  {
+    "emp_id": "7243",
+    "total_violations": 8,
+    "latest_date": "2026-09-26",
+    "latest_station": "PDPM"
+  },
+  {
+    "emp_id": "7442",
+    "total_violations": 5,
+    "latest_date": "2026-08-14",
+    "latest_station": "EDAP"
+  },
+  {
+    "emp_id": "7257",
+    "total_violations": 4,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7436",
+    "total_violations": 9,
+    "latest_date": "2026-10-01",
+    "latest_station": "PNCU"
+  },
+  {
+    "emp_id": "7219",
+    "total_violations": 11,
+    "latest_date": "2026-08-15",
+    "latest_station": "TPHT"
+  },
+  {
+    "emp_id": "7304",
+    "total_violations": 4,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7016",
+    "total_violations": 2,
+    "latest_date": "2026-08-17",
+    "latest_station": "MUTT"
+  },
+  {
+    "emp_id": "7074",
+    "total_violations": 20,
+    "latest_date": "2026-10-01",
+    "latest_station": "PDPM"
+  },
+  {
+    "emp_id": "7581",
+    "total_violations": 11,
+    "latest_date": "2026-09-03",
+    "latest_station": "TKDM"
+  },
+  {
+    "emp_id": "7156",
+    "total_violations": 13,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7040",
+    "total_violations": 9,
+    "latest_date": "2026-08-31",
+    "latest_station": "KLMT"
+  },
+  {
+    "emp_id": "7209",
+    "total_violations": 5,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7227",
+    "total_violations": 4,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7093",
+    "total_violations": 7,
+    "latest_date": "2026-09-03",
+    "latest_station": "ERSH"
+  },
+  {
+    "emp_id": "7090",
+    "total_violations": 13,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7017",
+    "total_violations": 5,
+    "latest_date": "2026-08-22",
+    "latest_station": "AATK"
+  },
+  {
+    "emp_id": "7194",
+    "total_violations": 10,
+    "latest_date": "2026-09-26",
+    "latest_station": "VAKK"
+  },
+  {
+    "emp_id": "7597",
+    "total_violations": 4,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7107",
+    "total_violations": 9,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7381",
+    "total_violations": 12,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7500",
+    "total_violations": 9,
+    "latest_date": "2026-09-11",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7428",
+    "total_violations": 1,
+    "latest_date": "2026-09-22",
+    "latest_station": "KVTR"
+  },
+  {
+    "emp_id": "7586",
+    "total_violations": 9,
+    "latest_date": "2026-07-20",
+    "latest_station": "TPHT"
+  },
+  {
+    "emp_id": "7403",
+    "total_violations": 5,
+    "latest_date": "2026-07-01",
+    "latest_station": "PARV"
+  },
+  {
+    "emp_id": "7141",
+    "total_violations": 1,
+    "latest_date": "2026-08-23",
+    "latest_station": "CCUV"
+  },
+  {
+    "emp_id": "7404",
+    "total_violations": 1,
+    "latest_date": "2026-08-14",
+    "latest_station": "MUTT"
+  },
+  {
+    "emp_id": "7451",
+    "total_violations": 18,
+    "latest_date": "2026-09-23",
+    "latest_station": "TNHL"
+  },
+  {
+    "emp_id": "7335",
+    "total_violations": 15,
+    "latest_date": "2026-09-06",
+    "latest_station": "TPHT"
+  },
+  {
+    "emp_id": "7159",
+    "total_violations": 11,
+    "latest_date": "2026-08-09",
+    "latest_station": "MACE"
+  },
+  {
+    "emp_id": "7051",
+    "total_violations": 4,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7010",
+    "total_violations": 11,
+    "latest_date": "2026-08-25",
+    "latest_station": "EDAP"
+  },
+  {
+    "emp_id": "7139",
+    "total_violations": 12,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7424",
+    "total_violations": 7,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7480",
+    "total_violations": 18,
+    "latest_date": "2026-07-16",
+    "latest_station": "TNHL"
+  },
+  {
+    "emp_id": "7116",
+    "total_violations": 7,
+    "latest_date": "2026-08-25",
+    "latest_station": "AATK"
+  },
+  {
+    "emp_id": "7489",
+    "total_violations": 1,
+    "latest_date": "2026-05-27",
+    "latest_station": "TNHL"
+  },
+  {
+    "emp_id": "7604",
+    "total_violations": 18,
+    "latest_date": "2026-09-07",
+    "latest_station": "TKDM"
+  },
+  {
+    "emp_id": "7187",
+    "total_violations": 7,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7316",
+    "total_violations": 14,
+    "latest_date": "2026-09-28",
+    "latest_station": "MGRD"
+  },
+  {
+    "emp_id": "7478",
+    "total_violations": 13,
+    "latest_date": "2026-06-10",
+    "latest_station": "PARV"
+  },
+  {
+    "emp_id": "7183",
+    "total_violations": 4,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7342",
+    "total_violations": 14,
+    "latest_date": "2026-08-05",
+    "latest_station": "TKDM"
+  },
+  {
+    "emp_id": "7073",
+    "total_violations": 8,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7233",
+    "total_violations": 5,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7355",
+    "total_violations": 14,
+    "latest_date": "2026-09-05",
+    "latest_station": "SNJN"
+  },
+  {
+    "emp_id": "7117",
+    "total_violations": 9,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7245",
+    "total_violations": 23,
+    "latest_date": "2026-08-23",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7434",
+    "total_violations": 8,
+    "latest_date": "2026-09-20",
+    "latest_station": "TPHT"
+  },
+  {
+    "emp_id": "7110",
+    "total_violations": 8,
+    "latest_date": "2026-07-31",
+    "latest_station": "EDAP"
+  },
+  {
+    "emp_id": "7408",
+    "total_violations": 1,
+    "latest_date": "2026-08-01",
+    "latest_station": "PDPM"
+  },
+  {
+    "emp_id": "7490",
+    "total_violations": 2,
+    "latest_date": "2026-09-02",
+    "latest_station": "TNHL"
+  },
+  {
+    "emp_id": "7502",
+    "total_violations": 13,
+    "latest_date": "2026-09-10",
+    "latest_station": "TNHL"
+  },
+  {
+    "emp_id": "7331",
+    "total_violations": 2,
+    "latest_date": "2026-08-21",
+    "latest_station": "ALVA"
+  },
+  {
+    "emp_id": "7186",
+    "total_violations": 6,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7203",
+    "total_violations": 2,
+    "latest_date": "2026-08-30",
+    "latest_station": "SNJN"
+  },
+  {
+    "emp_id": "7606",
+    "total_violations": 9,
+    "latest_date": "2026-06-14",
+    "latest_station": "TPHT"
+  },
+  {
+    "emp_id": "7064",
+    "total_violations": 5,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7238",
+    "total_violations": 10,
+    "latest_date": "2026-09-25",
+    "latest_station": "ERSH"
+  },
+  {
+    "emp_id": "7252",
+    "total_violations": 1,
+    "latest_date": "2026-09-16",
+    "latest_station": "TNHL"
+  },
+  {
+    "emp_id": "7346",
+    "total_violations": 5,
+    "latest_date": "2026-08-16",
+    "latest_station": "TPHT"
+  },
+  {
+    "emp_id": "7302",
+    "total_violations": 4,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7514",
+    "total_violations": 6,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7092",
+    "total_violations": 22,
+    "latest_date": "2026-09-12",
+    "latest_station": "PARV"
+  },
+  {
+    "emp_id": "7371",
+    "total_violations": 4,
+    "latest_date": "2026-09-29",
+    "latest_station": "SNJN"
+  },
+  {
+    "emp_id": "7530",
+    "total_violations": 8,
+    "latest_date": "2026-09-18",
+    "latest_station": "KVTR"
+  },
+  {
+    "emp_id": "7103",
+    "total_violations": 7,
+    "latest_date": "2026-08-18",
+    "latest_station": "PARV"
+  },
+  {
+    "emp_id": "7343",
+    "total_violations": 17,
+    "latest_date": "2026-09-25",
+    "latest_station": "MACE"
+  },
+  {
+    "emp_id": "7249",
+    "total_violations": 8,
+    "latest_date": "2026-08-05",
+    "latest_station": "MACE"
+  },
+  {
+    "emp_id": "7307",
+    "total_violations": 6,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7071",
+    "total_violations": 9,
+    "latest_date": "2026-07-10",
+    "latest_station": "TPHT"
+  },
+  {
+    "emp_id": "7550",
+    "total_violations": 3,
+    "latest_date": "2026-08-22",
+    "latest_station": "MUTT"
+  },
+  {
+    "emp_id": "7089",
+    "total_violations": 9,
+    "latest_date": "2026-09-17",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7085",
+    "total_violations": 3,
+    "latest_date": "2026-09-17",
+    "latest_station": "PNCU"
+  },
+  {
+    "emp_id": "7021",
+    "total_violations": 16,
+    "latest_date": "2026-09-29",
+    "latest_station": "ERSH"
+  },
+  {
+    "emp_id": "7143",
+    "total_violations": 12,
+    "latest_date": "2026-06-01",
+    "latest_station": "EDAP"
+  },
+  {
+    "emp_id": "7303",
+    "total_violations": 8,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7344",
+    "total_violations": 9,
+    "latest_date": "2026-09-12",
+    "latest_station": "PARV"
+  },
+  {
+    "emp_id": "7542",
+    "total_violations": 9,
+    "latest_date": "2026-08-30",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7562",
+    "total_violations": 20,
+    "latest_date": "2026-08-08",
+    "latest_station": "VAKK"
+  },
+  {
+    "emp_id": "7592",
+    "total_violations": 9,
+    "latest_date": "2026-05-24",
+    "latest_station": "KVTR"
+  },
+  {
+    "emp_id": "7220",
+    "total_violations": 6,
+    "latest_date": "2026-08-01",
+    "latest_station": "MACE"
+  },
+  {
+    "emp_id": "7222",
+    "total_violations": 8,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7400",
+    "total_violations": 6,
+    "latest_date": "2026-09-04",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7160",
+    "total_violations": 5,
+    "latest_date": "2026-08-01",
+    "latest_station": "MUTT"
+  },
+  {
+    "emp_id": "7211",
+    "total_violations": 10,
+    "latest_date": "2026-09-02",
+    "latest_station": "MGRD"
+  },
+  {
+    "emp_id": "7336",
+    "total_violations": 13,
+    "latest_date": "2026-09-05",
+    "latest_station": "KALR"
+  },
+  {
+    "emp_id": "7278",
+    "total_violations": 5,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7412",
+    "total_violations": 6,
+    "latest_date": "2026-09-15",
+    "latest_station": "PNCU"
+  },
+  {
+    "emp_id": "7124",
+    "total_violations": 4,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7505",
+    "total_violations": 1,
+    "latest_date": "2026-07-01",
+    "latest_station": "SNJN"
+  },
+  {
+    "emp_id": "7389",
+    "total_violations": 5,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7326",
+    "total_violations": 12,
+    "latest_date": "2026-09-17",
+    "latest_station": "KALR"
+  },
+  {
+    "emp_id": "7454",
+    "total_violations": 5,
+    "latest_date": "2026-08-29",
+    "latest_station": "SNJN"
+  },
+  {
+    "emp_id": "7192",
+    "total_violations": 6,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7386",
+    "total_violations": 8,
+    "latest_date": "2026-09-29",
+    "latest_station": "TPHT"
+  },
+  {
+    "emp_id": "7277",
+    "total_violations": 1,
+    "latest_date": "2026-09-17",
+    "latest_station": "JLSD"
+  },
+  {
+    "emp_id": "7259",
+    "total_violations": 14,
+    "latest_date": "2026-09-08",
+    "latest_station": "TNHL"
+  },
+  {
+    "emp_id": "7544",
+    "total_violations": 1,
+    "latest_date": "2026-09-23",
+    "latest_station": "PNCU"
+  },
+  {
+    "emp_id": "7288",
+    "total_violations": 9,
+    "latest_date": "2026-07-03",
+    "latest_station": "KALR"
+  },
+  {
+    "emp_id": "8007",
+    "total_violations": 7,
+    "latest_date": "2026-08-23",
+    "latest_station": "MACE"
+  },
+  {
+    "emp_id": "7520",
+    "total_violations": 3,
+    "latest_date": "2026-09-15",
+    "latest_station": "TPHT"
+  },
+  {
+    "emp_id": "7607",
+    "total_violations": 4,
+    "latest_date": "2026-09-11",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7087",
+    "total_violations": 8,
+    "latest_date": "2026-10-01",
+    "latest_station": "MACE"
+  },
+  {
+    "emp_id": "7102",
+    "total_violations": 14,
+    "latest_date": "2026-08-17",
+    "latest_station": "CGPP"
+  },
+  {
+    "emp_id": "7076",
+    "total_violations": 1,
+    "latest_date": "2026-08-22",
+    "latest_station": "ALVA"
+  },
+  {
+    "emp_id": "7253",
+    "total_violations": 1,
+    "latest_date": "2026-07-26",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7189",
+    "total_violations": 1,
+    "latest_date": "2026-06-06",
+    "latest_station": "MACE"
+  },
+  {
+    "emp_id": "7164",
+    "total_violations": 27,
+    "latest_date": "2026-09-07",
+    "latest_station": "KLMT"
+  },
+  {
+    "emp_id": "7020",
+    "total_violations": 8,
+    "latest_date": "2026-09-26",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7261",
+    "total_violations": 16,
+    "latest_date": "2026-09-26",
+    "latest_station": "MACE"
+  },
+  {
+    "emp_id": "7108",
+    "total_violations": 1,
+    "latest_date": "2026-08-13",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7567",
+    "total_violations": 9,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7127",
+    "total_violations": 17,
+    "latest_date": "2026-09-06",
+    "latest_station": "KVTR"
+  },
+  {
+    "emp_id": "7328",
+    "total_violations": 6,
+    "latest_date": "2026-06-11",
+    "latest_station": "KALR"
+  },
+  {
+    "emp_id": "7516",
+    "total_violations": 8,
+    "latest_date": "2026-06-16",
+    "latest_station": "KVTR"
+  },
+  {
+    "emp_id": "7417",
+    "total_violations": 7,
+    "latest_date": "2026-07-16",
+    "latest_station": "CGPP"
+  },
+  {
+    "emp_id": "7031",
+    "total_violations": 11,
+    "latest_date": "2026-09-30",
+    "latest_station": "ERSH"
+  },
+  {
+    "emp_id": "7317",
+    "total_violations": 12,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7373",
+    "total_violations": 1,
+    "latest_date": "2026-09-26",
+    "latest_station": "PETT"
+  },
+  {
+    "emp_id": "7388",
+    "total_violations": 7,
+    "latest_date": "2026-08-30",
+    "latest_station": "KLMT"
+  },
+  {
+    "emp_id": "7447",
+    "total_violations": 5,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7128",
+    "total_violations": 6,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7535",
+    "total_violations": 24,
+    "latest_date": "2026-08-26",
+    "latest_station": "EDAP"
+  },
+  {
+    "emp_id": "7130",
+    "total_violations": 6,
+    "latest_date": "2026-09-23",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7029",
+    "total_violations": 12,
+    "latest_date": "2026-08-15",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7047",
+    "total_violations": 19,
+    "latest_date": "2026-09-29",
+    "latest_station": "VAKK"
+  },
+  {
+    "emp_id": "7608",
+    "total_violations": 1,
+    "latest_date": "2026-07-06",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7190",
+    "total_violations": 2,
+    "latest_date": "2026-09-27",
+    "latest_station": "KVTR"
+  },
+  {
+    "emp_id": "7519",
+    "total_violations": 13,
+    "latest_date": "2026-09-27",
+    "latest_station": "VYTA"
+  },
+  {
+    "emp_id": "7223",
+    "total_violations": 1,
+    "latest_date": "2026-06-20",
+    "latest_station": "EMKM"
+  },
+  {
+    "emp_id": "7553",
+    "total_violations": 10,
+    "latest_date": "2026-09-21",
+    "latest_station": "MACE"
+  },
+  {
+    "emp_id": "7280",
+    "total_violations": 21,
+    "latest_date": "2026-06-20",
+    "latest_station": "PARV"
+  },
+  {
+    "emp_id": "7582",
+    "total_violations": 8,
+    "latest_date": "2026-09-27",
+    "latest_station": "VAKK"
+  },
+  {
+    "emp_id": "7229",
+    "total_violations": 10,
+    "latest_date": "2026-08-23",
+    "latest_station": "KLMT"
+  },
+  {
+    "emp_id": "7325",
+    "total_violations": 11,
+    "latest_date": "2026-09-23",
+    "latest_station": "PDPM"
+  },
+  {
+    "emp_id": "7598",
+    "total_violations": 2,
+    "latest_date": "2026-09-09",
+    "latest_station": "MGRD"
+  },
+  {
+    "emp_id": "7498",
+    "total_violations": 10,
+    "latest_date": null,
+    "latest_station": null
+  },
+  {
+    "emp_id": "7440",
+    "total_violations": 16,
+    "latest_date": "2026-06-19",
+    "latest_station": "CGPP"
+  },
+  {
+    "emp_id": "7330",
+    "total_violations": 9,
+    "latest_date": "2026-09-27",
+    "latest_station": "TNHL"
+  },
+  {
+    "emp_id": "7260",
+    "total_violations": 1,
+    "latest_date": "2026-10-01",
+    "latest_station": "CPPY"
+  }
+]

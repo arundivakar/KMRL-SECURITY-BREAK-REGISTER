@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMRL Archive — Previous Contractor</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        .archive-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border: 1px solid #fde68a;
+        }
+        .archive-banner {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .archive-banner h2 {
+            margin: 0;
+            color: #78350f;
+            font-size: 20px;
+        }
+        .archive-banner p {
+            margin: 4px 0 0 0;
+            color: #92400e;
+            font-size: 13px;
+        }
+        .active-nav-btn {
+            background: #0f766e !important;
+            box-shadow: 0 0 0 2px #0d9488 !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- ===== TOP MENU ===== -->
+    <div style="display:flex; gap:12px; margin-bottom:15px; flex-wrap:wrap; align-items:center;">
+        <a href="/dashboard">
+            <button class="admin-btn">Dashboard</button>
+        </a>
+        <a href="/today-exceeded">
+            <button class="admin-btn">Today's Extra Breaks</button>
+        </a>
+        <a href="/habitual-offenders">
+            <button class="admin-btn">Habitual Offenders</button>
+        </a>
+        <a href="/add_guard.html">
+            <button class="admin-btn" style="color: #0d9488;">+ Add Guard (MUTT SC)</button>
+        </a>
+        <a href="/archive">
+            <button class="active-nav-btn">📁 Previous Contract Archive</button>
+        </a>
+        <div style="margin-left:auto;">
+            <button onclick="loadArchiveLogs()" style="display:flex; align-items:center; gap:8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path></svg>
+                Refresh
+            </button>
+        </div>
+        <a href="/logout">
+            <button class="admin-btn">Logout</button>
+        </a>
+    </div>
+
+    <!-- ===== ARCHIVE NOTICE BANNER ===== -->
+    <div class="archive-banner">
+        <div>
+            <h2>📁 Historical Archive — Previous Contractor</h2>
+            <p>Historical operational records and employee logs from previous contractor (24,005 preserved breaks, 406 guards). Strictly Read-Only.</p>
+        </div>
+        <div>
+            <span class="archive-badge">🔒 READ-ONLY ARCHIVE</span>
+        </div>
+    </div>
+
+    <!-- ===== SUMMARY CARDS ===== -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Archived Break Logs</h3>
+            <h1 id="totalArchivedLogs">24,005</h1>
+        </div>
+        <div class="stat-card">
+            <h3>Archived Guards</h3>
+            <h1 id="totalArchivedGuards">406</h1>
+        </div>
+        <div class="stat-card">
+            <h3>Historical Exceeded</h3>
+            <h1 id="totalArchivedExceeded" style="color:#dc2626; cursor:pointer;" onclick="toggleExceededFilter()">442</h1>
+        </div>
+    </div>
+
+    <!-- ===== FILTER + SEARCH ===== -->
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:15px; background:#f8fafc; padding:14px; border-radius:10px; border:1px solid #e2e8f0;">
+        <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; width:100%;">
+            <select id="stationFilter" onchange="loadArchiveLogs()" style="width:180px;">
+                <option value="">ALL STATIONS</option>
+                <option value="ALVA">ALVA</option>
+                <option value="PNCU">PNCU</option>
+                <option value="CPPY">CPPY</option>
+                <option value="AATK">AATK</option>
+                <option value="MUTT">MUTT</option>
+                <option value="KLMT">KLMT</option>
+                <option value="CCUV">CCUV</option>
+                <option value="PDPM">PDPM</option>
+                <option value="EDAP">EDAP</option>
+                <option value="CGPP">CGPP</option>
+                <option value="PARV">PARV</option>
+                <option value="JLSD">JLSD</option>
+                <option value="KALR">KALR</option>
+                <option value="TNHL">TNHL</option>
+                <option value="MGRD">MGRD</option>
+                <option value="MACE">MACE</option>
+                <option value="ERSH">ERSH</option>
+                <option value="KVTR">KVTR</option>
+                <option value="EMKM">EMKM</option>
+                <option value="VYTA">VYTA</option>
+                <option value="TKDM">TKDM</option>
+                <option value="PETT">PETT</option>
+                <option value="VAKK">VAKK</option>
+                <option value="SNJN">SNJN</option>
+                <option value="TPHT">TPHT</option>
+            </select>
+
+            <input type="text" id="searchInput" placeholder="Search Old EMP ID / Station..." style="width:220px;" onkeydown="if(event.key==='Enter') loadArchiveLogs();" />
+
+            <div style="display:flex; align-items:center; gap:6px;">
+                <span style="font-size:12px; color:#64748b; font-weight:600;">FROM:</span>
+                <input type="date" id="dateFrom" onchange="loadArchiveLogs()" style="width:140px; padding:8px 10px;" />
+            </div>
+
+            <div style="display:flex; align-items:center; gap:6px;">
+                <span style="font-size:12px; color:#64748b; font-weight:600;">TO:</span>
+                <input type="date" id="dateTo" onchange="loadArchiveLogs()" style="width:140px; padding:8px 10px;" />
+            </div>
+
+            <button onclick="currentPage = 1; loadArchiveLogs();" style="padding:0 20px; height:42px;">Search</button>
+            <button onclick="resetFilters()" class="admin-btn" style="padding:0 16px; height:42px;">Reset</button>
+        </div>
+    </div>
+
+    <!-- ===== TABLE ===== -->
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Old EMP ID</th>
+                    <th>Guard Name</th>
+                    <th>Station</th>
+                    <th>Shift</th>
+                    <th>Session</th>
+                    <th>B1</th>
+                    <th>B2</th>
+                    <th>B3</th>
+                    <th>B4</th>
+                    <th>B5</th>
+                    <th>B6</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="archive-logs-body">
+                <tr><td colspan="14" style="text-align:center; padding:30px; color:#64748b;">Loading historical archive records...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+
+    <!-- ===== PAGINATION ===== -->
+    <div style="display:flex; gap:10px; align-items:center; justify-content:space-between;">
+        <div>
+            <button onclick="prevPage()" id="prevBtn" class="admin-btn">← Previous</button>
+            <span id="page-info" style="margin: 0 15px; font-weight:600; color:#475569;">Page 1</span>
+            <button onclick="nextPage()" id="nextBtn" class="admin-btn">Next →</button>
+        </div>
+        <div style="color:#64748b; font-size:13px;" id="recordCountInfo">Showing 50 records per page</div>
+    </div>
+
+</div>
+
+<script src="archive.js"></script>
+</body>
+</html>
