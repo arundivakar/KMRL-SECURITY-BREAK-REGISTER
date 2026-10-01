@@ -7,7 +7,7 @@ const path =
 const supabase =
     require('../lib/supabase');
 
-const { getEmployees, clearCache } =
+const { getEmployees, getArchivedEmployees, clearCache } =
     require('../lib/employeeCache');
 
 
@@ -246,6 +246,7 @@ console.log('ROWS RETURNED:', data?.length);
     /* ===== EMPLOYEE TABLE ===== */
 
     const employees = await getEmployees();
+    const archivedEmployees = await getArchivedEmployees();
 
     /* ===== MERGE EMPLOYEE NAME ===== */
 
@@ -256,6 +257,19 @@ console.log('ROWS RETURNED:', data?.length);
             const found =
 
                 employees.find(emp =>
+
+                    normalize(
+                        emp.emp_id
+                    )
+
+                    ===
+
+                    normalize(
+                        row.emp_id
+                    )
+                ) ||
+
+                archivedEmployees.find(emp =>
 
                     normalize(
                         emp.emp_id
@@ -493,6 +507,7 @@ async (req, res) => {
     }
 
     const employees = await getEmployees();
+    const archivedEmployees = await getArchivedEmployees();
 
     const rows =
 
@@ -501,6 +516,19 @@ async (req, res) => {
             const found =
 
                 employees.find(emp =>
+
+                    normalize(
+                        emp.emp_id
+                    )
+
+                    ===
+
+                    normalize(
+                        row.emp_id
+                    )
+                ) ||
+
+                archivedEmployees.find(emp =>
 
                     normalize(
                         emp.emp_id
@@ -593,6 +621,7 @@ async (req, res) => {
     }
 
     const employees = await getEmployees();
+    const archivedEmployees = await getArchivedEmployees();
 
     const result =
 
@@ -612,6 +641,19 @@ async (req, res) => {
             const found =
 
                 employees.find(emp =>
+
+                    normalize(
+                        emp.emp_id
+                    )
+
+                    ===
+
+                    normalize(
+                        row.emp_id
+                    )
+                ) ||
+
+                archivedEmployees.find(emp =>
 
                     normalize(
                         emp.emp_id

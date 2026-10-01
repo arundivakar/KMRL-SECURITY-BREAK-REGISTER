@@ -21,24 +21,7 @@ function normalize(id) {
         .toUpperCase();
 }
 
-// In-memory cache for archived employees to keep archive fast
-let cachedArchivedEmployees = null;
-let lastArchivedFetch = 0;
-const CACHE_DURATION_MS = 60 * 60 * 1000; // 1 hour (archive is static)
-
-async function getArchivedEmployees() {
-    const now = Date.now();
-    if (!cachedArchivedEmployees || now - lastArchivedFetch > CACHE_DURATION_MS) {
-        const { data, error } = await supabase
-            .from('archive_employees')
-            .select('*');
-        if (!error && data) {
-            cachedArchivedEmployees = data;
-            lastArchivedFetch = now;
-        }
-    }
-    return cachedArchivedEmployees || [];
-}
+const { getArchivedEmployees } = require('../lib/employeeCache');
 
 /* ===== ARCHIVE HTML PAGE ===== */
 router.get('/archive', isAuthenticated, (req, res) => {
