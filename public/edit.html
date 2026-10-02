@@ -35,16 +35,47 @@
         <!-- ===== FORM ===== -->
         <div class="edit-card">
             
+            <!-- ===== ERROR ALERT ===== -->
+            <div id="error-alert" style="display:none; background:#fee2e2; border:1px solid #f87171; color:#b91c1c; padding:14px 18px; border-radius:8px; font-weight:600; margin-bottom:25px; font-size:14px; line-height:1.4;"></div>
+
             <!-- ===== EMPLOYEE ===== -->
             <h3>Employee Details</h3>
             <div class="form-grid">
                 <div>
-                    <label>Employee ID</label>
+                    <label>Employee ID <span style="color:#ef4444;">*</span></label>
                     <input type="text" id="emp_id" placeholder="Enter ID">
+                    <div id="emp_status" style="font-size:12px; margin-top:5px; font-weight:600;"></div>
                 </div>
                 <div>
-                    <label>Station</label>
-                    <input type="text" id="station" placeholder="Enter Station">
+                    <label>Station <span style="color:#ef4444;">*</span></label>
+                    <select id="station">
+                        <option value="">Select Station</option>
+                        <option value="ALVA">ALVA</option>
+                        <option value="PNCU">PNCU</option>
+                        <option value="CPPY">CPPY</option>
+                        <option value="AATK">AATK</option>
+                        <option value="MUTT">MUTT</option>
+                        <option value="KLMT">KLMT</option>
+                        <option value="CCUV">CCUV</option>
+                        <option value="PDPM">PDPM</option>
+                        <option value="EDAP">EDAP</option>
+                        <option value="CGPP">CGPP</option>
+                        <option value="PARV">PARV</option>
+                        <option value="JLSD">JLSD</option>
+                        <option value="KALR">KALR</option>
+                        <option value="TNHL">TNHL</option>
+                        <option value="MGRD">MGRD</option>
+                        <option value="MACE">MACE</option>
+                        <option value="ERSH">ERSH</option>
+                        <option value="KVTR">KVTR</option>
+                        <option value="EMKM">EMKM</option>
+                        <option value="VYTA">VYTA</option>
+                        <option value="TKDM">TKDM</option>
+                        <option value="PETT">PETT</option>
+                        <option value="VAKK">VAKK</option>
+                        <option value="SNJN">SNJN</option>
+                        <option value="TPHT">TPHT</option>
+                    </select>
                 </div>
                 <div>
                     <label>Shift Type</label>
@@ -57,6 +88,7 @@
 
             <!-- ===== BREAKS ===== -->
             <h3 style="margin-top:40px;">Break Details (Minutes)</h3>
+            <div id="running-break-notice" style="display:none; margin-bottom:15px; padding:10px 14px; background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af; border-radius:8px; font-size:13px; font-weight:500;"></div>
             <div class="form-grid-small">
                 <div>
                     <label>Break 1</label>
@@ -88,16 +120,16 @@
             <h3 style="margin-top:40px;">Edit Audit Information</h3>
             <div class="form-grid">
                 <div>
-                    <label>Edited By Name</label>
+                    <label>Edited By Name <span style="color:#ef4444;">*</span></label>
                     <input type="text" id="edited_by_name" placeholder="Your Name">
                 </div>
                 <div>
-                    <label>Edited By Employee ID</label>
+                    <label>Edited By Employee ID <span style="color:#ef4444;">*</span></label>
                     <input type="text" id="edited_by_emp" placeholder="Your ID">
                 </div>
             </div>
 
-            <label>Edit Reason</label>
+            <label>Edit Reason <span style="color:#ef4444;">*</span></label>
             <textarea id="edit_reason" placeholder="Provide a detailed reason for modifying these records..." style="min-height:120px; resize:vertical;"></textarea>
 
             <!-- ===== BUTTONS ===== -->

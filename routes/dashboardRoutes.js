@@ -695,6 +695,188 @@ async (req, res) => {
     });
 });
 
+/* ===== HABITUAL OFFENDERS HISTORY API ===== */
+
+router.get(
+    '/api/habitual-offenders/history',
+    isAuthenticated,
+    async (req, res) => {
+        try {
+            const query = String(req.query.emp_id || req.query.name || req.query.search || req.query.query || '').trim();
+
+            if (!query) {
+                return res.json({
+                    query: '',
+                    totalMatches: 0,
+                    profiles: []
+                });
+            }
+
+            const employees = await getEmployees();
+            const archivedEmployees = await getArchivedEmployees();
+
+            const { data: currentHabs } = await supabase
+                .from('habitual_offenders')
+                .select('*');
+
+            const { data: archHabs } = await supabase
+                .from('archive_habitual_offenders')
+                .select('*');
+
+            const normId = s => String(s || '').replace(/\s/g, '').replace('TCSEK', '').trim().toUpperCase();
+            const normName = s => String(s || '').replace(/\s+/g, ' ').trim().toUpperCase();
+
+            const searchId = normId(query);
+            const searchName = normName(query);
+
+            let matchedCurrentEmps = [];
+            let matchedArchEmps = [];
+
+            // 1. Direct ID match check
+            const curById = employees.filter(e => normId(e.emp_id) === searchId);
+            const archById = archivedEmployees.filter(e => normId(e.emp_id) === searchId);
+
+            if (curById.length > 0 || archById.length > 0) {
+                matchedCurrentEmps = [...curById];
+                matchedArchEmps = [...archById];
+
+                // Expand by exact normalized name to find counterparts across contracts
+                const namesToExpand = new Set([
+                    ...curById.map(e => normName(e.name)),
+                    ...archById.map(e => normName(e.name))
+                ]);
+
+                namesToExpand.forEach(n => {
+                    employees.filter(e => normName(e.name) === n).forEach(e => {
+                        if (!matchedCurrentEmps.some(x => normId(x.emp_id) === normId(e.emp_id))) {
+                            matchedCurrentEmps.push(e);
+                        }
+                    });
+                    archivedEmployees.filter(e => normName(e.name) === n).forEach(e => {
+                        if (!matchedArchEmps.some(x => normId(x.emp_id) === normId(e.emp_id))) {
+                            matchedArchEmps.push(e);
+                        }
+                    });
+                });
+            } else {
+                // 2. Name substring match
+                matchedCurrentEmps = employees.filter(e => normName(e.name).includes(searchName));
+                matchedArchEmps = archivedEmployees.filter(e => normName(e.name).includes(searchName));
+
+                // Also check if query matches habitual emp_id directly
+                const cHabById = (currentHabs || []).filter(h => normId(h.emp_id) === searchId);
+                const aHabById = (archHabs || []).filter(h => normId(h.emp_id) === searchId);
+                if (cHabById.length > 0) {
+                    employees.filter(e => normId(e.emp_id) === searchId).forEach(e => {
+                        if (!matchedCurrentEmps.some(x => normId(x.emp_id) === normId(e.emp_id))) {
+                            matchedCurrentEmps.push(e);
+                        }
+                    });
+                }
+                if (aHabById.length > 0) {
+                    archivedEmployees.filter(e => normId(e.emp_id) === searchId).forEach(e => {
+                        if (!matchedArchEmps.some(x => normId(x.emp_id) === normId(e.emp_id))) {
+                            matchedArchEmps.push(e);
+                        }
+                    });
+                }
+            }
+
+            // Group into profiles by normalized employee name
+            const profileMap = new Map();
+
+            matchedCurrentEmps.forEach(e => {
+                const n = normName(e.name);
+                if (!profileMap.has(n)) {
+                    profileMap.set(n, { name: e.name, normalizedName: n, current: [], previous: [] });
+                }
+                if (!profileMap.get(n).current.some(x => normId(x.emp_id) === normId(e.emp_id))) {
+                    profileMap.get(n).current.push(e);
+                }
+            });
+
+            matchedArchEmps.forEach(e => {
+                const n = normName(e.name);
+                if (!profileMap.has(n)) {
+                    profileMap.set(n, { name: e.name, normalizedName: n, current: [], previous: [] });
+                }
+                if (!profileMap.get(n).previous.some(x => normId(x.emp_id) === normId(e.emp_id))) {
+                    profileMap.get(n).previous.push(e);
+                }
+            });
+
+            const formatDate = d => {
+                if (!d) return null;
+                const parts = String(d).split('T')[0].split('-');
+                if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                return d;
+            };
+
+            const profiles = [];
+
+            for (const [nKey, p] of profileMap.entries()) {
+                const currentList = p.current.map(ce => {
+                    const cHab = (currentHabs || []).find(h => normId(h.emp_id) === normId(ce.emp_id));
+                    return {
+                        emp_id: ce.emp_id,
+                        clean_emp_id: normId(ce.emp_id),
+                        name: ce.name,
+                        designation: ce.designation || 'Security Guard',
+                        contract: 'Current Contract',
+                        total_violations: cHab ? (cHab.total_violations || 0) : 0,
+                        latest_date: formatDate(cHab?.latest_date),
+                        latest_station: cHab?.latest_station || null
+                    };
+                });
+
+                const previousList = p.previous.map(ae => {
+                    const aHab = (archHabs || []).find(h => normId(h.emp_id) === normId(ae.emp_id));
+                    return {
+                        emp_id: ae.emp_id,
+                        clean_emp_id: normId(ae.emp_id),
+                        name: ae.name,
+                        designation: ae.designation || 'Security Guard',
+                        contract: 'Previous Contract',
+                        total_violations: aHab ? (aHab.total_violations || 0) : 0,
+                        latest_date: formatDate(aHab?.latest_date),
+                        latest_station: aHab?.latest_station || null
+                    };
+                });
+
+                const currentTotal = currentList.reduce((sum, item) => sum + item.total_violations, 0);
+                const previousTotal = previousList.reduce((sum, item) => sum + item.total_violations, 0);
+
+                profiles.push({
+                    name: p.name,
+                    normalizedName: nKey,
+                    hasMultipleCurrent: currentList.length > 1,
+                    hasMultiplePrevious: previousList.length > 1,
+                    hasDuplicates: currentList.length > 1 || previousList.length > 1,
+                    currentEmployees: currentList,
+                    previousEmployees: previousList,
+                    summary: {
+                        currentViolations: currentTotal,
+                        previousViolations: previousTotal,
+                        allRecordedViolations: currentTotal + previousTotal
+                    }
+                });
+            }
+
+            profiles.sort((a, b) => b.summary.allRecordedViolations - a.summary.allRecordedViolations);
+
+            res.json({
+                query,
+                totalMatches: profiles.length,
+                profiles
+            });
+
+        } catch (err) {
+            console.error('HABITUAL HISTORY ERROR:', err);
+            res.status(500).json({ error: 'Server error retrieving employee history' });
+        }
+    }
+);
+
 /* ===== ADD EMPLOYEE (MUTT SC ONLY) ===== */
 
 router.post(
